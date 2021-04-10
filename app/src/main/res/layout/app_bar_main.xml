@@ -24,8 +24,14 @@
     <!-- // Tool bar-->
 
     <!-- Main content-->
-    <include layout="@layout/content_main"/>
-    <!-- Main content-->
+     <include layout="@layout/content_main"/>
+<!--    <FrameLayout-->
+<!--        android:id="@+id/flContent"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="match_parent"-->
+
+<!--      android:layout_marginTop="?attr/actionBarSize"></FrameLayout>-->
+     <!-- Main content-->
 
     <!-- Email button
     <com.google.android.material.floatingactionbutton.FloatingActionButton

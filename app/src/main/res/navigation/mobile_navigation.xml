@@ -12,14 +12,25 @@
             tools:layout="@layout/fragment_home"/>
 
     <fragment
-            android:id="@+id/nav_gallery"
-            android:name="com.example.dietstram.ui.gallery.GalleryFragment"
-            android:label="@string/menu_gallery"
-            tools:layout="@layout/fragment_gallery"/>
+            android:id="@+id/nav_profile"
+            android:name="com.example.dietstram.ui.profile.ProfileFragment"
+            android:label="@string/menu_profile"
+            tools:layout="@layout/fragment_profile"/>
 
     <fragment
-            android:id="@+id/nav_slideshow"
-            android:name="com.example.dietstram.ui.slideshow.SlideshowFragment"
-            android:label="@string/menu_slideshow"
-            tools:layout="@layout/fragment_slideshow"/>
+            android:id="@+id/nav_goal"
+            android:name="com.example.dietstram.ui.goal.GoalFragment"
+            android:label="@string/menu_goal"
+            tools:layout="@layout/fragment_goal"/>
+
+    <fragment
+        android:id="@+id/nav_categories"
+        android:name="com.example.dietstram.ui.categories.CategoriesFragment"
+        android:label="@string/menu_categories"
+        tools:layout="@layout/fragment_categories"/>
+    <fragment
+        android:id="@+id/nav_food"
+        android:name="com.example.dietstram.ui.food.FoodFragment"
+        android:label="@string/menu_food"
+        tools:layout="@layout/fragment_food"/>
 </navigation>
