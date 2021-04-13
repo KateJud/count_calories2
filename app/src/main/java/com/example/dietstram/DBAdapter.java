@@ -13,7 +13,7 @@ public class DBAdapter {
 
   /* 01 Variables ------------------------------------------------------------------------------- */
   public static final String DATABASE_NAME = "stramdiet";
-  public static final int DATABASE_VERSION = 1;
+  public static final int DATABASE_VERSION = 2;
 
   /* 02 Database Variables ---------------------------------------------------------------------- */
   private final Context context;
@@ -265,5 +265,18 @@ public class DBAdapter {
     return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
   }
 
+  /* 12 Select ---------------------------------------------------------------------------------- */
+  public Cursor select(String table, String[] fields, String column, String value)
+      throws SQLException {
+
+    //TODO SELECT
+    Cursor mCursor = db.query(table, fields, column+" = ?",
+        new String[]{value}, null, null, null);
+    if (mCursor != null) {
+      mCursor.moveToFirst();
+    }
+    return mCursor;
+
+  }
 
 }

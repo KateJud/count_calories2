@@ -124,7 +124,11 @@ public class MainActivity extends AppCompatActivity
 
         /* Setup for food */
         //Count rows in food
-        int numRows = db.count("food");
+        int numRows = db.count("categories");
+        if (numRows < 1) {
+            DBSetupInsert setupInsert = new DBSetupInsert(this);
+            setupInsert.insertAllCategories();
+        }
 
 //        if (numRows < 1) {
 //            DBSetupInsert setupInsert = new DBSetupInsert(this);
