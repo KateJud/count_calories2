@@ -10,11 +10,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /* Set title */
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Profile");
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

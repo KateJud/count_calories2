@@ -266,12 +266,51 @@ public class DBAdapter {
   }
 
   /* 12 Select ---------------------------------------------------------------------------------- */
-  public Cursor select(String table, String[] fields, String column, String value)
+//  public Cursor select(String table, String[] fields, String column, String value)
+//      throws SQLException {
+//
+//    //TODO SELECT
+//    Cursor mCursor = db.query(table, fields, column+" = ?",
+//        new String[]{value}, null, null, null);
+//    if (mCursor != null) {
+//      mCursor.moveToFirst();
+//    }
+//    return mCursor;
+//
+//  }
+  public Cursor select(String table, String[] fields, String whereClause,String whereCondition)
       throws SQLException {
 
     //TODO SELECT
-    Cursor mCursor = db.query(table, fields, column+" = ?",
-        new String[]{value}, null, null, null);
+    Cursor mCursor = db.query(table, fields, whereClause+"="+whereCondition,
+        null, null, null, null);
+    if (mCursor != null) {
+      mCursor.moveToFirst();
+    }
+    return mCursor;
+
+  }
+
+  public Cursor select(String table, String[] fields, String whereClause,long whereCondition)
+      throws SQLException {
+
+    //TODO SELECT
+    Cursor mCursor = db.query(table, fields, whereClause+"="+whereCondition,
+        null, null, null, null);
+    if (mCursor != null) {
+      mCursor.moveToFirst();
+    }
+    return mCursor;
+
+  }
+
+  //Select with order
+  public Cursor select(String table, String[] fields, String whereClause,String whereCondition,String orderBy,String smth)
+      throws SQLException {
+
+    //TODO SELECT
+    Cursor mCursor = db.query(table, fields, whereClause+"="+whereCondition,
+        null, null, null, orderBy+" "+smth);
     if (mCursor != null) {
       mCursor.moveToFirst();
     }

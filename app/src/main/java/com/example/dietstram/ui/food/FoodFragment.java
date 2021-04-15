@@ -12,11 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 
 public class FoodFragment extends Fragment {
 
     private FoodViewModel foodViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /* Set title */
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Food");
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

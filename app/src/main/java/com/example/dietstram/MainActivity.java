@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.example.dietstram.ui.categories.CategoriesFragment;
 import com.example.dietstram.ui.food.FoodFragment;
 import com.example.dietstram.ui.goal.GoalFragment;
 import com.example.dietstram.ui.home.HomeFragment;
@@ -15,6 +16,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,8 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity
-  //  implements NavigationView.OnNavigationItemSelectedListener
-    {
+    implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -60,44 +61,46 @@ public class MainActivity extends AppCompatActivity
         /***********************************8*/
 
         /* Navigation */
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-        /* Navigation items */
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-            R.id.nav_home, R.id.nav_profile, R.id.nav_goal,R.id.nav_categories,R.id.nav_food)
-            .setDrawerLayout(drawer)
-            .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//
+//        /* Navigation items */
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        // Passing each menu ID as a set of Ids because each
+//        // menu should be considered as top level destinations.
+//        mAppBarConfiguration = new AppBarConfiguration.Builder(
+//            R.id.nav_home, R.id.nav_profile, R.id.nav_goal,R.id.nav_categories,R.id.nav_food)
+//            .setDrawerLayout(drawer)
+//            .build();
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+//        NavigationUI.setupWithNavController(navigationView, navController);
 
 
         /* Initialize fragment */
-//        Fragment fragment = null;
-//        Class fragmentClass = HomeFragment.class;
-//
-//        try {
-//            fragment  =(Fragment) fragmentClass.newInstance();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        FragmentManager fragmentManager=getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
+        Fragment fragment = null;
+        Class fragmentClass = HomeFragment.class;
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
 
 
 
         /* Navigation */
-        //DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         //ActionBarDrawerToggle
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        /* Navigation items */
-
-        //NavigationView navigationView = findViewById(R.id.nav_view);
-        // *** navigationView. setNavigationItemSelectedListener(this);
+        //Navigation items
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
@@ -170,49 +173,52 @@ public class MainActivity extends AppCompatActivity
 //
 //  }
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//        int id = menuItem.getGroupId();
-//
-//        Fragment fragment = null;
-//        Class fragmentClass = null;
-//
-//        //Menu item
-//        if (id == R.id.nav_home) {
-//            fragmentClass = HomeFragment.class;
-//
-//        } else if (id == R.id.nav_gallery) {
-//        fragmentClass = ProfileFragment.class;
-//
-//      } else if (id == R.id.nav_categories) {
-//          fragmentClass = GoalFragment.class;
-//
-//        } else if (id == R.id.nav_food) {
-//          fragmentClass = FoodFragment.class;
-//
-//        }
-//
-//        //Try add item fragment
-//        try {
-//            fragment=(Fragment)fragmentClass.newInstance();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
-//
-//        //Try to show that content
-//        FragmentManager fragmentManager=getSupportFragmentManager();
-//        try {
-//            fragmentManager.beginTransaction().replace(R.id.flContent,fragment);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            Toast.makeText(this,"Error: "+e.toString(),Toast.LENGTH_LONG).show();
-//        }
-//
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//
-//        return true;
-//
-//    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        Fragment fragment = null;
+        Class fragmentClass = null;
+
+        //Menu item
+        if (id == R.id.nav_home) {
+            fragmentClass = HomeFragment.class;
+
+        } else if (id == R.id.nav_profile) {
+            fragmentClass = ProfileFragment.class;
+
+        } else if (id == R.id.nav_categories) {
+            fragmentClass = CategoriesFragment.class;
+
+        } else if (id == R.id.nav_food) {
+            fragmentClass = FoodFragment.class;
+
+        }else if (id == R.id.nav_goal) {
+            fragmentClass = GoalFragment.class;
+
+        }
+
+        //Try add item fragment
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //Try to show that content
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        try {
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+
+    }
 }
