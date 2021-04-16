@@ -29,12 +29,27 @@ import com.example.dietstram.R;
 
 import java.util.ArrayList;
 
+
 public class CategoriesFragment extends Fragment {
 
-    Cursor categoryCursor;
+    /*Necessary  fields*/
     private View mainView;
 
+    /*My fields*/
+    Cursor listCursor;
+    int error;
+
+    /* Action buttons */
+    MenuItem menuItemEdit;
+    MenuItem menuItemDelete;
+
+    /* Holder on buttons on toolbar */
+    private String currentId;
+    private String currentName;
+
+
     private CategoriesViewModel categoriesViewModel;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +59,9 @@ public class CategoriesFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Categories");
     }
 
+    //Sets main view variables
+    //so we can change views on the fragment
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         categoriesViewModel =
@@ -61,31 +79,263 @@ public class CategoriesFragment extends Fragment {
         return mainView;
     }
 
+    // Run method when started
+    //Set toolbar menu items
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            createNewCategory();
-        }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        return super.onOptionsItemSelected(item);
+        populateList("0", "");
+
+        setHasOptionsMenu(true);
     }
 
-    public void createNewCategory() {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        /* Change layout */
-        int id = R.layout.fragment_categories_add_edit;
-        setMainView(id);
+        //Inflate menu
+        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
 
-        /* Fill spinner with categories */
-        DBAdapter db = new DBAdapter(getActivity());
-        db.open();
-//Get Categories
+        //Assign variables
+        menuItemEdit = menu.findItem(R.id.action_edit);
+        menuItemDelete = menu.findItem(R.id.action_delete);
+
+        //Hide as default
+        menuItemEdit.setVisible(false);
+        menuItemDelete.setVisible(false);
+
+
+    }
+
+
+    private void populateList(String parentId, String parentName) {
+
+        /*DataBase*/
+        DBAdapter db = getDbAdapter();
+
         String[] fields = new String[]{
             "category_id",
             "category_name",
             "category_parent_id"
         };
+        listCursor = db.select("categories", fields, "category_parent_id", parentId, "category_name", "ASC");
+        ArrayList<String> values = new ArrayList<>();
 
+
+        //Convert categories to string
+        int categoryCount = listCursor.getCount();
+        for (int i = 0; i < categoryCount; i++) {
+            values.add(listCursor.getString(listCursor.getColumnIndex("category_name")));
+            listCursor.moveToNext();
+
+        }
+
+        //Create adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
+
+        //Set adapter
+        final ListView listView = getActivity().findViewById(R.id.listViewCategories);
+        listView.setAdapter(adapter);
+
+        //OnClick
+        if (parentId.equals("0")) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    listItemClicked(position);
+                }
+            });
+        }
+
+        //Close
+        db.close();
+
+        changeMenuItemVisibility(parentId);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            createNewCategory();
+        }
+        if (item.getItemId() == R.id.action_edit) {
+            editCategory();
+        }
+        if (item.getItemId() == R.id.action_delete) {
+            deleteCategory();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editCategory() {
+        //Edit name -- currentName
+        //Edit id -- currentId
+        int id = R.layout.fragment_categories_add_edit;
+        changeLayout(id);
+
+        DBAdapter db = getDbAdapter();
+
+        //Parent id
+        String[] fields = new String[]{
+            "category_parent_id"
+        };
+        Cursor findParentId = db.select("categories", fields, "category_id", db.quoteSmart(currentId));
+        String currentParentId = findParentId.getString(0).toString();
+        int intParentId = 0;
+
+        /* Fill Name */
+        EditText editTextName = getActivity().findViewById(R.id.editTextName);
+        editTextName.setText(currentName);
+
+        /* Fill spinner with categories */
+
+        //Get Categories
+        String[] fields2 = new String[]{
+            "category_id",
+            "category_name",
+            "category_parent_id"
+        };
+
+        Cursor dbCursor = db.select("categories", fields2, "category_parent_id", "0", "category_name", "ASC");
+
+
+        //Create array
+        int dbCursorCount = dbCursor.getCount();
+        String[] arraySpinnerCategories = new String[dbCursorCount + 1];
+
+        //This is a parent
+        arraySpinnerCategories[0] = "-";
+
+        for (int i = 1; i < dbCursorCount + 1; i++) {
+            arraySpinnerCategories[i] = dbCursor.getString(1).toString();
+            if (dbCursor.getString(0).equals(currentParentId)) {
+                intParentId = i;
+            }
+            dbCursor.moveToNext();
+        }
+
+        //Populate spinner
+        Spinner spinnerParent = (Spinner) getActivity().findViewById(R.id.spinnerCategoryParent);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arraySpinnerCategories);
+
+        spinnerParent.setAdapter(adapter);
+
+        //Select correct spinner item
+        spinnerParent.setSelection(intParentId);
+
+        /* Close database */
+        db.close();
+
+        /* Submit listener */
+        Button buttonHome = getActivity().findViewById(R.id.buttonCategoriesSubmit);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editCategorySubmit();
+            }
+        });
+
+    }
+
+    private void changeLayout(int id) {
+        /*  Change layout */
+        setMainView(id);
+    }
+
+    private void editCategorySubmit() {
+        DBAdapter db = getDbAdapter();
+        error = 0;
+        String stringName = getName();
+
+        //Parent
+        String parentId = getParentId(db);
+
+        if (error == 0) {
+            //Insert into database
+            //Ready variables
+            long longCurrentIdSQL = db.quoteSmart(Long.parseLong(currentId));
+
+            String stringNameSQL = db.quoteSmart(stringName);
+            String parentIdSQL = db.quoteSmart(parentId);
+            String input = "NULL, " + stringNameSQL + ", " + parentIdSQL;
+            db.update("categories", "category_id", longCurrentIdSQL, "category_name", stringNameSQL);
+            db.update("categories", "category_id", longCurrentIdSQL, "category_parent_id", parentIdSQL);
+
+            //Give feedback
+            Toast.makeText(getActivity(), "Changes saved", Toast.LENGTH_SHORT).show();
+
+            //Move user back to correct layout
+            moveToCorrectLayout();
+            int id = R.layout.fragment_categories;
+            setMainView(id);
+
+        }
+        db.close();
+    }
+
+
+    private void deleteCategory() {
+        int id = R.layout.fragment_categories_delete;
+        changeLayout(id);
+
+        Button buttonDelete = getActivity().findViewById(R.id.buttonCategoriesDelete);
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDeleteClicked();
+            }
+        });
+        Button buttonCancel = getActivity().findViewById(R.id.buttonCategoriesCancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCancelClicked();
+            }
+        });
+
+    }
+
+    private void onCancelClicked(){
+        moveToCorrectLayout();
+    }
+
+    private void onDeleteClicked(){
+        //Delete Form Sql
+        DBAdapter db = getDbAdapter();
+
+        //Insert into database
+        //Ready variables
+        long longCurrentIdSQL = db.quoteSmart(Long.parseLong(currentId));
+        db.delete("categories", "category_id", longCurrentIdSQL);
+
+        /* Close */
+        db.close();
+
+        //Give feedback
+        Toast.makeText(getActivity(), "Category deleted", Toast.LENGTH_SHORT).show();
+
+        //Move user back to correct layout
+        moveToCorrectLayout();
+        int id = R.layout.fragment_categories;
+        setMainView(id);
+
+
+    }
+
+    private void createNewCategory() {
+
+        /* Change layout */
+        int id = R.layout.fragment_categories_add_edit;
+        changeLayout(id);
+
+        /* Fill spinner with categories */
+        DBAdapter db = getDbAdapter();
+        //Get Categories
+        String[] fields = new String[]{
+            "category_id",
+            "category_name",
+            "category_parent_id"
+        };
         Cursor dbCursor = db.select("categories", fields, "category_parent_id", 0);
 
         //Convert cursor to string
@@ -118,23 +368,48 @@ public class CategoriesFragment extends Fragment {
         db.close();
     }
 
-
-    private void createNewCategorySubmit() {
+    private DBAdapter getDbAdapter() {
         DBAdapter db = new DBAdapter(getActivity());
         db.open();
-        int error = 0;
+        return db;
+    }
 
-        //Name
-        EditText editTextName = getActivity().findViewById(R.id.editTextName);
-        String stringName = editTextName.getText().toString();
-        if (stringName.isEmpty()) {
-            Toast.makeText(getActivity(), "Please fill a name", Toast.LENGTH_SHORT).show();
 
-            error = 1;
-        }
-
+    private void createNewCategorySubmit() {
+        DBAdapter db = getDbAdapter();
+        error = 0;
+        String stringName = getName();
 
         //Parent
+        String parentId = getParentId(db);
+
+        if (error == 0) {
+            //Insert into database
+            //Ready variables
+            String stringNameSQL = db.quoteSmart(stringName);
+            String parentIdSQL = db.quoteSmart(parentId);
+            String input = "NULL, " + stringNameSQL + ", " + parentIdSQL;
+            db.insert("categories", "category_id, category_name, category_parent_id", input);
+
+            //Give feedback
+            Toast.makeText(getActivity(), "Category created", Toast.LENGTH_SHORT).show();
+
+            //Move user back to correct layout
+            moveToCorrectLayout();
+            int id = R.layout.fragment_categories;
+            setMainView(id);
+
+        }
+        db.close();
+
+    }
+
+    private void moveToCorrectLayout() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new CategoriesFragment(), CategoriesFragment.class.getName()).commit();
+    }
+
+    private String getParentId(DBAdapter db) {
         Spinner spinner = getActivity().findViewById(R.id.spinnerCategoryParent);
         String stringSpinnerCategoryParent = spinner.getSelectedItem().toString();
         String parentId;
@@ -153,31 +428,20 @@ public class CategoriesFragment extends Fragment {
             Cursor findParentId = db.select("categories", fields, "category_name", stringSpinnerCategoryParentSQL);
             parentId = findParentId.getString(0).toString();
 
-
         }
+        return parentId;
+    }
 
-        if (error == 0) {
-            //Insert into database
+    private String getName() {
+        //Name
+        EditText editTextName = getActivity().findViewById(R.id.editTextName);
+        String stringName = editTextName.getText().toString();
+        if (stringName.isEmpty()) {
+            Toast.makeText(getActivity(), "Please fill a name", Toast.LENGTH_SHORT).show();
 
-
-            //Ready variables
-            String stringNameSQL = db.quoteSmart(stringName);
-            String parentIdSQL = db.quoteSmart(parentId);
-            String input = "NULL, " + stringNameSQL + ", " + parentIdSQL;
-            db.insert("categories", "category_id, category_name, category_parent_id", input);
-
-            //Give feedback
-            Toast.makeText(getActivity(), "Category created", Toast.LENGTH_SHORT).show();
-
-            //Move user back to correct layout
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContent, new CategoriesFragment(), CategoriesFragment.class.getName()).commit();
-            int id = R.layout.fragment_categories;
-            setMainView(id);
-
+            error = 1;
         }
-        db.close();
-
+        return stringName;
     }
 
 
@@ -190,74 +454,15 @@ public class CategoriesFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
-        Toast.makeText(getActivity(), "activity created", Toast.LENGTH_SHORT).show();
-
-        populateList("0", "");
-
-        setHasOptionsMenu(true);
-    }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-
-        //Inflate menu
-        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
-
-    }
-
-
-    private void populateList(String parentId, String parentName) {
-
-        /*DataBase*/
-        DBAdapter db = new DBAdapter(getActivity());
-        db.open();
-
-//TODO
-        String[] fields = new String[]{
-            "category_id",
-            "category_name",
-            "category_parent_id"
-        };
-
-        categoryCursor = db.select("categories", fields, "category_parent_id", parentId, "category_name", "ASC");
-
-        ArrayList<String> values = new ArrayList<>();
-
-
-        //Convert categories to string
-        int categoryCount = categoryCursor.getCount();
-        for (int i = 0; i < categoryCount; i++) {
-            values.add(categoryCursor.getString(categoryCursor.getColumnIndex("category_name")));
-            categoryCursor.moveToNext();
-
-        }
-
-        //Close
-        //categoryCursor.close();
-
-        //Create adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
-
-        //Set adapter
-        final ListView listView = getActivity().findViewById(R.id.listViewCategories);
-        listView.setAdapter(adapter);
-
-        //OnClick
+    private void changeMenuItemVisibility(String parentId) {
         if (parentId.equals("0")) {
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    listItemClicked(position);
-                }
-            });
+            //Remove edit button
+        } else {
+            //Show edit button
+            menuItemEdit.setVisible(true);
+            menuItemDelete.setVisible(true);
         }
-
-        //Close
-        db.close();
     }
 
     public void listItemClicked(int arg2) {
@@ -265,16 +470,19 @@ public class CategoriesFragment extends Fragment {
 //        Toast.makeText(getActivity(), "id^ " + arg2, Toast.LENGTH_SHORT).show();
 
         //Move to id selected
-        categoryCursor.moveToPosition(arg2);
+        listCursor.moveToPosition(arg2);
 
         //GetId and name from cursor
-        String id = categoryCursor.getString(0);
-        String name = categoryCursor.getString(1);
-        String parentId = categoryCursor.getString(2);
+        String id = listCursor.getString(0);
+        String name = listCursor.getString(1);
+        String parentId = listCursor.getString(2);
 
         //Change Title
 
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(name);
+
+        currentId = id;
+        currentName = name;
 
         //Move to subclass
         populateList(id, name);

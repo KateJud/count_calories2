@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="vertical">
+
+        <!-- HeadLine -->
+        <TextView
+            android:id="@+id/textViewFoodName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+        <TextView
+            android:id="@+id/textViewManufacturerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+        <!-- //HeadLine -->
+
+        <!-- Image -->
+        <ImageView
+            android:id="@+id/imageViewFoodImage"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/logo"/>
+        <!-- //Image -->
+
+        <!-- About -->
+        <TextView
+            android:id="@+id/textViewFoodAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+        <!-- //About -->
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/textViewFoodDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+        <!-- // Description -->
+
+        <!-- Calories table -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp">
+
+            <!-- Email -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewFoodBlank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/textViewFoodEnergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/energy" />
+            </TableRow>
+            <!-- //Email -->
+        </TableLayout>
+        <!-- //  Calories table -->
+
+
+    </LinearLayout>
+
+</ScrollView>
