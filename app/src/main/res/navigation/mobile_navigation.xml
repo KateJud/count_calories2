@@ -14,7 +14,7 @@
     <fragment
             android:id="@+id/nav_profile"
             android:name="com.example.dietstram.ui.profile.ProfileFragment"
-            android:label="@string/menu_profile"
+            android:label="@string/profile"
             tools:layout="@layout/fragment_profile"/>
 
     <fragment
@@ -26,11 +26,11 @@
     <fragment
         android:id="@+id/nav_categories"
         android:name="com.example.dietstram.ui.categories.CategoriesFragment"
-        android:label="@string/menu_categories"
+        android:label="@string/category"
         tools:layout="@layout/fragment_categories"/>
     <fragment
         android:id="@+id/nav_food"
         android:name="com.example.dietstram.ui.food.FoodFragment"
-        android:label="@string/menu_food"
+        android:label="@string/food"
         tools:layout="@layout/fragment_food"/>
 </navigation>

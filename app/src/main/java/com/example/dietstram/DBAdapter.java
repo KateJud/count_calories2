@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "stramdiet";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 6;
 
     /* 02 Database Variables ---------------------------------------------------------------------- */
     private final Context context;
@@ -39,7 +39,8 @@ public class DBAdapter {
             try {
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS goal (" +
-                    "goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "goal_id INTEGER, " +
                     "goal_current_weight INT," +
                     "goal_target_weight INT," +
                     "goal_i_want_to VARCHAR," +
@@ -65,7 +66,8 @@ public class DBAdapter {
                     ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
-                    "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "user_id INTEGER , " +
                     "user_email VARCHAR," +
                     "user_password VARCHAR," +
                     "user_salt VARCHAR," +
@@ -82,7 +84,8 @@ public class DBAdapter {
                     ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
-                    "cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "cal_eaten_id INTEGER , " +
                     "cal_eaten_date DATE," +
                     "cal_meal_no INT," +
                     "cal_eaten_energy INT," +
@@ -92,7 +95,8 @@ public class DBAdapter {
                     ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary (" +
-                    "fd_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "fd_id INTEGER , " +
                     "fd_date DATE," +
                     "fd_meal_number INT," +
                     "fd_food_id INT," +
@@ -106,14 +110,16 @@ public class DBAdapter {
                     + ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS categories (" +
-                    "category_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "category_id INTEGER , " +
                     " category_name VARCHAR," +
                     " category_parent_id INT," +
                     " category_icon VARCHAR," +
                     " category_note VARCHAR" + ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS food (" +
-                    " food_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    " food_id INTEGER , " +
                     " food_name VARCHAR," +
                     " food_manufactor_name VARCHAR," +
                     " food_description VARCHAR," +
@@ -248,7 +254,7 @@ public class DBAdapter {
 
     /* 11 Update ---------------------------------------------------------------------------------- */
     public boolean update(String table, String primaryKey, long rowId, String field, String value) {
-//Remove \' \'
+        //Remove \' \'
         value = value.substring(1, value.length() - 1);
 
         ContentValues args = new ContentValues();
@@ -273,36 +279,36 @@ public class DBAdapter {
         return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
     }
 
-    /* 12 Select ---------------------------------------------------------------------------------- */
-//  public Cursor select(String table, String[] fields, String column, String value)
-//      throws SQLException {
-//
-//    //TODO SELECT
-//    Cursor mCursor = db.query(table, fields, column+" = ?",
-//        new String[]{value}, null, null, null);
-//    if (mCursor != null) {
-//      mCursor.moveToFirst();
-//    }
-//    return mCursor;
-//
-//  }
+    public boolean update(String table, String primaryKey, long rowId, String[] fields, String[] values) {
 
-  public Cursor select(String table, String[] fields)
-      throws SQLException {
+        ContentValues args = new ContentValues();
+        for (int i = 0; i < fields.length; i++) {
+            values[i] = values[i].substring(1, values[i].length() - 1);
+            args.put(fields[i], values[i]);
+        }
 
-    Cursor mCursor = db.query(table, fields, null,
-        null, null, null, null);
-    if (mCursor != null) {
-      mCursor.moveToFirst();
+
+        return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
     }
-    return mCursor;
 
-  }
+    /* 12 Select ---------------------------------------------------------------------------------- */
+
+    public Cursor select(String table, String[] fields)
+        throws SQLException {
+
+        Cursor mCursor = db.query(table, fields, null,
+            null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
 
     public Cursor select(String table, String[] fields, String whereClause, String whereCondition)
         throws SQLException {
         Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition,
-              null, null, null, null);
+            null, null, null, null);
 
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -327,12 +333,12 @@ public class DBAdapter {
     public Cursor select(String table, String[] fields, String whereClause, String whereCondition, String orderBy, String smth)
         throws SQLException {
 
-    Cursor mCursor;
-        if(whereClause.isEmpty()){
+        Cursor mCursor;
+        if (whereClause.isEmpty()) {
             mCursor = db.query(table, fields, null,
                 null, null, null, orderBy + " " + smth);
-        }else {
-             mCursor = db.query(table, fields, whereClause + "=" + whereCondition,
+        } else {
+            mCursor = db.query(table, fields, whereClause + "=" + whereCondition,
                 null, null, null, orderBy + " " + smth);
         }
         if (mCursor != null) {

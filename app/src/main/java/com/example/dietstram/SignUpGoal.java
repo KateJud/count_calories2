@@ -109,9 +109,9 @@ public class SignUpGoal extends AppCompatActivity {
     /* Get row number one from users */
     //TODO rowId!!
     long rowId = 0;
-    String[] fields = new String[]{"user_id", "user_measurement"};
+    String[] fields = new String[]{"_id", "user_measurement"};
 
-    Cursor cursor = db.selectPrimaryKey("users", "user_id", rowId, fields);
+    Cursor cursor = db.selectPrimaryKey("users", "_id", rowId, fields);
     String measurement = cursor.getString(1);
 
     // Toast.makeText(this,"Measure: "+measurement,Toast.LENGTH_LONG).show();
@@ -208,7 +208,7 @@ public class SignUpGoal extends AppCompatActivity {
     double bmr = getBmr(db, targetWeight);
     System.out.println("1bmr:"+bmr);
     double energyBmrSQL = db.quoteSmart(bmr);
-    db.update("goal", "goal_id", goalId, "goal_energy_bmr", energyBmrSQL);
+    db.update("goal", "_id", goalId, "goal_energy_bmr", energyBmrSQL);
     updateDbEnergyFatsCarbsProteins(db, bmr,
         new String[]{"goal_fat_bmr", "goal_carbs_bmr", "goal_proteins_bmr"}, "goal_energy_bmr");
 
@@ -235,12 +235,12 @@ public class SignUpGoal extends AppCompatActivity {
   private double getBmrWithActivity(DBAdapter db, double bmr) {
     long rowId = 0;
     String fields[] = new String[]{
-        "user_id",
+        "_id",
         "user_dob",
         "user_gender",
         "user_height",
         "user_activity_level"};
-    Cursor c = db.selectPrimaryKey("users", "user_id", rowId, fields);
+    Cursor c = db.selectPrimaryKey("users", "_id", rowId, fields);
     String stringUserActivityLevel = c.getString(4);
     double activityCoefficient = getActivityCoefficient(stringUserActivityLevel);
     double bmrWithActivity = bmr * activityCoefficient;
@@ -265,12 +265,12 @@ public class SignUpGoal extends AppCompatActivity {
   private double getBmr(DBAdapter db, double targetWeight) {
     long rowId = 0;
     String fields[] = new String[]{
-        "user_id",
+        "_id",
         "user_dob",
         "user_gender",
         "user_height",
         "user_activity_level"};
-    Cursor c = db.selectPrimaryKey("users", "user_id", rowId, fields);
+    Cursor c = db.selectPrimaryKey("users", "_id", rowId, fields);
     String stringUserDOB = c.getString(1);
     String stringUserGender = c.getString(2);
     String stringUserHeight = c.getString(3);
@@ -308,9 +308,8 @@ public class SignUpGoal extends AppCompatActivity {
     //40-50 % karbohydrat
     //25-35 % fat
     double energyBmrSQL = db.quoteSmart(bmr);
-    System.out.println(" j                     j                      j");
-    db.update("goal", "goal_id", goalId, mainField, energyBmrSQL);
-    System.out.println(" j                     j                      j");
+
+    db.update("goal", "_id", goalId, mainField, energyBmrSQL);
 
     double proteinsBmr = Math.round(bmr * 25 / 100);
     double carbsBmr = Math.round(bmr * 50 / 100);
@@ -320,9 +319,9 @@ public class SignUpGoal extends AppCompatActivity {
     double carbsBmrSQL = db.quoteSmart(carbsBmr);
     double fatBmrSQL = db.quoteSmart(fatBmr);
 
-    db.update("goal", "goal_id", goalId, fields[0], fatBmrSQL);
-    db.update("goal", "goal_id", goalId, fields[1], carbsBmrSQL);
-    db.update("goal", "goal_id", goalId, fields[2], proteinsBmrSQL);
+    db.update("goal", "_id", goalId, fields[0], fatBmrSQL);
+    db.update("goal", "_id", goalId, fields[1], carbsBmrSQL);
+    db.update("goal", "_id", goalId, fields[2], proteinsBmrSQL);
   }
 
   private void updateGoalDB(double targetWeight, int iWantTo, String weeklyGoal, DBAdapter db) {
@@ -330,9 +329,9 @@ public class SignUpGoal extends AppCompatActivity {
     int iWantToSQL = db.quoteSmart(iWantTo);
     double targetWeightSQL = db.quoteSmart(targetWeight);
 
-    db.update("goal", "goal_id", goalId, "goal_target_weight", targetWeightSQL);
-    db.update("goal", "goal_id", goalId, "goal_i_want_to", iWantToSQL);
-    db.update("goal", "goal_id", goalId, "goal_weekly_goal", weeklyGoalSQL);
+    db.update("goal", "_id", goalId, "goal_target_weight", targetWeightSQL);
+    db.update("goal", "_id", goalId, "goal_i_want_to", iWantToSQL);
+    db.update("goal", "_id", goalId, "goal_weekly_goal", weeklyGoalSQL);
   }
 
   double getActivityCoefficient(String userActivityLevel) {

@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity
             DBSetupInsert setupInsert = new DBSetupInsert(this);
             setupInsert.insertAllCategories();
         }
-
 //        if (numRows < 1) {
 //            DBSetupInsert setupInsert = new DBSetupInsert(this);
 //            setupInsert.insertAllFood();
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity
 //        }
 
         DBSetupInsert setupInsert = new DBSetupInsert(this);
+        //setupInsert.insertAllFood();
         //setupInsert.setupInsertToFood();
 
         /* Check if there is user table */

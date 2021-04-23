@@ -113,7 +113,7 @@ public class CategoriesFragment extends Fragment {
         DBAdapter db = getDbAdapter();
 
         String[] fields = new String[]{
-            "category_id",
+            "_id",
             "category_name",
             "category_parent_id"
         };
@@ -155,7 +155,7 @@ public class CategoriesFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            createNewCategory();
+            addCategory();
         }
         if (item.getItemId() == R.id.action_edit) {
             editCategory();
@@ -179,7 +179,7 @@ public class CategoriesFragment extends Fragment {
         String[] fields = new String[]{
             "category_parent_id"
         };
-        Cursor findParentId = db.select("categories", fields, "category_id", db.quoteSmart(currentId));
+        Cursor findParentId = db.select("categories", fields, "_id", db.quoteSmart(currentId));
         String currentParentId = findParentId.getString(0).toString();
         int intParentId = 0;
 
@@ -191,7 +191,7 @@ public class CategoriesFragment extends Fragment {
 
         //Get Categories
         String[] fields2 = new String[]{
-            "category_id",
+            "_id",
             "category_name",
             "category_parent_id"
         };
@@ -258,8 +258,8 @@ public class CategoriesFragment extends Fragment {
             String stringNameSQL = db.quoteSmart(stringName);
             String parentIdSQL = db.quoteSmart(parentId);
             String input = "NULL, " + stringNameSQL + ", " + parentIdSQL;
-            db.update("categories", "category_id", longCurrentIdSQL, "category_name", stringNameSQL);
-            db.update("categories", "category_id", longCurrentIdSQL, "category_parent_id", parentIdSQL);
+            db.update("categories", "_id", longCurrentIdSQL, "category_name", stringNameSQL);
+            db.update("categories", "_id", longCurrentIdSQL, "category_parent_id", parentIdSQL);
 
             //Give feedback
             Toast.makeText(getActivity(), "Changes saved", Toast.LENGTH_SHORT).show();
@@ -306,7 +306,7 @@ public class CategoriesFragment extends Fragment {
         //Insert into database
         //Ready variables
         long longCurrentIdSQL = db.quoteSmart(Long.parseLong(currentId));
-        db.delete("categories", "category_id", longCurrentIdSQL);
+        db.delete("categories", "_id", longCurrentIdSQL);
 
         /* Close */
         db.close();
@@ -322,7 +322,7 @@ public class CategoriesFragment extends Fragment {
 
     }
 
-    private void createNewCategory() {
+    private void addCategory() {
 
         /* Change layout */
         int id = R.layout.fragment_categories_add_edit;
@@ -332,7 +332,7 @@ public class CategoriesFragment extends Fragment {
         DBAdapter db = getDbAdapter();
         //Get Categories
         String[] fields = new String[]{
-            "category_id",
+            "_id",
             "category_name",
             "category_parent_id"
         };
@@ -389,7 +389,7 @@ public class CategoriesFragment extends Fragment {
             String stringNameSQL = db.quoteSmart(stringName);
             String parentIdSQL = db.quoteSmart(parentId);
             String input = "NULL, " + stringNameSQL + ", " + parentIdSQL;
-            db.insert("categories", "category_id, category_name, category_parent_id", input);
+            db.insert("categories", "_id, category_name, category_parent_id", input);
 
             //Give feedback
             Toast.makeText(getActivity(), "Category created", Toast.LENGTH_SHORT).show();
@@ -420,7 +420,7 @@ public class CategoriesFragment extends Fragment {
             String stringSpinnerCategoryParentSQL = db.quoteSmart(stringSpinnerCategoryParent);
 
             String[] fields = new String[]{
-                "category_id",
+                "_id",
                 "category_name",
                 "category_parent_id"
             };

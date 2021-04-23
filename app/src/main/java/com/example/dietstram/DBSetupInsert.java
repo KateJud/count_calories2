@@ -24,7 +24,7 @@ public class DBSetupInsert {
   public void setupInsertToCategories(String values) {
     DBAdapter db = new DBAdapter(context);
     db.open();
-    db.insert("categories", "category_id, " +
+    db.insert("categories", "_id, " +
         " category_name ," +
         " category_parent_id ," +
         " category_icon ," +
@@ -98,36 +98,40 @@ public class DBSetupInsert {
 
     DBAdapter db = new DBAdapter(context);
     db.open();
-    db.insert("food", "food_id," +
+    db.insert("food", "_id," +
         " food_name," +
-        " food_manufactor_name ," +
+        " food_manufactor_name," +
+        " food_description," +
         " food_serving_size ," +
         " food_serving_mesurment ," +
         " food_serving_name_number," +
         " food_serving_name_word ," +
         " food_energy ," +
-        " food_proteins ," +
+        " food_protein," +
         " food_carbohidrates ," +
         " food_fat ," +
-        " food_energy_calculated ," +
-        " food_proteins_calculated ," +
+        " food_energy_calculated," +
+        " food_protein_calculated," +
         " food_carbohidrates_calculated ," +
-        " food_fat_calculated," +
+        " food_fat_calculated ," +
         " food_user_id," +
-        " food_barcode," +
-        " food_category_id," +
+        " food_barcode ," +
+        " food_category_id ," +
         " food_thumb," +
         " food_image_a," +
         " food_image_b ," +
-        " food_image_c ," +
-        " food_note ", values);
+        " food_image_c, " +
+        " food_last_used, " +
+        " food_notes" , values);
     db.close();
 
   }
 
   public void insertAllFood() {
-    setupInsertToFood(
-        "NULL, 'Ham', 'Glide', 12,'ee',13,'serv_name',1111,111,10,12,123,123,23,123,1,'barcode',2,'thumb','a.jpg','b.jpg','c.jpg','note'");
+//    setupInsertToFood(
+//        "NULL, 'Ham', 'Glide', 12,'ee',13,'serv_name',1111,111,10,12,123,123,23,123,1,'barcode',2,'thumb','a.jpg','b.jpg','c.jpg','note'");
+    setupInsertToFood(  " NULL, 'ice-cream', 'manufacture_name', 'description','12.2', 'serving_mesurment', '13.3', 'serving_name_word', '220', '5', '67', '10', '180', '2', '63', '7', '1', 'barcode', '2', 'thumb ', 'image_a' , 'image_b','image_c ', '2017-11-20', 'food_notes'");
+
   }
 
 }

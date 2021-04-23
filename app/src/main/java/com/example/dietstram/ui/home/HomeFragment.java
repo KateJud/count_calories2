@@ -11,10 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.dietstram.DBAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 
 public class HomeFragment extends Fragment {
+
+    private DBAdapter getDbAdapter() {
+        DBAdapter db = new DBAdapter(getActivity());
+        db.open();
+        return db;
+    }
+
 
     private HomeViewModel homeViewModel;
 
@@ -23,11 +31,12 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         /* Set title */
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
+       //
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -38,6 +47,7 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        ((MainActivity) getActivity()).setTitle("Home");
         return root;
     }
 }

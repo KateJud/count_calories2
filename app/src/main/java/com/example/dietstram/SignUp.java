@@ -30,7 +30,7 @@ public class SignUp extends AppCompatActivity {
 
   /* My fields -------------------------------------------------------------------------------- */
   private final String[] arraySpinnerDOBDay = new String[31];
-  private final String[] arraySpinnerDOBYear = new String[100];
+  private final String[] arraySpinnerDOBYear = new String[75];
   private String errorMessage = "";
 
   /* Widgets fields --------------------------------------------------------------------------- */
@@ -332,11 +332,11 @@ public class SignUp extends AppCompatActivity {
 
     db.open();
     db.insert("users",
-        "user_id, user_email, user_dob, user_gender, user_height, user_activity_level, user_measurement",
+        "_id, user_email, user_dob, user_gender, user_height, user_activity_level, user_measurement",
         stringInput);
 
     db.insert("goal",
-        "goal_id, goal_current_weight, goal_date",
+        "_id, goal_current_weight, goal_date",
         stringInput2);
     db.close();
   }
@@ -514,16 +514,19 @@ public class SignUp extends AppCompatActivity {
   }
 
   private void fillYears() {
+    //13-80
     Calendar calendar = Calendar.getInstance();
-    int year = calendar.get(Calendar.YEAR);
-    int yearEnd = year - 100;
+    int year = calendar.get(Calendar.YEAR) - 13;
+    int yearEnd = year - 68;
     for (int k = 0, i = yearEnd; i < year; k++, i++) {
-      arraySpinnerDOBYear[100 - k - 1] = "" + i;
+      arraySpinnerDOBYear[67 - k ] = "" + i;
+
     }
 
     ArrayAdapter<String> adapterYear = new ArrayAdapter<String>(this,
         android.R.layout.simple_spinner_item, arraySpinnerDOBYear);
     spinnerDOBYear.setAdapter(adapterYear);
+
   }
 
   private void fillDays() {

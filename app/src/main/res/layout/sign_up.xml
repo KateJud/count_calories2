@@ -1,346 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:fitsSystemWindows="true"
-  android:orientation="vertical">
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!-- Logo -->
-    <ImageView
-      android:layout_width="wrap_content"
-      android:layout_height="72dp"
-      android:layout_gravity="center_horizontal"
-      android:layout_marginTop="24dp"
-      android:layout_marginBottom="24dp"
-      android:src="@drawable/logo"/>
-
-    <!-- //Logo -->
-
-    <!-- Error handling -->
-    <TableLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-      <TableRow
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="vertical">
 
+        <!-- Logo -->
         <ImageView
-          android:id="@+id/imageViewError"
-          android:layout_width="40dp"
-          android:layout_height="40dp"
-          android:src="@drawable/error"/>
-
-        <TextView
-          android:id="@+id/textViewErrorMessage"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="8dp"
-          android:layout_marginTop="8dp"
-          android:text="Error"/>
-      </TableRow>
-    </TableLayout>
-    <!-- //Error handling -->
-
-    <!-- Table layout -->
-    <TableLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="24dp">
-
-      <!-- Email -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <TextView
-          android:id="@+id/textViewEmail"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/email"/>
-
-        <EditText
-          android:id="@+id/editTextEmail"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ems="10"
-          android:hint="@string/email"
-          android:inputType="textEmailAddress"/>
-      </TableRow>
-      <!-- //Email -->
-
-      <!-- Date of birth -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
-
-        <TextView
-          android:id="@+id/textView8"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/date_of_birth"/>
-
-        <TableRow
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content">
-
-          <Spinner
-            android:id="@+id/spinnerDOBDay"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/array_months"/>
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/logo" />
 
-          <Spinner
-            android:id="@+id/spinnerDOBMonth"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:entries="@array/array_months"/>
+        <!-- //Logo -->
 
-          <Spinner
-            android:id="@+id/spinnerDOBYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/array_months"/>
-        </TableRow>
-
-      </TableRow>
-
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-          android:id="@+id/textView2"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/blank"/>
-
-        <TableRow
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-          <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="@string/day"/>
-
-          <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="@string/month"
-            android:layout_marginStart="30dp"/>
-
-          <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="@string/year"
-            android:layout_marginStart="30dp"/>
-        </TableRow>
-      </TableRow>
-      <!-- //Date of birth -->
-
-
-      <!-- Gender -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
-
-        <TextView
-          android:id="@+id/textView9"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/gender"/>
-
-        <TableRow
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
-          <RadioGroup
-            android:id="@+id/radioGroupGender"
+        <!-- Error handling -->
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <RadioButton
-              android:id="@+id/radioButtonGenderMale"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginRight="10dp"
-              android:checked="true"
-              android:text="@string/male"
-              android:layout_marginEnd="10dp"/>
+                <ImageView
+                    android:id="@+id/imageViewError"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/error" />
 
-            <RadioButton
-              android:id="@+id/radioButtonGenderFemale"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginRight="2dp"
-              android:text="@string/female"
-              android:layout_marginEnd="2dp"/>
-          </RadioGroup>
+                <TextView
+                    android:id="@+id/textViewErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Error" />
+            </TableRow>
+        </TableLayout>
+        <!-- //Error handling -->
 
-        </TableRow>
-
-      </TableRow>
-      <!-- //Gender -->
-
-      <!-- Measurement -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp">
-
-        <TextView
-          android:id="@+id/textView10"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/measurement"/>
-
-        <Spinner
-          android:id="@+id/spinnerMeasurement"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:entries="@array/array_measurements"/>
-      </TableRow>
-      <!-- //Measurement -->
-
-
-      <!-- Height -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp">
-
-        <TextView
-          android:id="@+id/textView11"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:text="@string/height"/>
-
-        <TableRow
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
-          <EditText
-            android:id="@+id/editTextHeightCm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:inputType="number"
-            />
-
-          <EditText
-            android:id="@+id/editTextHeightInches"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:inputType="number"
-            />
-
-          <TextView
-            android:id="@+id/textViewCm"
-            android:layout_width="wrap_content"
+        <!-- Table layout -->
+        <TableLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/cm"/>
+            android:layout_marginTop="24dp">
 
-        </TableRow>
-      </TableRow>
-
-      <!-- //Height -->
-
-      <!-- Weight -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp">
-
-        <TextView
-          android:id="@+id/textView14"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:text="@string/weight"/>
-
-        <TableRow
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
-          <EditText
-            android:id="@+id/editTextWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:inputType="number"/>
-
-          <TextView
-            android:id="@+id/textViewKg"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/kg"/>
-
-        </TableRow>
-      </TableRow>
-
-      <!-- //Weight -->
-
-      <!-- Activity level -->
-      <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp">
-
-        <TextView
-          android:id="@+id/textView15"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/activity_level"/>
+            <!-- Email -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
-        <Spinner
-          android:id="@+id/spinnerActivityLevel"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:entries="@array/array_activity_level"/>
-      </TableRow>
-      <!-- //Activity level -->
+                <TextView
+                    android:id="@+id/textViewEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email" />
 
-      <!-- Submit button -->
-      <!-- Table layout -->
+                <EditText
+                    android:id="@+id/editTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </TableRow>
+            <!-- //Email -->
 
-      <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
-        <!-- TODO HOW CENTER button?? -->
+            <!-- Date of birth -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
 
-        <Button
-          android:id="@+id/buttonSignUp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/sign_up"/>
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_of_birth" />
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/spinnerDOBDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/array_months" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDOBMonth"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/array_months" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDOBYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/array_months" />
+                </TableRow>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blank" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:text="@string/day" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:text="@string/month" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:text="@string/year" />
+                </TableRow>
+            </TableRow>
+            <!-- //Date of birth -->
 
 
-      </TableRow>
-      <!-- //Submit button -->
+            <!-- Gender -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
 
-    </TableLayout>
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender" />
 
-  </LinearLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <RadioButton
+                            android:id="@+id/radioButtonGenderMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:checked="true"
+                            android:text="@string/male" />
+
+                        <RadioButton
+                            android:id="@+id/radioButtonGenderFemale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginRight="2dp"
+                            android:text="@string/female" />
+                    </RadioGroup>
+
+                </TableRow>
+
+            </TableRow>
+            <!-- //Gender -->
+
+            <!-- Measurement -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/measurement" />
+
+                <Spinner
+                    android:id="@+id/spinnerMeasurement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/array_measurements" />
+            </TableRow>
+            <!-- //Measurement -->
+
+
+            <!-- Height -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/height" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/editTextHeightCm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="3"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/editTextHeightInches"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="3"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:id="@+id/textViewCm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/cm" />
+
+                </TableRow>
+            </TableRow>
+
+            <!-- //Height -->
+
+            <!-- Weight -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/weight" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/editTextWeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="3"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:id="@+id/textViewKg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/kg" />
+
+                </TableRow>
+            </TableRow>
+
+            <!-- //Weight -->
+
+            <!-- Activity level -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_level" />
+
+
+                <Spinner
+                    android:id="@+id/spinnerActivityLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/array_activity_level" />
+            </TableRow>
+        </TableLayout>
+            <!-- //Activity level -->
+
+            <!-- Submit button -->
+                <Button
+                    android:id="@+id/buttonSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up"
+                    android:layout_gravity="center_horizontal"/>
+            <!-- //Submit button -->
+
+
+
+    </LinearLayout>
 
 </ScrollView>

@@ -26,20 +26,20 @@ public class FoodCursorAdapter extends android.widget.CursorAdapter {
         TextView textViewSubName = view.findViewById(R.id.textViewListSubName);
 
 
-        int getId = cursor.getInt(cursor.getColumnIndexOrThrow("food_id"));
+        int getId = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String getName = cursor.getString(cursor.getColumnIndexOrThrow("food_name"));
         String getManufacture = cursor.getString(cursor.getColumnIndexOrThrow("food_manufactor_name"));
         String getDescription = cursor.getString(cursor.getColumnIndexOrThrow("food_description"));
         String getServingSize = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size"));
         String getServingMesurment = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_mesurment"));
-        String getServingNameNumber = cursor.getString(cursor.getColumnIndexOrThrow("serving_name_number"));
+        String getServingNameNumber = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_name_number"));
         String getServingNameWord = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_name_word"));
         int getFoodEnergyCalculated = cursor.getInt(cursor.getColumnIndexOrThrow("food_energy_calculated"));
 
         String subLine = getManufacture + ", " + getServingMesurment + ", " + getServingSize + " " + getServingNameNumber + " " + getServingNameWord;
 
         textViewName.setText(getName);
-        textViewNumber.setText(getFoodEnergyCalculated);
+        textViewNumber.setText(String.valueOf( getFoodEnergyCalculated));
         textViewSubName.setText(subLine);
     }
 }
