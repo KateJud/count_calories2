@@ -1,32 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bg_login"
+        >
+
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/guideLineLeft"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation ="vertical"-->
+<!--            app:layout_constraintGuide_begin="24dp"/>-->
+
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/guideLineRight"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation ="vertical"-->
+<!--            app:layout_constraintGuide_end="24dp"/>-->
+
 
         <!-- Logo -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/logo" />
+            android:layout_marginTop="80dp"
+            android:src="@drawable/logo"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="14dp"/>
 
         <!-- //Logo -->
 
         <!-- Error handling -->
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="14dp">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -53,7 +75,9 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="14dp">
 
             <!-- Email -->
             <TableRow
@@ -61,17 +85,19 @@
                 android:layout_height="match_parent">
 
 
-                <TextView
-                    android:id="@+id/textViewEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/email" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textViewEmail"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/email" />-->
 
                 <EditText
                     android:id="@+id/editTextEmail"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    app:layout_constraintStart_toStartOf="@+id/guideLineLeft"
+                    app:layout_constraintEnd_toEndOf="@+id/guideLineRight"
+                    android:background="@drawable/bg_textedit"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress" />
             </TableRow>
@@ -111,7 +137,6 @@
                         android:layout_height="wrap_content"
                         android:entries="@array/array_months" />
                 </TableRow>
-
             </TableRow>
 
             <TableRow
@@ -317,19 +342,19 @@
                     android:entries="@array/array_activity_level" />
             </TableRow>
         </TableLayout>
-            <!-- //Activity level -->
+        <!-- //Activity level -->
 
-            <!-- Submit button -->
-                <Button
-                    android:id="@+id/buttonSignUp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sign_up"
-                    android:layout_gravity="center_horizontal"/>
-            <!-- //Submit button -->
-
+        <!-- Submit button -->
+        <Button
+            android:id="@+id/buttonSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/sign_up" />
+        <!-- //Submit button -->
 
 
     </LinearLayout>
+<!--    </android.support.constraint.ConstraintLayout>-->
 
 </ScrollView>

@@ -12,6 +12,22 @@
         android:layout_marginRight="24dp"
         android:orientation="vertical">
 
+        <!-- HeadLine -->
+        <TextView
+            android:id="@+id/textViewFoodName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textViewManufacture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/manufacture" />
+        <!-- //HeadLine -->
+
+        <!-- Add serving -->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,46 +39,70 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="12dp">
 
-
-                <!-- HeadLine -->
                 <TextView
-                    android:id="@+id/textViewFoodName"
+                    android:id="@+id/textViewPortionSizeA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="12dp"
-                    android:layout_weight="1"
-                    android:text="@string/name"
-                    android:textSize="18sp" />
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/portion_size" />
 
-                <ImageView
-                    android:id="@+id/imageViewFoodAdd"
+                <EditText
+                    android:id="@+id/editTextPortionSizePCS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:src="@drawable/ic_menu_action_add" />
+                    android:ems="3"
+                    android:inputType="number" />
 
+                <TextView
+                    android:id="@+id/textViewPcs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/pcs" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/textViewPortionSizeB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/portion_size" />
+
+                <EditText
+                    android:id="@+id/editTextPortionSizeGram"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="3"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/textViewPortionSizePCS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/gram" />
             </TableRow>
 
         </TableLayout>
-
-        <TextView
-            android:id="@+id/textViewManufacture"
-            android:layout_width="match_parent"
+        <!-- Submit button -->
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/manufacture" />
-        <!-- //HeadLine -->
+            android:layout_gravity="center_horizontal"
+            android:text="@string/add_to_diary" />
+        <!-- //Submit button -->
 
-        <!--        &lt;!&ndash; Select a meal &ndash;&gt;-->
-        <!--        <TextView-->
-        <!--            android:id="@+id/textViewSelectMealHeadline"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/select_meal"-->
-        <!--            android:layout_marginTop="12dp"-->
-        <!--            android:textSize="18sp"/>-->
-        <!--        &lt;!&ndash; // Select a meal &ndash;&gt;-->
-
+        <!-- // Add serving -->
 
         <!-- Image -->
         <ImageView

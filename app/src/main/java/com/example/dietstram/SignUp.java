@@ -76,7 +76,7 @@ public class SignUp extends AppCompatActivity {
 
     /* TextView ------------------------------------------------------------------------------- */
     textViewErrorMessage = findViewById(R.id.textViewErrorMessage);
-    textViewEmail = findViewById(R.id.textViewEmail);
+    //textViewEmail = findViewById(R.id.textViewEmail);
 
     /* Button --------------------------------------------------------------------------------- */
     buttonSignUp = findViewById(R.id.buttonSignUp);
@@ -504,11 +504,11 @@ public class SignUp extends AppCompatActivity {
     Toast.makeText(this, stringEmail, Toast.LENGTH_SHORT).show();
 
     if (stringEmail.isEmpty() || stringEmail.startsWith(" ")) {
-      textViewEmail.setTextColor(Color.RED);
+   //   textViewEmail.setTextColor(Color.RED);
       errorMessage = "Please fill in an e-mail address";
       textViewErrorMessage.setText(errorMessage);
     } else {
-      textViewEmail.setTextColor(Color.DKGRAY);
+//      textViewEmail.setTextColor(Color.DKGRAY);
     }
     return stringEmail;
   }

@@ -1,23 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/text_home"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="vertical">
+
+        <!-- Today result -->
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            android:layout_marginStart="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="24dp">
+
+            <!-- Head result -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textViewGoalWithActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_weight="80"
+                android:text="@string/goal_with_activity"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/textViewFood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_weight="80"
+                android:text="@string/food"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/textViewSum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_weight="80"
+                android:text="@string/sum"
+                android:textSize="18sp" />
+        </TableRow>
+            <!--// Head result -->
+            <!-- Body result -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/textViewGoalWithActivityBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="80"
+                    android:text="@string/goal_with_activity"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/textViewFoodBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="80"
+                    android:text="@string/food"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/textViewSumBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="80"
+                    android:text="@string/sum"
+                    android:textSize="18sp" />
+            </TableRow>
+            <!-- // Body result -->
+        </TableLayout>
+
+        <!-- // Today result -->
+
+
+        <!-- Breakfast -->
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="24dp">
+
+            <TableRow
+                android:id="@+id/tableLayoutBreakfast"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/imageButtonBreakfastAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="80dp"
+                    android:src="@drawable/ic_menu_action_add" />
+
+                <TextView
+                    android:id="@+id/textViewBreakfast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="80"
+                    android:text="@string/breakfast"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textViewBreakfastEnergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="10"
+                    android:text="@string/breakfast"
+                    android:textSize="18sp" />
+
+            </TableRow>
+        </TableLayout>
+        <!-- Breakfast Items -->
+        <TableLayout
+            android:id="@+id/tableLayoutBreakfastItems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewBreakfastItemsName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/name"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textViewBreakfastItemsKcal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="80"
+                    android:text="@string/blank"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textViewBreakfastItemsEnergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="10"
+                    android:text="@string/breakfast"
+                    android:textSize="18sp" />
+
+            </TableRow>
+        </TableLayout>
+        <!-- // Breakfast items -->
+
+        <!-- Breakfast Items -->
+        <TableLayout
+            android:id="@+id/tableLayoutBreakfastItemsSub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewBreakfastItemsSubName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/name" />
+
+
+            </TableRow>
+        </TableLayout>
+        <!-- // Breakfast items sub -->
+        <!-- // Breakfast -->
+
+        <!-- Lunch -->
+        <!-- // Lunch -->
+
+        <!-- Supper -->
+        <!-- // Supper -->
+
+        <!-- Snacks -->
+        <!-- // Snack -->
+    </LinearLayout>
+
+</ScrollView>

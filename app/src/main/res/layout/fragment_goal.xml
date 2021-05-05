@@ -96,7 +96,8 @@
             <!-- Activity -->
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:shrinkColumns="0, true">
 
                 <TextView
                     android:id="@+id/textViewActivity"
@@ -108,11 +109,13 @@
 
                 <TextView
                     android:id="@+id/textViewUserActivity"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/user_activity"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:shrinkColumns="0, true"
+                    android:singleLine="false"/>
             </TableRow>
             <!-- // Activity -->
         </TableLayout>
@@ -142,6 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="@string/if_you_want_to_loose_weight" />
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -290,11 +294,12 @@
 
         <!-- Keep weight -->
         <TextView
-            android:id="@+id/textViewStayWeight"
+            android:id="@+id/textViewKeepWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="@string/if_you_want_to_keep_weight" />
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -305,7 +310,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textViewStayBlank"
+                    android:id="@+id/textViewKeepBlank"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -313,7 +318,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewStayEnergy"
+                    android:id="@+id/textViewEnergyKeep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -321,7 +326,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewStayProteins"
+                    android:id="@+id/textViewProteinsKeep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -329,7 +334,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewStayCarbs"
+                    android:id="@+id/textViewCarbsKeep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -337,7 +342,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewStayFat"
+                    android:id="@+id/textViewFatKeep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -351,7 +356,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textViewStayWithoutActivity"
+                    android:id="@+id/textViewKeepWithoutActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -359,7 +364,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewEnergyStayWithout"
+                    android:id="@+id/textViewEnergyKeepWithout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -367,7 +372,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewProteinsStayWithout"
+                    android:id="@+id/textViewProteinsKeepWithout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -375,7 +380,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewCarbsStayWithout"
+                    android:id="@+id/textViewCarbsKeepWithout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -383,7 +388,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewFatStayWithout"
+                    android:id="@+id/textViewFatKeepWithout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -397,7 +402,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textViewStayWithActivity"
+                    android:id="@+id/textViewKeepWithActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -405,7 +410,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewEnergyStayWith"
+                    android:id="@+id/textViewEnergyKeepWith"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -413,7 +418,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewProteinsStayWith"
+                    android:id="@+id/textViewProteinsKeepWith"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -421,7 +426,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewCarbsStayWith"
+                    android:id="@+id/textViewCarbsKeepWith"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -429,7 +434,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewFatStayWith"
+                    android:id="@+id/textViewFatKeepWith"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"

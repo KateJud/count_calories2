@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "stramdiet";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 8;
 
     /* 02 Database Variables ---------------------------------------------------------------------- */
     private final Context context;
@@ -77,7 +77,6 @@ public class DBAdapter {
                     "user_location VARCHAR," +
                     "user_height INT," +
                     "user_activity_level INT," +
-//            "user_weight INT," +
                     "user_measurement VARCHAR," +
                     "user_last_seen TIME," +
                     "user_note VARCHAR" +
@@ -85,13 +84,24 @@ public class DBAdapter {
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "cal_eaten_id INTEGER , " +
-                    "cal_eaten_date DATE," +
-                    "cal_meal_no INT," +
-                    "cal_eaten_energy INT," +
-                    "cal_eaten_proteins INT," +
-                    "cal_eaten_carbs INT," +
-                    "cal_eaten_fat INT" +
+                    "fdce_id INTEGER , " +
+                    "fdce_date DATE," +
+                    "fdce_meal_no INT," +
+                    "fdce_eaten_energy INT," +
+                    "fdce_eaten_proteins INT," +
+                    "fdce_eaten_carbs INT," +
+                    "fdce_eaten_fat INT" +
+                    ");");
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS food_diary_sum (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "fd_sum_id INTEGER , " +
+                    "fd_sum_date DATE," +
+                    "fd_sum_meal_no INT," +
+                    "fd_sum_energy INT," +
+                    "fd_sum_proteins INT," +
+                    "fd_sum_carbs INT," +
+                    "fd_sum_fat INT" +
                     ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary (" +
@@ -100,13 +110,15 @@ public class DBAdapter {
                     "fd_date DATE," +
                     "fd_meal_number INT," +
                     "fd_food_id INT," +
-                    "fd_searving_size DOUBLE," +
-                    "fd_serving_mesurment VARCHAR," +
+                    "fd_serving_size_gram DOUBLE," +
+                    "fd_serving_size_gram_measurement VARCHAR,"+
+                    "fd_serving_size_pcs DOUBLE ,"+
+                    "fd_serving_size_pcs_measurement VARCHAR ,"+
                     "fd_energy_calculated DOUBLE," +
                     "fd_protein_calculated DOUBLE," +
-                    "fd_carbohidrates_calculated DOUBLE," +
+                    "fd_carbohydrates_calculated DOUBLE," +
                     "fd_fat_calculated DOUBLE," +
-                    "fd_user_id INT"
+                    "fd_fat_meal_id INT"
                     + ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS categories (" +
@@ -123,17 +135,17 @@ public class DBAdapter {
                     " food_name VARCHAR," +
                     " food_manufactor_name VARCHAR," +
                     " food_description VARCHAR," +
-                    " food_serving_size DOUBLE," +
-                    " food_serving_mesurment VARCHAR," +
-                    " food_serving_name_number DOUBLE," +
-                    " food_serving_name_word VARCHAR," +
+                    " food_serving_size_gram DOUBLE," +
+                    " food_serving_size_gram_measurement VARCHAR," +
+                    " food_serving_size_pcs DOUBLE," +
+                    " food_serving_size_pcs_measurement VARCHAR," +
                     " food_energy DOUBLE," +
                     " food_protein DOUBLE," +
-                    " food_carbohidrates DOUBLE," +
+                    " food_carbohydrates DOUBLE," +
                     " food_fat DOUBLE," +
                     " food_energy_calculated DOUBLE," +
                     " food_protein_calculated DOUBLE," +
-                    " food_carbohidrates_calculated DOUBLE," +
+                    " food_carbohydrates_calculated DOUBLE," +
                     " food_fat_calculated DOUBLE," +
                     " food_user_id INT," +
                     " food_barcode VARCHAR," +
@@ -158,6 +170,7 @@ public class DBAdapter {
             db.execSQL("DROP TABLE IF EXISTS goal");
             db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
+            db.execSQL("DROP TABLE IF EXISTS food_diary_sum");
             db.execSQL("DROP TABLE IF EXISTS food_diary");
             db.execSQL("DROP TABLE IF EXISTS categories");
             db.execSQL("DROP TABLE IF EXISTS food");
@@ -304,7 +317,7 @@ public class DBAdapter {
         return mCursor;
 
     }
-
+    //Select all where (String)
     public Cursor select(String table, String[] fields, String whereClause, String whereCondition)
         throws SQLException {
         Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition,
@@ -317,10 +330,35 @@ public class DBAdapter {
 
     }
 
+    //Select all where (long)
     public Cursor select(String table, String[] fields, String whereClause, long whereCondition)
         throws SQLException {
 
         Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition,
+            null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+
+    //Select all where (String) And Or
+    public Cursor select(String table, String[] fields, String[] whereClause, String[] whereCondition,String[] whereAndOr)
+        throws SQLException {
+
+        StringBuilder where= new StringBuilder();
+        for (int i = 0; i < whereClause.length; i++) {
+
+            if(where.length() == 0){
+                where = new StringBuilder(whereClause[i] + "=" + whereCondition[i]);
+            }else {
+                where.append(" ").append(whereAndOr[i-1]).append(" ").append(whereClause[i]).append("=").append(whereCondition[i]);
+            }
+        }
+
+
+            Cursor mCursor = db.query(table, fields, where.toString(),
             null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();

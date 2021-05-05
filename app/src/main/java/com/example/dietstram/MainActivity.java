@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,8 +31,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -45,35 +46,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Set title
-        toolbar.setTitle("My live");
-
-        /* Setting button  */
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-
-        /***********************************8*/
-
-        /* Navigation */
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//
-//        /* Navigation items */
-//        NavigationView navigationView = findViewById(R.id.nav_view);
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        mAppBarConfiguration = new AppBarConfiguration.Builder(
-//            R.id.nav_home, R.id.nav_profile, R.id.nav_goal,R.id.nav_categories,R.id.nav_food)
-//            .setDrawerLayout(drawer)
-//            .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-//        NavigationUI.setupWithNavController(navigationView, navController);
+        toolbar.setTitle("Fragment activity");
 
 
         /* Initialize fragment */
@@ -104,15 +77,6 @@ public class MainActivity extends AppCompatActivity
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
-
-//        mAppBarConfiguration = new AppBarConfiguration.Builder(
-//            R.id.nav_home, R.id.nav_profile, R.id.nav_goal,R.id.nav_categories,R.id.nav_food)
-//            .setDrawerLayout(drawer)
-//            .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-//        NavigationUI.setupWithNavController(navigationView, navController);
-
         /* ---------------------------------------------------------------------- */
 
         /* Stetho*/
@@ -128,32 +92,28 @@ public class MainActivity extends AppCompatActivity
         /* Setup for food */
         //Count rows in food
         int numRows = db.count("categories");
+
         if (numRows < 1) {
             DBSetupInsert setupInsert = new DBSetupInsert(this);
+            setupInsert.insertAllFood();
             setupInsert.insertAllCategories();
         }
-//        if (numRows < 1) {
-//            DBSetupInsert setupInsert = new DBSetupInsert(this);
-//            setupInsert.insertAllFood();
-//            setupInsert.insertAllCategories();
-//        }
-
-        DBSetupInsert setupInsert = new DBSetupInsert(this);
-        //setupInsert.insertAllFood();
-        //setupInsert.setupInsertToFood();
 
         /* Check if there is user table */
         //Count rows in user table
         numRows = db.count("users");
+        Intent i;
         if (numRows < 1) {
-            Intent i = new Intent(MainActivity.this, SignUp.class);
+            i = new Intent(MainActivity.this, SignUp.class);
             startActivity(i);
+        }else {
+          //  i = new Intent(MainActivity.this, HomeFragment.class);
         }
+
 
         /*Close*/
         db.close();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -221,4 +181,5 @@ public class MainActivity extends AppCompatActivity
         return true;
 
     }
+
 }

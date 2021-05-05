@@ -102,17 +102,17 @@ public class DBSetupInsert {
         " food_name," +
         " food_manufactor_name," +
         " food_description," +
-        " food_serving_size ," +
-        " food_serving_mesurment ," +
-        " food_serving_name_number," +
-        " food_serving_name_word ," +
+        " food_serving_size_gram,"+
+        " food_serving_size_gram_measurement,"+
+        " food_serving_size_pcs,"+
+        " food_serving_size_pcs_measurement,"+
         " food_energy ," +
         " food_protein," +
-        " food_carbohidrates ," +
+        " food_carbohydrates ," +
         " food_fat ," +
         " food_energy_calculated," +
         " food_protein_calculated," +
-        " food_carbohidrates_calculated ," +
+        " food_carbohydrates_calculated ," +
         " food_fat_calculated ," +
         " food_user_id," +
         " food_barcode ," +

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.example.dietstram.DBAdapter;
 import com.example.dietstram.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
+import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
 import com.example.dietstram.ui.categories.CategoriesFragment;
 
 public class FoodFragment extends Fragment {
@@ -45,7 +47,7 @@ public class FoodFragment extends Fragment {
 
 
     /* Holder on buttons on toolbar */
-    private String currentId;
+    private String currentId="";
     private String currentName;
     private String selectedMainCategoryName = "";
 
@@ -55,14 +57,30 @@ public class FoodFragment extends Fragment {
     private View mainView;
 
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        /* Set title */
-//        changeTitle("Food");
-//
-//    }
+private void preListItemClickedReadyCursor(){
+    DBAdapter db = getDbAdapter();
+
+    String[] fields = new String[]{
+        "_id",
+        "food_name",
+        "food_manufactor_name",
+        "food_description",
+        "food_serving_size_gram",
+        "food_serving_size_gram_measurement",
+        "food_serving_size_pcs",
+        "food_serving_size_pcs_measurement",
+        "food_energy_calculated"
+    };
+    listCursor = db.select("food", fields, "_id", db.quoteSmart(currentId), "food_name", "ASC");
+
+    //Close
+    db.close();
+
+    makeMenuItemInvisible();
+
+    listItemClicked(0);
+
+}
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,9 +98,23 @@ public class FoodFragment extends Fragment {
 
         /* Set title */
         changeTitle("Food");
-        populateListFood();
-
         setHasOptionsMenu(true);
+
+        Bundle bundle=this.getArguments();
+        if(bundle!=null){
+            currentId=bundle.getString("currentFoodId");
+
+        }
+        if(currentId.isEmpty()){
+            populateListFood();
+
+        }else {
+            //Came from another country
+            //And need a cursor
+            preListItemClickedReadyCursor();
+        }
+
+
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -96,8 +128,7 @@ public class FoodFragment extends Fragment {
         menuItemAdd=menu.findItem(R.id.action_food_add);
 
         //Hide as default
-        madeMenuItemInvisible();
-
+        makeMenuItemInvisible();
 
     }
 
@@ -116,10 +147,10 @@ public class FoodFragment extends Fragment {
             "food_name",
             "food_manufactor_name",
             "food_description",
-            "food_serving_size",
-            "food_serving_mesurment",
-            "food_serving_name_number",
-            "food_serving_name_word",
+            "food_serving_size_gram",
+            "food_serving_size_gram_measurement",
+            "food_serving_size_pcs",
+            "food_serving_size_pcs_measurement",
             "food_energy_calculated",
         };
         listCursor = db.select("food", fields, "", "", "food_name", "ASC");
@@ -138,14 +169,13 @@ public class FoodFragment extends Fragment {
         //Close
         db.close();
 
-        //  changeMenuItemVisibility(parentId);
     }
 
 
     public void listItemClicked(int listItemIDClicked) {
 
         //show edit button
-        madeMenuItemVisible();
+        makeMenuItemVisible();
 
         /* Change layout */
         changeLayout(R.layout.fragment_food_view);
@@ -162,21 +192,21 @@ public class FoodFragment extends Fragment {
         changeTitle(currentName);
 
         /* Get data fro database */
-        String[] fields2 = new String[]{
+        String[] fields = new String[]{
             " food_name",
             " food_manufactor_name",
             " food_description",
-            " food_serving_size",
-            " food_serving_mesurment",
-            " food_serving_name_number ",
-            " food_serving_name_word ",
+            "food_serving_size_gram",
+            "food_serving_size_gram_measurement",
+            "food_serving_size_pcs",
+            "food_serving_size_pcs_measurement",
             " food_energy ",
             " food_protein ",
-            " food_carbohidrates ",
+            " food_carbohydrates ",
             " food_fat ",
             " food_energy_calculated ",
             " food_protein_calculated ",
-            " food_carbohidrates_calculated ",
+            " food_carbohydrates_calculated ",
             " food_fat_calculated ",
             " food_user_id ",
             " food_barcode ",
@@ -187,20 +217,9 @@ public class FoodFragment extends Fragment {
             " food_image_c ",
         };
 
-        String[] fields = new String[]{
-            "_id",
-            "food_name",
-            "food_manufactor_name",
-            "food_description",
-            "food_serving_size",
-            "food_serving_mesurment",
-            "food_serving_name_number",
-            "food_serving_name_word",
-            "food_energy_calculated",
-        };
         DBAdapter db = getDbAdapter();
         String currentIdSQL = db.quoteSmart(currentId);
-        Cursor foodCursor = db.select("food", fields2, "_id", currentIdSQL);
+        Cursor foodCursor = db.select("food", fields, "_id", currentIdSQL);
 
         //Convert Cursor to strings
         String name = foodCursor.getString(0);
@@ -212,11 +231,11 @@ public class FoodFragment extends Fragment {
         String servingNameWord = foodCursor.getString(6);
         String energy = foodCursor.getString(7);
         String protein = foodCursor.getString(8);
-        String carbohidrates = foodCursor.getString(9);
+        String carbohydrates = foodCursor.getString(9);
         String fat = foodCursor.getString(10);
         String energyCalculated = foodCursor.getString(11);
         String proteinCalculated = foodCursor.getString(12);
-        String carbohidratesCalculated = foodCursor.getString(13);
+        String carbohydratesCalculated = foodCursor.getString(13);
         String fatCalculated = foodCursor.getString(14);
         String userId = foodCursor.getString(15);
         String barcode = foodCursor.getString(16);
@@ -252,7 +271,7 @@ public class FoodFragment extends Fragment {
         TextView textViewFoodProteinsPerHundred = getView().findViewById(R.id.textViewFoodProteinsPerHundred);
         textViewFoodProteinsPerHundred.setText(protein);
         TextView textViewFoodCarbsPerHundred = getView().findViewById(R.id.textViewFoodCarbsPerHundred);
-        textViewFoodCarbsPerHundred.setText(carbohidrates);
+        textViewFoodCarbsPerHundred.setText(carbohydrates);
         TextView textViewFoodFatPerHundred = getView().findViewById(R.id.textViewFoodFatPerHundred);
         textViewFoodFatPerHundred.setText(fat);
 
@@ -261,12 +280,56 @@ public class FoodFragment extends Fragment {
         TextView textViewFoodProteinsPerN = getView().findViewById(R.id.textViewFoodProteinsPerN);
         textViewFoodProteinsPerN.setText(proteinCalculated);
         TextView textViewFoodCarbsPerN = getView().findViewById(R.id.textViewFoodCarbsPerN);
-        textViewFoodCarbsPerN.setText(carbohidratesCalculated);
+        textViewFoodCarbsPerN.setText(carbohydratesCalculated);
         TextView textViewFoodFatPerN = getView().findViewById(R.id.textViewFoodFatPerN);
         textViewFoodFatPerN.setText(fatCalculated);
 
 
         db.close();
+
+        //set Listener
+        ImageView imageViewFoodAdd =getActivity().findViewById(R.id.imageViewFoodAdd);
+        imageViewFoodAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFoodToDiarySelectMealNumber();
+            }
+        });
+
+    }
+
+    private void addFoodToDiarySelectMealNumber() {
+    changeLayout(R.layout.fragment_home_select_meal_number);
+
+        TextView textViewBreakfast = getActivity().findViewById(R.id.textViewBreakfast);
+        textViewBreakfast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFoodToDiarySelectMealNumberMoveToAdd(0);
+            }
+        });
+
+
+        TextView textViewLunch = getActivity().findViewById(R.id.textViewLunch);
+        textViewLunch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFoodToDiarySelectMealNumberMoveToAdd(1);
+            }
+        });
+
+    }
+    private  void addFoodToDiarySelectMealNumberMoveToAdd(int mealNumber){
+        Bundle bundle = new Bundle();
+        bundle.putString("mealNumber", String.valueOf(mealNumber));
+        bundle.putString("currentFoodId", "");
+        bundle.putString("action", "foodInCategoryListItemClicked");
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Fragment fragment = new AddFoodToDiaryFragment();
+
+        //Need to pass meal number
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment, CategoriesFragment.class.getName()).commit();
 
     }
 
@@ -495,17 +558,17 @@ public class FoodFragment extends Fragment {
                 " food_name,"+
                     " food_manufactor_name,"+
                     " food_description,"+
-                    " food_serving_size,"+
-                    " food_serving_mesurment,"+
-                    " food_serving_name_number,"+
-                    " food_serving_name_word,"+
+                    " food_serving_size_gram,"+
+                    " food_serving_size_gram_measurement,"+
+                    " food_serving_size_pcs,"+
+                    " food_serving_size_pcs_measurement,"+
                     " food_energy,"+
                     " food_protein,"+
-                    " food_carbohidrates,"+
+                    " food_carbohydrates,"+
                     " food_fat,"+
                     " food_energy_calculated,"+
                     " food_protein_calculated,"+
-                    " food_carbohidrates_calculated,"+
+                    " food_carbohydrates_calculated,"+
                     " food_fat_calculated,"+
                     " food_barcode,"+
                     " food_category_id ";
@@ -597,7 +660,7 @@ public class FoodFragment extends Fragment {
     /* Edit food ----------------------------------------- */
     private void editFood() {
         //show edit button
-        madeMenuItemInvisible();
+        makeMenuItemInvisible();
         /* Change layout */
         changeLayout(R.layout.fragment_food_edit);
 
@@ -614,17 +677,17 @@ public class FoodFragment extends Fragment {
             " food_name",
             " food_manufactor_name",
             " food_description",
-            " food_serving_size",
-            " food_serving_mesurment",
-            " food_serving_name_number ",
-            " food_serving_name_word ",
+            " food_serving_size_gram",
+            " food_serving_size_gram_measurement",
+            " food_serving_size_pcs",
+            " food_serving_size_pcs_measurement",
             " food_energy ",
             " food_protein ",
-            " food_carbohidrates ",
+            " food_carbohydrates ",
             " food_fat ",
             " food_energy_calculated ",
             " food_protein_calculated ",
-            " food_carbohidrates_calculated ",
+            " food_carbohydrates_calculated ",
             " food_fat_calculated ",
             " food_user_id ",
             " food_barcode ",
@@ -649,11 +712,11 @@ public class FoodFragment extends Fragment {
         String servingNameWord = foodCursor.getString(6);
         String energy = foodCursor.getString(7);
         String protein = foodCursor.getString(8);
-        String carbohidrates = foodCursor.getString(9);
+        String carbohydrates = foodCursor.getString(9);
         String fat = foodCursor.getString(10);
         String energyCalculated = foodCursor.getString(11);
         String proteinCalculated = foodCursor.getString(12);
-        String carbohidratesCalculated = foodCursor.getString(13);
+        String carbohydratesCalculated = foodCursor.getString(13);
         String fatCalculated = foodCursor.getString(14);
         String userId = foodCursor.getString(15);
         String barcode = foodCursor.getString(16);
@@ -702,7 +765,7 @@ public class FoodFragment extends Fragment {
         EditText editTextFoodProteinsPerHundred = getView().findViewById(R.id.editTextFoodProteinsPerHundred);
         editTextFoodProteinsPerHundred.setText(protein);
         EditText editTextFoodCarbsPerHundred = getView().findViewById(R.id.editTextFoodCarbsPerHundred);
-        editTextFoodCarbsPerHundred.setText(carbohidrates);
+        editTextFoodCarbsPerHundred.setText(carbohydrates);
         EditText editTextFoodFatPerHundred = getView().findViewById(R.id.editTextFoodFatPerHundred);
         editTextFoodFatPerHundred.setText(fat);
 
@@ -994,17 +1057,17 @@ public class FoodFragment extends Fragment {
                 " food_name",
                 " food_manufactor_name",
                 " food_description",
-                " food_serving_size",
-                " food_serving_mesurment",
-                " food_serving_name_number ",
-                " food_serving_name_word ",
+                " food_serving_size_gram",
+                " food_serving_size_gram_measurement",
+                " food_serving_size_pcs",
+                " food_serving_size_pcs_measurement",
                 " food_energy ",
                 " food_protein ",
-                " food_carbohidrates ",
+                " food_carbohydrates ",
                 " food_fat ",
                 " food_energy_calculated ",
                 " food_protein_calculated ",
-                " food_carbohidrates_calculated ",
+                " food_carbohydrates_calculated ",
                 " food_fat_calculated ",
                 " food_barcode ",
                 " food_category_id "
@@ -1042,7 +1105,7 @@ public class FoodFragment extends Fragment {
     /*// Edit food ----------------------------------------- */
 
     /* Visible & invisible ----------------------------------------- */
-    private void madeMenuItemVisible() {
+    private void makeMenuItemVisible() {
 
         //Show edit button
         menuItemEdit.setVisible(true);
@@ -1051,7 +1114,7 @@ public class FoodFragment extends Fragment {
     }
 
 
-    private void madeMenuItemInvisible() {
+    private void makeMenuItemInvisible() {
 
         //Show edit button
         menuItemEdit.setVisible(false);
