@@ -1,15 +1,17 @@
 package com.example.dietstram.ui.goal;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -24,20 +26,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.dietstram.ChangeGoal;
 import com.example.dietstram.DBAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
-import com.example.dietstram.SignUpGoal;
-import com.example.dietstram.ui.food.FoodFragment;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Calendar;
 
 import static com.example.dietstram.OpenCloseDB.changeTitle;
+import static com.example.dietstram.OpenCloseDB.convertKgToPounds;
 
 //TODO SUbmiT??
 public class GoalFragment extends Fragment {
+    static final int goalId = 1;
+
     /* Action buttons */
     MenuItem menuItemEdit;
     MenuItem menuItemDelete;
@@ -83,8 +85,8 @@ public class GoalFragment extends Fragment {
     TextView textViewFatKeepWith; //textViewFatKeepWith);
 
     /*Spinner */
-    Spinner spinnerWantTo;
     Spinner spinnerWeeklyGoal;
+    Spinner spinnerActivityLevel;
 
     /* EditText */
     EditText editTextUserWeight;
@@ -125,9 +127,9 @@ public class GoalFragment extends Fragment {
         textViewCarbsKeepWith = getActivity().findViewById(R.id.textViewCarbsKeepWith);
         textViewFatKeepWith = getActivity().findViewById(R.id.textViewFatKeepWith);
 
-
-        spinnerWantTo = getActivity().findViewById(R.id.spinnerWantTo);
+        //Spinner
         spinnerWeeklyGoal = getActivity().findViewById(R.id.spinnerWeeklyGoal);
+        spinnerActivityLevel = getActivity().findViewById(R.id.spinnerActivityLevel);
 
         //EditText
         editTextUserWeight = getActivity().findViewById(R.id.editTextUserWeight);
@@ -142,7 +144,7 @@ public class GoalFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         /* Set title */
-        changeTitle(getActivity(), "Profile");
+        changeTitle(getActivity(), "Goal");
 
     }
 
@@ -245,39 +247,86 @@ public class GoalFragment extends Fragment {
         TextView textViewGoalKg = getActivity().findViewById(R.id.textViewGoalKg);
         TextView textViewGoalKg2 = getActivity().findViewById(R.id.textViewGoalKg2);
 
+        /* Weight */
+        /* Target Weight */
         if (measurement.startsWith("m")) {
             textViewGoalKg.setText(getActivity().getString(R.string.kg));
             textViewGoalKg2.setText(getActivity().getString(R.string.kg));
+            editTextUserWeight.setText(stringGoalCurrentWeight);
+            editTextUserTargetWeight.setText(stringGoalTargetWeight);
         } else {
             textViewGoalKg.setText(getActivity().getString(R.string.pounds));
             textViewGoalKg2.setText(getActivity().getString(R.string.pounds));
+            editTextUserWeight.setText("" + convertKgToPounds(stringGoalCurrentWeight));
+            editTextUserTargetWeight.setText("" + convertKgToPounds(stringGoalTargetWeight));
         }
+        /* Listener */
+        editTextUserWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
 
-        /* Weight */
-        //todo if pounds
-        editTextUserWeight.setText(stringGoalCurrentWeight);
+                String weight = editTextUserWeight.getText().toString();
+                String targetWeight = editTextUserTargetWeight.getText().toString();
+                if (!weight.isEmpty() && !targetWeight.isEmpty()) {
+                    //update currentWeight (temp)
+                    DBAdapter db = getDbAdapter();
+                    db.update("temp_goal", "_id", goalId, "t_goal_current_weight", db.quoteSmart(weight));
+                    db.close();
 
-        /* Target Weight */
-        editTextUserTargetWeight.setText(stringGoalTargetWeight);
+                    //update temp db
+                    updateTempGoalDB();
+
+                }
+
+            }
+        });
+
 
         /* I want to */
-        spinnerWantTo.setSelection(Integer.parseInt(stringGoalIWantTo));
+        TextView textViewUserWantTo = getActivity().findViewById(R.id.textViewUserWantTo);
+        textViewUserWantTo.setText(stringGoalIWantTo);
 
-        /* I want to */
-        String[] arr=getActivity().getResources().getStringArray(R.array.array_weekly_goal_kg);
 
+        /* Weekly goal */
+        String[] arr = getActivity().getResources().getStringArray(R.array.array_weekly_goal_kg);
         spinnerWeeklyGoal.setSelection(Arrays.asList(arr).indexOf(stringGoalWeeklyGoal));
+        spinnerWeeklyGoal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateTempGoalDB();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         /*  ActivityLevel */
-        spinnerWeeklyGoal.setSelection(Integer.parseInt(activityLevel));
+        spinnerActivityLevel.setSelection(Integer.parseInt(activityLevel));
+        spinnerActivityLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateTempGoalDB();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
         db.close();
 
 
         /* Numbers */
-        updateNumberTable();
+        updateTempTable(true);
 
 
         // Submit listener
@@ -285,12 +334,31 @@ public class GoalFragment extends Fragment {
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileEditGoalSubmit();
+                goalEditGoalSubmit();
             }
         });
 
 
     }
+
+    private void updateTempGoalDB() {
+
+        DBAdapter db = getDbAdapter();
+        //dou int string
+        double targetWeight = Double.parseDouble(editTextUserTargetWeight.getText().toString());
+
+        /* Spinner WeeklyGoal*/
+        String weeklyGoal = spinnerWeeklyGoal.getSelectedItem().toString();
+
+        //ActivityLevel
+        String activityLevel = String.valueOf(spinnerActivityLevel.getSelectedItemPosition());
+        ChangeGoal.updateTempGoalDBMain(db, targetWeight, weeklyGoal, activityLevel);
+
+        db.close();
+        //update table
+        updateTempTable(false);
+    }
+
 
     private DBAdapter getDbAdapter() {
         DBAdapter db = new DBAdapter(getActivity());
@@ -303,7 +371,7 @@ public class GoalFragment extends Fragment {
         /* Get data from database */
         DBAdapter db = getDbAdapter();
 
-        String fields[] = {
+        String[] fields = {
             "_id",
             "goal_current_weight",
             "goal_target_weight",
@@ -330,12 +398,15 @@ public class GoalFragment extends Fragment {
 
         String method = "";
         String ifYouWant = "";
-        if (stringGoalIWantTo.equals("0")) {
+        if (stringGoalIWantTo.startsWith("l")) {
             ifYouWant = "If you want to loose weight ";
             method = "Loose " + stringGoalWeeklyGoal;
-        } else {
+        } else if(stringGoalIWantTo.startsWith("g")) {
             ifYouWant = "If you want to gain weight ";
             method = "Gain " + stringGoalWeeklyGoal;
+        }else {
+            ifYouWant = "If you want to keep weight ";
+            method = "Just keep " ;
         }
 
         /* Measurement */
@@ -367,7 +438,7 @@ public class GoalFragment extends Fragment {
 
 
         /* Numbers */
-        updateNumberTable();
+        updateTempTable(true);
 
         checkBoxAdvanced.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -379,29 +450,60 @@ public class GoalFragment extends Fragment {
         db.close();
     }
 
-    private void updateNumberTable() {
-        DBAdapter db = getDbAdapter();
+    private void updateTempTable(boolean firstTime) {
+        //todo при начальной загрузке все подгружается с goal
+        //При любом изменениии все сохраняется в tempGoal и подгружается оттуда
+        //TODo Update temp table (после любого изменения)
+        //TODO только полсе submit все сохраняем в бд
 
-        //Get goal data
-        String[] fields_goal = {
-            "goal_energy_bmr ",
-            "goal_proteins_bmr ",
-            "goal_carbs_bmr ",
-            "goal_fat_bmr ",
-            "goal_energy_diet ",
-            "goal_proteins_diet ",
-            "goal_carbs_diet ",
-            "goal_fat_diet ",
-            "goal_energy_with_activity ",
-            "goal_proteins_with_activity ",
-            "goal_carbs_with_activity ",
-            "goal_fat_with_activity ",
-            "goal_energy_with_activity_and_diet ",
-            "goal_proteins_with_activity_and_diet ",
-            "goal_carbs_with_activity_and_diet ",
-            "goal_fat_with_activity_and_diet "
-        };
-        Cursor goalCursor = db.select("goal", fields_goal, "", "", "_id", "DESC");
+        DBAdapter db = getDbAdapter();
+        Cursor goalCursor;
+        String[] fields;
+        if (firstTime) {
+
+            //Get goal data
+            fields = new String[]{
+                "goal_energy_bmr ",
+                "goal_proteins_bmr ",
+                "goal_carbs_bmr ",
+                "goal_fat_bmr ",
+                "goal_energy_diet ",
+                "goal_proteins_diet ",
+                "goal_carbs_diet ",
+                "goal_fat_diet ",
+                "goal_energy_with_activity ",
+                "goal_proteins_with_activity ",
+                "goal_carbs_with_activity ",
+                "goal_fat_with_activity ",
+                "goal_energy_with_activity_and_diet ",
+                "goal_proteins_with_activity_and_diet ",
+                "goal_carbs_with_activity_and_diet ",
+                "goal_fat_with_activity_and_diet "
+            };
+            goalCursor = db.select("goal", fields, "_id", 1);
+        } else {
+            //Get goal data
+            fields = new String[]{
+                "t_goal_energy_bmr ",
+                "t_goal_proteins_bmr ",
+                "t_goal_carbs_bmr ",
+                "t_goal_fat_bmr ",
+                "t_goal_energy_diet ",
+                "t_goal_proteins_diet ",
+                "t_goal_carbs_diet ",
+                "t_goal_fat_diet ",
+                "t_goal_energy_with_activity ",
+                "t_goal_proteins_with_activity ",
+                "t_goal_carbs_with_activity ",
+                "t_goal_fat_with_activity ",
+                "t_goal_energy_with_activity_and_diet ",
+                "t_goal_proteins_with_activity_and_diet ",
+                "t_goal_carbs_with_activity_and_diet ",
+                "t_goal_fat_with_activity_and_diet "
+            };
+            goalCursor = db.select("temp_goal", fields, "_id", 1);
+        }
+
         //Cursor goalCursor = db.select("goal", fields_goal, "_id", goalId);
 
 
@@ -543,37 +645,16 @@ public class GoalFragment extends Fragment {
     String errorMessage;
 
     /*SignUpGoal Submit ----------------------------------------------------- */
-    public void profileEditGoalSubmit() {
+    public void goalEditGoalSubmit() {
         errorMessage = "";
         //Get Target Weight
         double doubleTargetWeight = getTargetWeight();
-
-        //Spinner WantTo
-        //0: loose
-        //1: gain
-        int positionWantTo = spinnerWantTo.getSelectedItemPosition();
-
 
         /* Spinner WeeklyGoal*/
         String stringWeeklyGoal = spinnerWeeklyGoal.getSelectedItem().toString();
 
         //Error handling
-        tryFinishSignUp(doubleTargetWeight, positionWantTo, stringWeeklyGoal);
-
-    }
-
-    void editGoalSubmitOnClick() {
-        //I want to
-
-        //Spinner weekly goal
-
-        //Activity level
-
-
-        //Current weight
-        String currentWeight = editTextUserWeight.getText().toString();
-        double doubleCurrWeight = 0;
-
+        tryFinishSubmit(doubleTargetWeight, stringWeeklyGoal);
 
     }
 
@@ -589,15 +670,17 @@ public class GoalFragment extends Fragment {
         return doubleTargetWeight;
     }
 
-    private void tryFinishSignUp(double targetWeight, int iWantTo, String weeklyGoal) {
+    private void tryFinishSubmit(double targetWeight, String weeklyGoal) {
         //Нет ошибки
 
         if (errorMessage.isEmpty()) {
             //Update database
 
             DBAdapter db = getDbAdapter();
-            updateGoalDB(targetWeight, iWantTo, weeklyGoal, db);
-            calculateEnergy(targetWeight, iWantTo, weeklyGoal, db);
+           String weight= editTextUserWeight.getText().toString();
+            db.update("goal", "_id", goalId, "goal_current_weight", db.quoteSmart(weight));
+
+            ChangeGoal.updateGoalDBMain(db, targetWeight, weeklyGoal);
             db.close();
 
 
@@ -612,178 +695,4 @@ public class GoalFragment extends Fragment {
         }
     }
 
-    private void calculateEnergy(double targetWeight, int iWantTo, String weeklyGoal, DBAdapter db) {
-        /*Get Row number from 'users'*/
-        //ToDo
-
-
-        /*Calculate Energy*/
-
-        /*1: bmr*/
-        double bmr = getBmr(db, targetWeight);
-        System.out.println("1bmr:" + bmr);
-        double energyBmrSQL = db.quoteSmart(bmr);
-        db.update("goal", "_id", goalId, "goal_energy_bmr", energyBmrSQL);
-        updateDbEnergyFatsCarbsProteins(db, bmr,
-            new String[]{"goal_fat_bmr", "goal_carbs_bmr", "goal_proteins_bmr"}, "goal_energy_bmr");
-
-        /*2: with diet*/
-        double energyDiet = getEnergyDiet(iWantTo, weeklyGoal, bmr);
-        System.out.println("2bmr:" + energyDiet);
-        updateDbEnergyFatsCarbsProteins(db, energyDiet,
-            new String[]{"goal_fat_diet", "goal_carbs_diet", "goal_proteins_diet"}, "goal_energy_diet");
-
-        /*3: with activity*/
-        double bmrWithActivity = getBmrWithActivity(db, bmr);
-        updateDbEnergyFatsCarbsProteins(db, bmrWithActivity,
-            new String[]{"goal_fat_with_activity", "goal_carbs_with_activity",
-                "goal_proteins_with_activity"}, "goal_energy_with_activity");
-
-        /*4: with_activity_and_diet*/
-        double bmrGoal = getEnergyDiet(iWantTo, weeklyGoal, bmrWithActivity);
-        updateDbEnergyFatsCarbsProteins(db, bmrGoal,
-            new String[]{"goal_fat_with_activity_and_diet", "goal_carbs_with_activity_and_diet",
-                "goal_proteins_with_activity_and_diet"}, "goal_energy_with_activity_and_diet");
-
-    }
-
-    private double getBmrWithActivity(DBAdapter db, double bmr) {
-        long rowId = 0;
-        String fields[] = new String[]{
-            "_id",
-            "user_dob",
-            "user_gender",
-            "user_height",
-            "user_activity_level"};
-        Cursor c = db.selectPrimaryKey("users", "_id", rowId, fields);
-        String stringUserActivityLevel = c.getString(4);
-        double activityCoefficient = getActivityCoefficient(stringUserActivityLevel);
-        double bmrWithActivity = bmr * activityCoefficient;
-        return bmrWithActivity;
-    }
-
-    private double getEnergyDiet(int iWantTo, String weeklyGoal, double bmr) {
-        double doubleWeeklyGoal = Double.parseDouble(weeklyGoal);
-        double kcal = 0;
-        double energyDiet = 0;
-        kcal = 7700 * doubleWeeklyGoal;
-        if (iWantTo == 0) {
-            //Loose wait
-            energyDiet = Math.round(bmr - kcal / 7);
-        } else {
-            //Gain
-            energyDiet = Math.round(bmr + kcal / 7);
-        }
-        return energyDiet;
-    }
-
-    private double getBmr(DBAdapter db, double targetWeight) {
-        long rowId = 0;
-        String fields[] = new String[]{
-            "_id",
-            "user_dob",
-            "user_gender",
-            "user_height",
-            "user_activity_level"};
-        Cursor c = db.selectPrimaryKey("users", "_id", rowId, fields);
-        String stringUserDOB = c.getString(1);
-        String stringUserGender = c.getString(2);
-        String stringUserHeight = c.getString(3);
-
-        String[] items = stringUserDOB.split("-");
-        String day = items[2];
-        String month = items[1];
-        String year = items[0];
-        String stringUserAge = getAge(Integer.parseInt(year), Integer.parseInt(month),
-            Integer.parseInt(day));
-
-        double bmr;
-        double commonPart =
-            10 * targetWeight + 6.25 * Double.parseDouble(stringUserHeight) - 5 * Integer
-                .parseInt(stringUserAge);
-
-        if (stringUserGender.startsWith("m")) {
-            //Male
-            // =(10 x вес (кг) + 6.25 x рост (см) – 5 x возраст (г) + 5) x A;
-            bmr = commonPart + 5;
-
-        } else {
-            //Female
-            // (10 x вес (кг) + 6.25 x рост (см) – 5 x возраст (г) – 161) x A.
-            bmr = commonPart - 161;
-        }
-        return bmr;
-    }
-
-    //TODO
-    int goalId = 1;
-
-    private void updateDbEnergyFatsCarbsProteins(DBAdapter db, double bmr, String[] fields,
-                                                 String mainField) {
-
-        //CalculateProteins
-        //20-25 % protein
-        //40-50 % karbohydrat
-        //25-35 % fat
-        double energyBmrSQL = db.quoteSmart(bmr);
-
-        db.update("goal", "_id", goalId, mainField, energyBmrSQL);
-
-        double proteinsBmr = Math.round(bmr * 25 / 100);
-        double carbsBmr = Math.round(bmr * 50 / 100);
-        double fatBmr = Math.round(bmr * 25 / 100);
-
-        double proteinsBmrSQL = db.quoteSmart(proteinsBmr);
-        double carbsBmrSQL = db.quoteSmart(carbsBmr);
-        double fatBmrSQL = db.quoteSmart(fatBmr);
-
-        db.update("goal", "_id", goalId, fields[0], fatBmrSQL);
-        db.update("goal", "_id", goalId, fields[1], carbsBmrSQL);
-        db.update("goal", "_id", goalId, fields[2], proteinsBmrSQL);
-    }
-
-    private void updateGoalDB(double targetWeight, int iWantTo, String weeklyGoal, DBAdapter db) {
-        String weeklyGoalSQL = db.quoteSmart(weeklyGoal);
-        int iWantToSQL = db.quoteSmart(iWantTo);
-        double targetWeightSQL = db.quoteSmart(targetWeight);
-
-        db.update("goal", "_id", goalId, "goal_target_weight", targetWeightSQL);
-        db.update("goal", "_id", goalId, "goal_i_want_to", iWantToSQL);
-        db.update("goal", "_id", goalId, "goal_weekly_goal", weeklyGoalSQL);
-    }
-
-    double getActivityCoefficient(String userActivityLevel) {
-
-        //1,2 – минимальная активность,
-        //1,375 – слабый уровень активности
-        //1,55 – умеренный уровень активности
-        //1,7 – тяжелая или трудоемкая активность
-        //1,9 – экстремальный уровень
-        switch (userActivityLevel) {
-            case "0":
-                return 1.2;
-            case "1":
-                return 1.375;
-            case "2":
-                return 1.55;
-            case "3":
-                return 1.7;
-            default:
-                return 1.9;
-
-        }
-    }
-
-    /*get Age ------------------------------ */
-    private String getAge(int year, int month, int day) {
-        Calendar dob = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
-
-        dob.set(year, month, day);
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-            age--;
-        }
-        return "" + age;
-    }
 }

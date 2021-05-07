@@ -15,25 +15,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/breakfast" />
+        android:text="@string/breakfast"
+        style="@style/Widget.TextViewBig"/>
 
     <TextView
         android:id="@+id/textViewLunch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        style="@style/Widget.TextViewBig"
         android:text="@string/lunch" />
         <TextView
             android:id="@+id/textViewSupper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/Widget.TextViewBig"
             android:text="@string/supper" />
         <TextView
             android:id="@+id/textViewSnacks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/Widget.TextViewBig"
             android:text="@string/snacks" />
 
 </LinearLayout>

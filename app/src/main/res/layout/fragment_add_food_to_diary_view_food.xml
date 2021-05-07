@@ -115,23 +115,7 @@
             android:src="@drawable/logo" />
         <!-- //Image -->
 
-        <!-- About -->
-        <TextView
-            android:id="@+id/textViewFoodAbout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/about"
-            android:textSize="18sp" />
-        <!-- //About -->
 
-        <!-- Description -->
-        <TextView
-            android:id="@+id/textViewFoodDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/description"
-            android:textSize="18sp" />
-        <!-- // Description -->
 
         <!-- Calories table -->
         <TextView
@@ -271,6 +255,24 @@
 
         </TableLayout>
         <!-- //  Calories table -->
+
+        <!-- About -->
+        <TextView
+            android:id="@+id/textViewFoodAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about"
+            android:textSize="18sp" />
+        <!-- //About -->
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/textViewFoodDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textSize="18sp" />
+        <!-- // Description -->
 
 
     </LinearLayout>

@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
         <!-- Table layout -->
 
         <!-- Delete Message -->
@@ -23,6 +24,7 @@
                 android:id="@+id/textViewDeleteMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Widget.TextViewBig"
                 android:text="@string/delete_message" />
 
         </TableRow>
@@ -43,12 +45,14 @@
                     android:id="@+id/buttonCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/buttonDelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/delete" />
             </TableRow>
 

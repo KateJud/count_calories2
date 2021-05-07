@@ -2,24 +2,37 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/bg_goal"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:orientation="vertical">
 
         <!-- Status -->
-        <TextView
-            android:id="@+id/textViewStatus"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/status"
-            android:textSize="18sp" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:src="@drawable/ic_status_person" />
+
+            <TextView
+                android:id="@+id/textViewStatus"
+                style="@style/Widget.TextViewBig"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/status" />
+        </TableRow>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -28,16 +41,15 @@
             <!-- Weight -->
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/textViewGoalWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/weight"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    style="@style/Widget.TextViewSimple"/>
 
                 <TextView
                     android:id="@+id/textViewUserWeight"
@@ -45,7 +57,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/user_weight"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Weight -->
             <!-- Target Weight -->
@@ -57,17 +70,15 @@
                     android:id="@+id/textViewTarget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/target_weight"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple" />
 
                 <TextView
                     android:id="@+id/textViewUserTargetWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/user_target_weight"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple" />
             </TableRow>
             <!-- // Target weight -->
 
@@ -80,17 +91,15 @@
                     android:id="@+id/textViewMethod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/method"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple"/>
 
                 <TextView
                     android:id="@+id/textViewUserMethod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/user_method"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple" />
             </TableRow>
             <!-- // Method -->
             <!-- Activity -->
@@ -105,17 +114,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/activity_level"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewUserActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/user_activity"
-                    android:textSize="18sp"
+
                     android:shrinkColumns="0, true"
-                    android:singleLine="false"/>
+                    android:singleLine="false"
+                    android:text="@string/user_activity"
+                    style="@style/Widget.TextViewSimple" />
             </TableRow>
             <!-- // Activity -->
         </TableLayout>
@@ -129,22 +139,35 @@
             android:text="@string/advanced" />
         <!-- // Advanced -->
 
-        <!-- Numbers -->
-        <TextView
-            android:id="@+id/textViewNumbers"
+        <!-- Digits -->
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/number"
-            android:textSize="18sp" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:src="@drawable/ic_parts"
+              />
+
+            <TextView
+                android:id="@+id/textViewNumbers"
+                style="@style/Widget.TextViewBig"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/digits" />
+        </TableRow>
+
 
         <!-- Loose weight -->
         <TextView
             android:id="@+id/textViewLooseWeight"
+            style="@style/Widget.TextViewSimple"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/if_you_want_to_loose_weight" />
+            android:text="@string/to_loose_weight" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -161,13 +184,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/blank"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewEnergy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/energy"
                     android:textSize="18sp" />
 
@@ -177,7 +200,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/proteins"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewCarbs"
@@ -185,7 +209,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/carbs"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewFat"
@@ -193,7 +218,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/fat"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Head -->
             <!-- Without activity -->
@@ -207,7 +233,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/without_activity"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewEnergyLooseWithout"
@@ -215,7 +242,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/energy"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewProteinsLooseWithout"
@@ -223,7 +251,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/proteins"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewCarbsLooseWithout"
@@ -231,7 +260,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/carbs"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewFatLooseWithout"
@@ -239,7 +269,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/fat"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Without Activity -->
             <!-- With activity -->
@@ -253,7 +284,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/with_activity"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewEnergyLooseWith"
@@ -261,7 +293,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/energy"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewProteinsLooseWith"
@@ -269,7 +302,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/proteins"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewCarbsLooseWith"
@@ -277,7 +311,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/carbs"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewFatLooseWith"
@@ -285,7 +320,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/fat"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Without Activity -->
 
@@ -295,10 +331,10 @@
         <!-- Keep weight -->
         <TextView
             android:id="@+id/textViewKeepWeight"
+            style="@style/Widget.TextViewSimple"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/if_you_want_to_keep_weight" />
+            android:text="@string/to_keep_weight" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -315,7 +351,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/blank"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewEnergyKeep"
@@ -323,7 +360,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/energy"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewProteinsKeep"
@@ -331,7 +369,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/proteins"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewCarbsKeep"
@@ -339,7 +378,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/carbs"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewFatKeep"
@@ -347,7 +387,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/fat"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Head -->
             <!-- Without activity -->
@@ -361,7 +402,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/without_activity"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewEnergyKeepWithout"
@@ -369,7 +411,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/energy"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewProteinsKeepWithout"
@@ -377,7 +420,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/proteins"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewCarbsKeepWithout"
@@ -385,7 +429,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/carbs"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewFatKeepWithout"
@@ -393,7 +438,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/fat"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Without Activity -->
             <!-- With activity -->
@@ -407,7 +453,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/with_activity"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewEnergyKeepWith"
@@ -415,7 +462,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/energy"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewProteinsKeepWith"
@@ -423,7 +471,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/proteins"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewCarbsKeepWith"
@@ -431,7 +480,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/carbs"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:id="@+id/textViewFatKeepWith"
@@ -439,12 +489,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/fat"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_marginEnd="8dp" />
             </TableRow>
             <!-- // Without Activity -->
-
         </TableLayout>
         <!-- // Keep weight -->
+
+        <!-- // Digits -->
 
 
     </LinearLayout>

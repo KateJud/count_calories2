@@ -501,7 +501,7 @@ public class SignUp extends AppCompatActivity {
   private String getEmail() {
 
     String stringEmail = editTextEmail.getText().toString();
-    Toast.makeText(this, stringEmail, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this,"Hi, "+ stringEmail+"!", Toast.LENGTH_SHORT).show();
 
     if (stringEmail.isEmpty() || stringEmail.startsWith(" ")) {
    //   textViewEmail.setTextColor(Color.RED);

@@ -27,7 +27,6 @@ import com.example.dietstram.DBAdapter;
 import com.example.dietstram.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
-import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
 import com.example.dietstram.ui.food.FoodFragment;
 
 import java.util.ArrayList;
@@ -263,7 +262,7 @@ public class CategoriesFragment extends Fragment {
             Toast.makeText(getActivity(), "Changes saved", Toast.LENGTH_SHORT).show();
 
             //Move user back to correct layout
-            moveToCorrectLayout();
+            moveToCategoryLayout();
             int id = R.layout.fragment_categories;
             setMainView(id);
 
@@ -294,7 +293,7 @@ public class CategoriesFragment extends Fragment {
     }
 
     private void onCancelClicked(){
-        moveToCorrectLayout();
+        moveToCategoryLayout();
     }
 
     private void onDeleteClicked(){
@@ -313,7 +312,7 @@ public class CategoriesFragment extends Fragment {
         Toast.makeText(getActivity(), "Category deleted", Toast.LENGTH_SHORT).show();
 
         //Move user back to correct layout
-        moveToCorrectLayout();
+        moveToCategoryLayout();
         int id = R.layout.fragment_categories;
         setMainView(id);
 
@@ -393,7 +392,7 @@ public class CategoriesFragment extends Fragment {
             Toast.makeText(getActivity(), "Category created", Toast.LENGTH_SHORT).show();
 
             //Move user back to correct layout
-            moveToCorrectLayout();
+            moveToCategoryLayout();
             int id = R.layout.fragment_categories;
             setMainView(id);
 
@@ -402,7 +401,7 @@ public class CategoriesFragment extends Fragment {
 
     }
 
-    private void moveToCorrectLayout() {
+    private void moveToCategoryLayout() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, new CategoriesFragment(), CategoriesFragment.class.getName()).commit();
     }

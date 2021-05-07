@@ -12,8 +12,8 @@ import android.util.Log;
 public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
-    public static final String DATABASE_NAME = "stramdiet";
-    public static final int DATABASE_VERSION = 8;
+    public static final String DATABASE_NAME = "my_life";
+    public static final int DATABASE_VERSION = 23;
 
     /* 02 Database Variables ---------------------------------------------------------------------- */
     private final Context context;
@@ -64,6 +64,33 @@ public class DBAdapter {
                     "goal_fat_with_activity_and_diet INT," +
                     "goal_notes VARCHAR" +
                     ");");
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS temp_goal (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "t_goal_id INTEGER, " +
+                    "t_goal_current_weight INT," +
+                    "t_goal_target_weight INT," +
+                    "t_goal_i_want_to VARCHAR," +
+                    "t_goal_weekly_goal VARCHAR," +
+                    "t_goal_energy_bmr INT," +
+                    "t_goal_proteins_bmr INT," +
+                    "t_goal_carbs_bmr INT," +
+                    "t_goal_fat_bmr INT," +
+                    "t_goal_energy_diet INT," +
+                    "t_goal_proteins_diet INT," +
+                    "t_goal_carbs_diet INT," +
+                    "t_goal_fat_diet INT," +
+                    "t_goal_energy_with_activity INT," +
+                    "t_goal_proteins_with_activity INT," +
+                    "t_goal_carbs_with_activity INT," +
+                    "t_goal_fat_with_activity INT," +
+                    "t_goal_energy_with_activity_and_diet INT," +
+                    "t_goal_proteins_with_activity_and_diet INT," +
+                    "t_goal_carbs_with_activity_and_diet INT," +
+                    "t_goal_fat_with_activity_and_diet INT" +
+                    ");");
+
+
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -168,6 +195,7 @@ public class DBAdapter {
 
             //! All tables that are going to be dropped need to be listed here
             db.execSQL("DROP TABLE IF EXISTS goal");
+            db.execSQL("DROP TABLE IF EXISTS temp_goal");
             db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
             db.execSQL("DROP TABLE IF EXISTS food_diary_sum");

@@ -150,9 +150,6 @@ public class AddFoodToDiaryFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        //populateList("0", "");
-
         //setHasOptionsMenu(true);
 
         String action="";
@@ -784,8 +781,8 @@ public class AddFoodToDiaryFragment extends Fragment {
                     "fd_energy_calculated ," +
                     "fd_protein_calculated ," +
                     "fd_carbohydrates_calculated ," +
-                    "fd_fat_calculated ," +
-                    "fd_fat_meal_id ";
+                    "fd_fat_calculated "
+                   ;
             String values =
                 "NULL," +
                     fdDateSQL + "," +

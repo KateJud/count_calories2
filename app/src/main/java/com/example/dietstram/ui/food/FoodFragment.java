@@ -322,14 +322,14 @@ private void preListItemClickedReadyCursor(){
     private  void addFoodToDiarySelectMealNumberMoveToAdd(int mealNumber){
         Bundle bundle = new Bundle();
         bundle.putString("mealNumber", String.valueOf(mealNumber));
-        bundle.putString("currentFoodId", "");
+        bundle.putString("currentFoodId", currentId);
         bundle.putString("action", "foodInCategoryListItemClicked");
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Fragment fragment = new AddFoodToDiaryFragment();
 
         //Need to pass meal number
         fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment, CategoriesFragment.class.getName()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment, AddFoodToDiaryFragment.class.getName()).commit();
 
     }
 

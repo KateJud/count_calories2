@@ -22,11 +22,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.dietstram.ChangeGoal;
 import com.example.dietstram.DBAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
+import com.example.dietstram.ui.home.HomeFragment;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -34,8 +37,6 @@ import java.util.Locale;
 import static com.example.dietstram.OpenCloseDB.convertCmToFeetInchesFEET;
 import static com.example.dietstram.OpenCloseDB.convertCmToFeetInchesINCHES;
 import static com.example.dietstram.OpenCloseDB.convertFeetInchesToCm;
-import static com.example.dietstram.OpenCloseDB.convertKgToPounds;
-import static com.example.dietstram.OpenCloseDB.convertPoundsToKg;
 
 public class ProfileFragment extends Fragment {
 
@@ -67,7 +68,7 @@ public class ProfileFragment extends Fragment {
 
     private void setAllWidgets() {
         /* Spinner -------------------------------------------------------------------------------- */
-        spinnerMeasurement =  getActivity().findViewById(R.id.spinnerMeasurement);
+        spinnerMeasurement = getActivity().findViewById(R.id.spinnerMeasurement);
         spinnerDOBDay = getActivity().findViewById(R.id.spinnerDOBDay);
         spinnerDOBYear = getActivity().findViewById(R.id.spinnerDOBYear);
         spinnerDOBMonth = getActivity().findViewById(R.id.spinnerDOBMonth);
@@ -137,6 +138,7 @@ public class ProfileFragment extends Fragment {
         db.open();
         return db;
     }
+
     //Set toolbar menu items
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -153,7 +155,7 @@ public class ProfileFragment extends Fragment {
 
         /* Get data from data base */
         DBAdapter db = getDbAdapter();
-        //TODO
+
         long longRowId = 1;
         String fields[] = {
             "_id",
@@ -191,27 +193,6 @@ public class ProfileFragment extends Fragment {
             radioButtonGenderFemale.setChecked(true);
         }
 
-
-        /* Height */
-
-        TextView textViewHeightCm = getActivity().findViewById(R.id.textViewCm);
-        EditText editTextHeightCm = getActivity().findViewById(R.id.editTextHeightCm);
-        EditText editTextHeightInches = getActivity().findViewById(R.id.editTextHeightInches);
-        if (stringUserMeasurement.startsWith("m")) {
-            editTextHeightInches.setVisibility(View.GONE);
-            editTextHeightCm.setText(stringUserHeight);
-        } else {
-            textViewHeightCm.setText("feet and inches");
-            double heightCm = Double.parseDouble(stringUserHeight);
-            double heightFeet = 0;
-            double heightInches = 0;
-            heightFeet = heightCm * 0.3937008 / 12;
-            editTextHeightCm.setText("" + (int) heightFeet);
-
-        }
-
-
-
         /* Measurement */
         Spinner spinnerMeasurement = getActivity().findViewById(R.id.spinnerMeasurement);
         if (stringUserMeasurement.startsWith("m")) {
@@ -219,6 +200,12 @@ public class ProfileFragment extends Fragment {
         } else {
             spinnerMeasurement.setSelection(1);
         }
+        /* Listener */
+        spinnerMeasurementListener();
+
+        /* Height */
+        editTextHeightCm.setText(stringUserHeight);
+
 
         Button buttonSave = getActivity().findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -245,9 +232,10 @@ public class ProfileFragment extends Fragment {
         //Measurement
         String measurement = spinnerMeasurement.getSelectedItem().toString().toLowerCase();
 
-
         //Error handling
         tryFinishSave(stringDateOfBirth, stringGender, height, measurement);
+
+
     }
 
     private void tryFinishSave(String stringDateOfBirth, String stringGender,
@@ -276,17 +264,39 @@ public class ProfileFragment extends Fragment {
         String measurementSQL = db.quoteSmart(measurement);
 
 
-        String[] fields = {"user_dob",
+        String[] fieldsUser = {"user_dob",
             "user_gender",
             "user_height",
             "user_measurement"};
         String[] values = {stringDateOfBirthSQL, stringGenderSQL, heightSQL, measurementSQL};
 
 
-        db.update("users", "_id", id, fields, values);
-        Toast.makeText(getActivity(), "Everything was saved :)" , Toast.LENGTH_LONG).show();
+        db.update("users", "_id", id, fieldsUser, values);
+        Toast.makeText(getActivity(), "Everything was saved :)", Toast.LENGTH_LONG).show();
 
+
+
+        /* UpdateGoal Db */
+        String[] fieldsGoal = {"goal_target_weight",
+            "goal_weekly_goal",
+        };
+        Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
+
+        double targetWeight = cursorGoal.getDouble(0);
+        String weeklyGoal = cursorGoal.getString(1);
+
+
+        ChangeGoal.updateGoalDBMain(db, targetWeight, weeklyGoal);
         db.close();
+
+        moveToHomeLayout();
+
+    }
+
+    private void moveToHomeLayout() {
+        //TODO (убрать выделение Profile Fragment)
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).commit();
     }
 
     private String getGender() {
@@ -364,14 +374,9 @@ public class ProfileFragment extends Fragment {
         return stringDOBMonth;
     }
 
-    /* Measurement changed*/
-    void measurementChanged() {
-        //Measurement spinner
-
-    }
 
     private final String[] arraySpinnerDOBDay = new String[31];
-    private final String[] arraySpinnerDOBYear = new String[68]; //13-60
+    private final String[] arraySpinnerDOBYear = new String[68]; //13-80
 
 
     private void fillYears(String stringYear) {
@@ -381,8 +386,8 @@ public class ProfileFragment extends Fragment {
         int year = calendar.get(Calendar.YEAR) - 13;
         int yearEnd = year - 68;
         for (int k = 0, i = yearEnd; i < year; k++, i++) {
-            arraySpinnerDOBYear[67 - k ] = "" + i;
-            if (stringYear.equals(arraySpinnerDOBYear[67 - k ])) {
+            arraySpinnerDOBYear[67 - k] = "" + i;
+            if (stringYear.equals(arraySpinnerDOBYear[67 - k])) {
                 spinnerYearSelectedIndex = 67 - k;
             }
         }
@@ -410,7 +415,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fillMonth(String stringMonth) {
-        spinnerDOBMonth.setSelection(Integer.parseInt(stringMonth)-1);
+        spinnerDOBMonth.setSelection(Integer.parseInt(stringMonth) - 1);
     }
 
     private boolean isMetric() {
@@ -423,7 +428,6 @@ public class ProfileFragment extends Fragment {
         String stringHeightInches = editTextHeightInches.getText().toString();
 
         double heightCm = 0;
-        boolean metric = true;
 
         if (isMetric()) {
             //Convert cm
@@ -442,6 +446,9 @@ public class ProfileFragment extends Fragment {
                 errorMessage = "Height has to be number";
             }
         }
+        System.out.println();
+        System.out.println(heightCm);
+        System.out.println();
         return heightCm;
     }
 
@@ -476,7 +483,7 @@ public class ProfileFragment extends Fragment {
         if (stringMeasurement.startsWith("I")) {
             //Imperial
             editTextHeightInches.setVisibility(View.VISIBLE);
-            textViewCm.setText("feet and inches");
+            textViewCm.setText(R.string.feetInches);
 
             //Change Cm to Feet and Inches
             if (!stringHeightCm.isEmpty()) {
@@ -489,7 +496,7 @@ public class ProfileFragment extends Fragment {
 
             //Metric
             editTextHeightInches.setVisibility(View.GONE);
-            textViewCm.setText("cm");
+            textViewCm.setText(R.string.cm);
 
             //Change Feet and Inches to Cm
             if (!stringHeightCm.isEmpty() && !stringHeightInches.isEmpty()) {

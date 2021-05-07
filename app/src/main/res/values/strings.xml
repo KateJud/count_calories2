@@ -12,7 +12,7 @@
     <string name="menu_slideshow">Slideshow</string>
 
 
-    <string name="email">Email</string>
+    <string name="email">Email address</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
@@ -23,7 +23,7 @@
     <string name="target_weight">Target weight</string>
     <string name="measurement">Measurement</string>
     <string name="cm">cm</string>
-    <string name="feetInches">feet Inches</string>
+    <string name="feetInches">Feet inches </string>
     <string name="kg">kg</string>
     <string name="pounds">pounds</string>
     <string name="weekly_goal">Weekly goal</string>
@@ -34,18 +34,20 @@
     <string name="pounds_each_week">pounds each week</string>
 
 
-    <string-array name="array_weekly_goal">
-        <item> loose weight</item>
-        <item> gain weight</item>
-    </string-array>
+<!--    <string-array name="array_weekly_goal">-->
+<!--        <item> loose weight</item>-->
+<!--        <item> gain weight</item>-->
+<!--    </string-array>-->
 
     <string-array name="array_weekly_goal_kg">
-        <item>0.5</item>
-        <item>1</item>
-        <item>1.5</item>
-        <item>2</item>
-        <item>2.5</item>
-        <item>3</item>
+        <item> reach the goal carefully</item>
+        <item> reach the goal quickly</item>
+<!--        <item>0.5</item>-->
+<!--        <item>1</item>-->
+<!--        <item>1.5</item>-->
+<!--        <item>2</item>-->
+<!--        <item>2.5</item>-->
+<!--        <item>3</item>-->
     </string-array>
 
     <string-array name="array_weekly_goal_b">
@@ -145,9 +147,9 @@
     <string name="user_activity">User activity</string>
     <string name="advanced">Advanced</string>
     <string name="without_activity">Without activity</string>
-    <string name="if_you_want_to_loose_weight">if you want to lose weight</string>
+    <string name="to_loose_weight">To loose weight</string>
     <string name="with_activity">With activity</string>
-    <string name="if_you_want_to_keep_weight">If you wnt to keep weight</string>
+    <string name="to_keep_weight">To keep weight</string>
     <string name="breakfast">Breakfast</string>
     <string name="lunch">Lunch</string>
     <string name="portion_size">Portion size</string>
@@ -165,5 +167,8 @@
     <string name="menu_home">Home</string>
     <string name="select_meal">Select meal</string>
     <string name="unlink">unlink</string>
+    <string name="error">Error</string>
+    <string name="digits">Digits</string>
+    <string name="nickname">Nickname</string>
 
 </resources>

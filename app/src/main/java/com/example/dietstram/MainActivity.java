@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             i = new Intent(MainActivity.this, SignUp.class);
             startActivity(i);
         }else {
-          //  i = new Intent(MainActivity.this, HomeFragment.class);
+//            i = new Intent(MainActivity.this, HomeFragment.class);
+//            startActivity(i);
         }
 
 

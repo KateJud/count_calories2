@@ -3,14 +3,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg_profile">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
 
 
         <!-- Date of birth -->
@@ -20,7 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/date_of_birth"
-            android:textSize="18sp" />
+            android:textSize="24sp"
+            style="@style/Widget.TextViewSimple"
+             />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -30,27 +34,27 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                >
 
                 <TextView
                     android:id="@+id/textViewDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:text="@string/day"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple" />
 
                 <Spinner
                     android:id="@+id/spinnerDOBDay"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.SpinnerBlank"/>
             </TableRow>
             <!-- // Day -->
             <!-- Month -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                >
 
                 <TextView
                     android:id="@+id/textViewMonth"
@@ -58,12 +62,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="@string/month"
-                    android:textSize="18sp" />
+                    style="@style/Widget.TextViewSimple" />
 
                 <Spinner
                     android:id="@+id/spinnerDOBMonth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.SpinnerBlank"
                     android:entries="@array/array_months" />
             </TableRow>
             <!-- // Day -->
@@ -71,20 +76,21 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                >
 
                 <TextView
-                    android:id="@+id/textViewFoodSize"
+                    android:id="@+id/textViewYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:text="@string/size"
-                    android:textSize="18sp" />
+                    android:text="@string/year"
+                    style="@style/Widget.TextViewSimple" />
 
                 <Spinner
                     android:id="@+id/spinnerDOBYear"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.SpinnerBlank"/>
             </TableRow>
             <!-- // Year -->
 
@@ -98,23 +104,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/general"
-            android:textSize="18sp" />
+            android:textSize="24sp"
+            style="@style/Widget.TextViewSimple" />
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="24dp">
+            android:layout_height="match_parent">
 
             <!-- Gender -->
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.TextViewSimple"
                     android:text="@string/gender" />
 
                 <TableRow
@@ -125,7 +131,8 @@
                         android:id="@+id/radioGroupGender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                       >
 
 
                         <RadioButton
@@ -155,18 +162,20 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="24dp">
+               >
 
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.TextViewSimple"
                     android:text="@string/measurement" />
 
                 <Spinner
                     android:id="@+id/spinnerMeasurement"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.SpinnerBlank"
                     android:entries="@array/array_measurements" />
             </TableRow>
             <!-- //Measurement -->
@@ -176,17 +185,19 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="24dp">
+                >
 
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    style="@style/Widget.TextViewSimple"
                     android:text="@string/height" />
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:shrinkColumns="2">
 
                     <EditText
                         android:id="@+id/editTextHeightCm"
@@ -206,6 +217,8 @@
                         android:id="@+id/textViewCm"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        style="@style/Widget.TextViewSimple"
+                        android:singleLine="false"
                         android:text="@string/cm" />
 
                 </TableRow>
@@ -221,8 +234,10 @@
         <Button
             android:id="@+id/buttonSave"
             android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_bg"
             android:text="@string/save" />
         <!-- //Submit button -->
 

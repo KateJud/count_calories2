@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
         <!-- Table layout -->
         <TableLayout
             android:layout_width="match_parent"
@@ -27,6 +28,7 @@
                 android:id="@+id/textViewName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Widget.TextViewBig"
                 android:text="@string/name"/>
 
             <EditText
@@ -49,6 +51,7 @@
                     android:id="@+id/textViewParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.TextViewBig"
                     android:text="@string/parent"/>
                 <Spinner
                     android:id="@+id/spinnerCategoryParent"
@@ -60,22 +63,13 @@
             </TableRow>
             <!-- //Parent -->
             <!-- Save -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/blank"/>
 
                 <Button
                     android:id="@+id/buttonCategoriesSubmit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save"/>
-            </TableRow>
+
             <!-- //Save -->
 
         </TableLayout>

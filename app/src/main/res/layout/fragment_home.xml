@@ -21,60 +21,64 @@
             android:layout_marginRight="24dp">
 
             <!-- Head result -->
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/textViewGoalWithActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_weight="80"
-                android:text="@string/goal_with_activity"
-                android:textSize="18sp" />
-            <TextView
-                android:id="@+id/textViewFood"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_weight="80"
-                android:text="@string/food"
-                android:textSize="18sp" />
-            <TextView
-                android:id="@+id/textViewSum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_weight="80"
-                android:text="@string/sum"
-                android:textSize="18sp" />
-        </TableRow>
-            <!--// Head result -->
-            <!-- Body result -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
-                    android:id="@+id/textViewGoalWithActivityBody"
+                    android:id="@+id/textViewGoalWithActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_weight="80"
                     android:text="@string/goal_with_activity"
                     android:textSize="18sp" />
+
                 <TextView
-                    android:id="@+id/textViewFoodBody"
+                    android:id="@+id/textViewFood"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_weight="80"
                     android:text="@string/food"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textViewSum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_weight="80"
+                    android:text="@string/sum"
+                    android:textSize="18sp" />
+            </TableRow>
+            <!--// Head result -->
+            <!-- Body result -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewGoalWithActivityBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="80"
+                    android:text="@string/goal_with_activity"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textViewFoodBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="80"
+                    android:text="@string/food"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/textViewSumBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+
                     android:layout_weight="80"
                     android:text="@string/sum"
                     android:textSize="18sp" />
@@ -84,15 +88,16 @@
 
         <!-- // Today result -->
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
 
-        <!-- Breakfast -->
+        </ListView>
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="14dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="24dp">
+            android:layout_height="match_parent">
 
             <TableRow
                 android:id="@+id/tableLayoutBreakfast"
@@ -102,32 +107,29 @@
                 <ImageButton
                     android:id="@+id/imageButtonBreakfastAdd"
                     android:layout_width="wrap_content"
-                    android:layout_height="72dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="80dp"
+                    android:layout_height="wrap_content"
+                    android:foregroundGravity="center_vertical"
                     android:src="@drawable/ic_menu_action_add" />
 
                 <TextView
                     android:id="@+id/textViewBreakfast"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
                     android:layout_weight="80"
-                    android:text="@string/breakfast"
-                    android:textSize="18sp" />
+                    android:text="@string/breakfast" />
 
                 <TextView
                     android:id="@+id/textViewBreakfastEnergy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
                     android:layout_weight="10"
                     android:text="@string/breakfast"
                     android:textSize="18sp" />
 
             </TableRow>
         </TableLayout>
-        <!-- Breakfast Items -->
+        <!--  Breakfast items -->
         <TableLayout
             android:id="@+id/tableLayoutBreakfastItems"
             android:layout_width="match_parent"
@@ -166,8 +168,7 @@
             </TableRow>
         </TableLayout>
         <!-- // Breakfast items -->
-
-        <!-- Breakfast Items -->
+        <!-- Breakfast Items Sub -->
         <TableLayout
             android:id="@+id/tableLayoutBreakfastItemsSub"
             android:layout_width="match_parent"
@@ -181,7 +182,6 @@
                     android:id="@+id/textViewBreakfastItemsSubName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
                     android:text="@string/name" />
 
 
