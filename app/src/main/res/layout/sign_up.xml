@@ -3,29 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/bg_login">
+    android:background="@drawable/bg_login"
+    tools:context=".MainActivity">
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <!-- Logo -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="80dp"
             android:layout_marginRight="24dp"
-            android:layout_marginLeft="24dp"
-           />
+            android:src="@drawable/logo" />
 
         <!-- //Logo -->
 
@@ -33,28 +28,27 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="24dp"
-            android:layout_marginLeft="24dp">
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-               >
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/imageViewError"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_error"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_error" />
 
                 <TextView
                     android:id="@+id/textViewErrorMessage"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.TextViewSimple"
-                    android:text="@string/error"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/error" />
             </TableRow>
         </TableLayout>
         <!-- //Error handling -->
@@ -62,19 +56,19 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="24dp"
-            android:layout_marginLeft="24dp">
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp">
 
 
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:layout_marginTop="16dp"
-                android:textColorHint="@color/login_form_details"
+                android:background="@drawable/et_bg"
                 android:hint="@string/nickname"
                 android:inputType="textPersonName"
-                android:background="@drawable/et_bg"/>
+                android:padding="16dp"
+                android:textColorHint="@color/login_form_details_medium" />
         </TableRow>
         <!-- //Email -->
 
@@ -82,9 +76,8 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="24dp"
-            android:layout_marginLeft="24dp">
-
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp">
 
 
             <!-- Date of birth -->
@@ -95,43 +88,39 @@
 
                 <TextView
                     android:id="@+id/textView8"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    style="@style/Widget.TextViewSimple"
-                    android:text="@string/date_of_birth"
-                    />
+                    android:text="@string/date_of_birth" />
 
                 <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <Spinner
                         android:id="@+id/spinnerDOBDay"
+                        style="@style/Widget.Spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        style="@style/Widget.Spinner"
-                        android:padding="12dp"
-                        />
+                        android:padding="12dp" />
 
                     <Spinner
                         android:id="@+id/spinnerDOBMonth"
+                        style="@style/Widget.Spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        style="@style/Widget.Spinner"
-                        android:padding="12dp"
                         android:entries="@array/array_months"
-                        />
+                        android:padding="12dp" />
 
                     <Spinner
                         android:id="@+id/spinnerDOBYear"
+                        style="@style/Widget.Spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        style="@style/Widget.Spinner"
                         android:padding="12dp" />
                 </TableRow>
             </TableRow>
@@ -155,8 +144,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
-                        android:textColor="@color/login_form_details_medium"
-                        android:text="@string/day" />
+                        android:text="@string/day"
+                        android:textColor="@color/login_form_details_medium" />
 
                     <TextView
                         android:id="@+id/textView6"
@@ -165,7 +154,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginLeft="30dp"
                         android:text="@string/month"
-                        android:textColor="@color/login_form_details_medium"/>
+                        android:textColor="@color/login_form_details_medium" />
 
                     <TextView
                         android:id="@+id/textView7"
@@ -174,7 +163,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginLeft="30dp"
                         android:text="@string/year"
-                        android:textColor="@color/login_form_details_medium"/>
+                        android:textColor="@color/login_form_details_medium" />
                 </TableRow>
             </TableRow>
             <!-- //Date of birth -->
@@ -188,10 +177,10 @@
 
                 <TextView
                     android:id="@+id/textView9"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    style="@style/Widget.TextViewSimple"
                     android:text="@string/gender" />
 
                 <TableRow
@@ -213,8 +202,8 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
                             android:checked="true"
-                            android:textColor="@color/login_form_details"
-                            android:text="@string/male" />
+                            android:text="@string/male"
+                            android:textColor="@color/login_form_details" />
 
                         <RadioButton
                             android:id="@+id/radioButtonGenderFemale"
@@ -222,8 +211,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
-                            android:textColor="@color/login_form_details"
-                            android:text="@string/female" />
+                            android:text="@string/female"
+                            android:textColor="@color/login_form_details" />
                     </RadioGroup>
 
                 </TableRow>
@@ -239,19 +228,19 @@
 
                 <TextView
                     android:id="@+id/textView10"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    style="@style/Widget.TextViewSimple"
                     android:text="@string/measurement" />
 
                 <Spinner
                     android:id="@+id/spinnerMeasurement"
+                    style="@style/Widget.Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.Spinner"
-                    android:padding="16dp"
-                    android:entries="@array/array_measurements" />
+                    android:entries="@array/array_measurements"
+                    android:padding="16dp" />
             </TableRow>
             <!-- //Measurement -->
 
@@ -264,10 +253,10 @@
 
                 <TextView
                     android:id="@+id/textView11"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="16dp"
-                    style="@style/Widget.TextViewSimple"
                     android:text="@string/height" />
 
                 <TableRow
@@ -278,26 +267,26 @@
                         android:id="@+id/editTextHeightCm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="3"
-                        android:padding="16dp"
                         android:background="@drawable/et_bg"
-                        android:inputType="number" />
+                        android:ems="3"
+                        android:inputType="number"
+                        android:padding="16dp" />
 
                     <EditText
                         android:id="@+id/editTextHeightInches"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="3"
-                        android:padding="16dp"
                         android:background="@drawable/et_bg"
-                        android:inputType="number" />
+                        android:ems="3"
+                        android:inputType="number"
+                        android:padding="16dp" />
 
                     <TextView
                         android:id="@+id/textViewCm"
+                        style="@style/Widget.TextViewSimple"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="16dp"
-                        style="@style/Widget.TextViewSimple"
                         android:text="@string/cm" />
 
                 </TableRow>
@@ -313,10 +302,10 @@
 
                 <TextView
                     android:id="@+id/textView14"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="16dp"
-                    style="@style/Widget.TextViewSimple"
                     android:text="@string/weight" />
 
                 <TableRow
@@ -327,17 +316,17 @@
                         android:id="@+id/editTextWeight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="3"
-                        android:padding="16dp"
                         android:background="@drawable/et_bg"
-                        android:inputType="number" />
+                        android:ems="3"
+                        android:inputType="number"
+                        android:padding="16dp" />
 
                     <TextView
                         android:id="@+id/textViewKg"
+                        style="@style/Widget.TextViewSimple"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="16dp"
-                        style="@style/Widget.TextViewSimple"
                         android:text="@string/kg" />
 
                 </TableRow>
@@ -353,20 +342,20 @@
 
                 <TextView
                     android:id="@+id/textView15"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    style="@style/Widget.TextViewSimple"
                     android:text="@string/activity_level" />
 
 
                 <Spinner
                     android:id="@+id/spinnerActivityLevel"
+                    style="@style/Widget.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    style="@style/Widget.Spinner"
-                    android:entries="@array/array_activity_level" />
+                    android:entries="@array/array_activity_level"
+                    android:padding="16dp" />
             </TableRow>
         </TableLayout>
         <!-- //Activity level -->
@@ -377,17 +366,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/btn_bg"
-            android:layout_marginRight="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="24dp"
             android:layout_marginBottom="24dp"
-            android:textColor="@color/login_form_details_medium"
-            android:text="@string/sign_up" />
+            android:background="@drawable/btn_bg"
+            android:text="@string/sign_up"
+            android:textColor="@color/login_form_details_medium" />
         <!-- //Submit button -->
 
 
     </LinearLayout>
-<!--    </android.support.constraint.ConstraintLayout>-->
+    <!--    </android.support.constraint.ConstraintLayout>-->
 
 </ScrollView>

@@ -4,6 +4,7 @@ package com.example.dietstram.ui.food;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,10 @@ import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
 import com.example.dietstram.ui.categories.CategoriesFragment;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class FoodFragment extends Fragment {
 
@@ -301,22 +308,40 @@ private void preListItemClickedReadyCursor(){
     private void addFoodToDiarySelectMealNumber() {
     changeLayout(R.layout.fragment_home_select_meal_number);
 
-        TextView textViewBreakfast = getActivity().findViewById(R.id.textViewBreakfast);
-        textViewBreakfast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFoodToDiarySelectMealNumberMoveToAdd(0);
-            }
-        });
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentData = dateFormat.format(Calendar.getInstance().getTime());
 
+        DBAdapter db = getDbAdapter();
+        String[] fieldsMeal = {"_id," +
+            "meal_name"};
+        Cursor c = db.select("meal", fieldsMeal, "meal_date", db.quoteSmart(currentData));
+        db.close();
 
-        TextView textViewLunch = getActivity().findViewById(R.id.textViewLunch);
-        textViewLunch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFoodToDiarySelectMealNumberMoveToAdd(1);
-            }
-        });
+        TableLayout tableLayoutMain = getActivity().findViewById(R.id.tableViewMealNames);
+        for (int i = 0; i < c.getCount(); i++) {
+
+            final String mealId = c.getString(0);
+
+            TableRow tableRowMealName = new TableRow(getActivity());
+
+            /* Name */
+            TableRow.LayoutParams textNameParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 8f);
+            TextView textViewMealName = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewBig), null, 0);
+            textViewMealName.setText(c.getString(1));
+            tableRowMealName.addView(textViewMealName, textNameParams);
+
+            textViewMealName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addFoodToDiarySelectMealNumberMoveToAdd(Integer.parseInt(mealId));
+                }
+            });
+
+            tableLayoutMain.addView(tableRowMealName);
+
+            c.moveToNext();
+        }
+
 
     }
     private  void addFoodToDiarySelectMealNumberMoveToAdd(int mealNumber){

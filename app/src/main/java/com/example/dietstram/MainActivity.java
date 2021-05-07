@@ -1,6 +1,7 @@
 package com.example.dietstram;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
@@ -28,6 +29,10 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import okhttp3.OkHttpClient;
 
@@ -92,17 +97,26 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         /* Setup for food */
         //Count rows in food
         int numRows = db.count("categories");
-
         if (numRows < 1) {
             DBSetupInsert setupInsert = new DBSetupInsert(this);
             setupInsert.insertAllFood();
             setupInsert.insertAllCategories();
         }
 
+        /* Setup for MealName */
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentData = dateFormat.format(Calendar.getInstance().getTime());
+        Cursor c = db.select("meal",new String[] {"_id"},"meal_date",db.quoteSmart(currentData));
+        if(c.getCount()==0) {
+            DBSetupInsert setupInsert = new DBSetupInsert(this);
+            setupInsert.insertAllMealName();
+        }
+
         /* Check if there is user table */
         //Count rows in user table
         numRows = db.count("users");
         Intent i;
+
         if (numRows < 1) {
             i = new Intent(MainActivity.this, SignUp.class);
             startActivity(i);

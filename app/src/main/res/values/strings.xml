@@ -159,7 +159,7 @@
     <string name="add_to_diary">Add to diary</string>
     <string name="supper">Supper</string>
     <string name="snacks">Snacks</string>
-    <string name="goal_with_activity">goal with activity</string>
+    <string name="goal_with_activity">Goal with activity</string>
     <string name="eaten">Eaten</string>
     <string name="sum">Sum</string>
     <string name="title_activity_fragment">FragmentActivity</string>
@@ -170,5 +170,11 @@
     <string name="error">Error</string>
     <string name="digits">Digits</string>
     <string name="nickname">Nickname</string>
+    <string name="goal">Goal</string>
+    <string name="remained">Remained</string>
+    <string name="left">Left</string>
+    <string name="add_meal">Add meal</string>
+    <string name="meal_name">Meal name</string>
+    <string name="meal_name_error">Meal name should\'t be empty</string>
 
 </resources>

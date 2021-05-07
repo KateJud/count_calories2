@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 23;
+    public static final int DATABASE_VERSION = 25;
 
     /* 02 Database Variables ---------------------------------------------------------------------- */
     private final Context context;
@@ -184,6 +184,14 @@ public class DBAdapter {
                     " food_last_used DATA," +
                     " food_notes VARCHAR" +
                     ");");
+
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS meal (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "meal_id INTEGER , " +
+                    "meal_date DATE," +
+                    "meal_name VARCHAR" +
+                    ");");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -202,6 +210,7 @@ public class DBAdapter {
             db.execSQL("DROP TABLE IF EXISTS food_diary");
             db.execSQL("DROP TABLE IF EXISTS categories");
             db.execSQL("DROP TABLE IF EXISTS food");
+            db.execSQL("DROP TABLE IF EXISTS meal");
             onCreate(db);
 
             String TAG = "Tag";

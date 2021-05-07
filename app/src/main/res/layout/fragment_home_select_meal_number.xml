@@ -10,35 +10,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewBreakfast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/breakfast"
-        style="@style/Widget.TextViewBig"/>
+        <TableLayout
+            android:id="@+id/tableViewMealNames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
-    <TextView
-        android:id="@+id/textViewLunch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="@style/Widget.TextViewBig"
-        android:text="@string/lunch" />
-        <TextView
-            android:id="@+id/textViewSupper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="@style/Widget.TextViewBig"
-            android:text="@string/supper" />
-        <TextView
-            android:id="@+id/textViewSnacks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="@style/Widget.TextViewBig"
-            android:text="@string/snacks" />
+<!--    <TextView-->
+<!--        android:id="@+id/textViewBreakfast"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:text="@string/breakfast"-->
+<!--        style="@style/Widget.TextViewBig"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textViewLunch"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        style="@style/Widget.TextViewBig"-->
+<!--        android:text="@string/lunch" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/textViewSupper"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            style="@style/Widget.TextViewBig"-->
+<!--            android:text="@string/supper" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/textViewSnacks"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            style="@style/Widget.TextViewBig"-->
+<!--            android:text="@string/snacks" />-->
 
 </LinearLayout>
 </ScrollView>

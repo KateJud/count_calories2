@@ -55,4 +55,13 @@
         <item name="background">@drawable/btn_bg</item>
     </style>
     <!-- // Button  -->
+    <!-- Button -->
+    <style name="Widget.MyButtonAdd" parent="android:Widget">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/login_form_details</item>
+        <item name="background">@color/gray</item>
+        <item name="android:foregroundGravity">center_vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    <!-- // Button  -->
 </resources>

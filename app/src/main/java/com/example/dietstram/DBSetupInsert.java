@@ -2,6 +2,10 @@ package com.example.dietstram;
 
 import android.content.Context;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 public class DBSetupInsert {
 
@@ -13,6 +17,8 @@ public class DBSetupInsert {
 
 
   private final Context context;
+
+
 
   /* Public class -----------------------------------------------------*/
   public DBSetupInsert(Context context) {
@@ -31,6 +37,9 @@ public class DBSetupInsert {
         " category_note ", values);
     db.close();
   }
+
+
+
 
   public void insertAllCategories() {
     //setupInsertToCategories("NULL, 'name', 12,'icon', 'note'");
@@ -132,6 +141,29 @@ public class DBSetupInsert {
 //        "NULL, 'Ham', 'Glide', 12,'ee',13,'serv_name',1111,111,10,12,123,123,23,123,1,'barcode',2,'thumb','a.jpg','b.jpg','c.jpg','note'");
     setupInsertToFood(  " NULL, 'ice-cream', 'manufacture_name', 'description','12.2', 'serving_mesurment', '13.3', 'serving_name_word', '220', '5', '67', '10', '180', '2', '63', '7', '1', 'barcode', '2', 'thumb ', 'image_a' , 'image_b','image_c ', '2017-11-20', 'food_notes'");
 
+  }
+
+
+  public void insertAllMealName() {
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String currentData = dateFormat.format(Calendar.getInstance().getTime());
+
+    setupInsertToMeal("NULL,'"+currentData+"' ,'Breakfast'");
+    setupInsertToMeal("NULL,'"+currentData+"' ,'Lunch'");
+    setupInsertToMeal("NULL,'"+currentData+"' ,'Dinner'");
+    setupInsertToMeal("NULL,'"+currentData+"' ,'Snacks'");
+    //TODO
+    //захожу -- читаю из бд вещи в зависимости от даты + если ? (сегодняшней даты нет то вставляю по умолчанию ЗОБ) устанавливаю ЗавтракОбедУжин
+
+  }
+
+  public void setupInsertToMeal( String values) {
+    DBAdapter db = new DBAdapter(context);
+    db.open();
+    db.insert("meal", "_id," +
+        "meal_date ," +
+        "meal_name "  , values);
+    db.close();
   }
 
 }

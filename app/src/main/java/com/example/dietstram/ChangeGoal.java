@@ -36,39 +36,39 @@ public class ChangeGoal {
         double weight = Double.parseDouble(getTempWeight(db));
 
         /*1: bmr*/
-        double bmr = getBmr(db, weight);
-        double energyBmrSQL = db.quoteSmart(bmr);
+        int bmr = getBmr(db, weight);
+        int energyBmrSQL = db.quoteSmart(bmr);
         db.update("goal", "_id", goalId, "goal_energy_bmr", energyBmrSQL);
         updateDbEnergyFatsCarbsProteins(db, bmr,
             new String[]{"goal_fat_bmr", "goal_carbs_bmr", "goal_proteins_bmr"}, "goal_energy_bmr");
 
         /*2: with diet*/
-        double energyDiet = getEnergyDiet(db, weeklyGoal, bmr);
+       int energyDiet = getEnergyDiet(db, weeklyGoal, bmr);
         updateDbEnergyFatsCarbsProteins(db, energyDiet,
             new String[]{"goal_fat_diet", "goal_carbs_diet", "goal_proteins_diet"}, "goal_energy_diet");
 
         /*3: with activity*/
-        double bmrWithActivity = getBmrWithActivity(bmr, activity);
+        int bmrWithActivity = getBmrWithActivity(bmr, activity);
         updateDbEnergyFatsCarbsProteins(db, bmrWithActivity,
             new String[]{"goal_fat_with_activity", "goal_carbs_with_activity",
                 "goal_proteins_with_activity"}, "goal_energy_with_activity");
 
         /*4: with_activity_and_diet*/
-        double bmrGoal = getEnergyDiet(db, weeklyGoal, bmrWithActivity);
+        int bmrGoal = getEnergyDiet(db, weeklyGoal, bmrWithActivity);
         updateDbEnergyFatsCarbsProteins(db, bmrGoal,
             new String[]{"goal_fat_with_activity_and_diet", "goal_carbs_with_activity_and_diet",
                 "goal_proteins_with_activity_and_diet"}, "goal_energy_with_activity_and_diet");
 
     }
 
-    private static double getBmrWithActivity(double bmr, String stringUserActivityLevel) {
+    private static int getBmrWithActivity(double bmr, String stringUserActivityLevel) {
 
         double activityCoefficient = getActivityCoefficient(stringUserActivityLevel);
         double bmrWithActivity = bmr * activityCoefficient;
-        return bmrWithActivity;
+        return (int)Math.round( bmrWithActivity);
     }
 
-    private static double getEnergyDiet(DBAdapter db, String weeklyGoal, double bmr) {
+    private static int getEnergyDiet(DBAdapter db, String weeklyGoal, double bmr) {
         //Carefully or quickly
         double doubleWeeklyGoal = weeklyGoal.equals("0") ? 0.2 : 0.3;
         double kcal = 0;
@@ -87,10 +87,10 @@ public class ChangeGoal {
             //Gain
             energyDiet = Math.round(bmr + kcal);
         }
-        return energyDiet;
+        return (int)Math.round( energyDiet);
     }
 
-    private static double getBmr(DBAdapter db, double weight) {
+    private static int getBmr(DBAdapter db, double weight) {
         long rowId = 0;
         String fields[] = new String[]{
             "_id",
@@ -125,7 +125,7 @@ public class ChangeGoal {
             // (10 x вес (кг) + 6.25 x рост (см) – 5 x возраст (г) – 161) x A.
             bmr = commonPart - 161;
         }
-        return bmr;
+        return (int) Math.round( bmr);
     }
 
     private static void updateDbEnergyFatsCarbsProteins(DBAdapter db, double bmr, String[] fields,

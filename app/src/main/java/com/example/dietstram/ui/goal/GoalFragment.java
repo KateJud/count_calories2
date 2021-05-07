@@ -247,6 +247,11 @@ public class GoalFragment extends Fragment {
         TextView textViewGoalKg = getActivity().findViewById(R.id.textViewGoalKg);
         TextView textViewGoalKg2 = getActivity().findViewById(R.id.textViewGoalKg2);
 
+
+        /* I want to */
+        final TextView textViewUserWantTo = getActivity().findViewById(R.id.textViewUserWantTo);
+        textViewUserWantTo.setText(stringGoalIWantTo);
+
         /* Weight */
         /* Target Weight */
         if (measurement.startsWith("m")) {
@@ -260,6 +265,9 @@ public class GoalFragment extends Fragment {
             editTextUserWeight.setText("" + convertKgToPounds(stringGoalCurrentWeight));
             editTextUserTargetWeight.setText("" + convertKgToPounds(stringGoalTargetWeight));
         }
+
+
+
         /* Listener */
         editTextUserWeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -279,10 +287,14 @@ public class GoalFragment extends Fragment {
                     //update currentWeight (temp)
                     DBAdapter db = getDbAdapter();
                     db.update("temp_goal", "_id", goalId, "t_goal_current_weight", db.quoteSmart(weight));
-                    db.close();
+
 
                     //update temp db
                     updateTempGoalDB();
+                    String[] fields={"t_goal_i_want_to"};
+                    Cursor c=db.select("temp_goal", fields,"_id",goalId);
+                    textViewUserWantTo.setText(c.getString(0));
+                    db.close();
 
                 }
 
@@ -290,9 +302,7 @@ public class GoalFragment extends Fragment {
         });
 
 
-        /* I want to */
-        TextView textViewUserWantTo = getActivity().findViewById(R.id.textViewUserWantTo);
-        textViewUserWantTo.setText(stringGoalIWantTo);
+
 
 
         /* Weekly goal */
