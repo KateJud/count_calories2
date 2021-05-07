@@ -185,6 +185,7 @@ public class ChangeGoal {
 
         /*Calculate Energy*/
         double weight = Double.parseDouble(getTempWeight(db));
+//some
 
         /*1: bmr*/
         double bmr = getBmr(db, weight);
