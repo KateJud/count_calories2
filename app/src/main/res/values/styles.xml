@@ -27,16 +27,35 @@
         <item name="android:textColor">@color/login_form_details</item>
     </style>
     <!-- Text View -->
+    <!-- Text Simple -->
     <style name="Widget.TextViewSimple" parent="android:Widget">
         <item name="android:textColor">@color/login_form_details</item>
         <item name="android:padding">6dp</item>
         <item name="android:textSize">18sp</item>
     </style>
+    <!-- // Text Simple -->
+    <!-- Text Big -->
     <style name="Widget.TextViewBig" parent="android:Widget">
         <item name="android:textColor">@color/login_form_details</item>
         <item name="android:textSize">24sp</item>
         <item name="android:padding">16dp</item>
     </style>
+    <!-- // Text Big -->
+    <!-- Text Big Components-->
+    <style name="Widget.TextViewBigComponents" parent="android:Widget">
+        <item name="android:textColor">@color/login_form_details</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- // Text Big Components-->
+    <!-- Text Small Components-->
+    <style name="Widget.TextViewSmallComponents" parent="android:Widget">
+        <item name="android:textColor">@color/login_form_details</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <!-- // Text Small Components-->
     <!-- // Text View -->
 
     <!-- EditText -->
@@ -64,4 +83,20 @@
         <item name="android:padding">16dp</item>
     </style>
     <!-- // Button  -->
+
+
+    <!-- Table -->
+    <!-- Meal Table -->
+    <style name="Widget.TableMeal" parent="android:Widget">
+        <item name="background">@drawable/bg_meal_table</item>
+    </style>
+    <!-- // Meal Table -->
+    <!-- Sub Meal Table -->
+    <style name="Widget.TableMealSub" parent="android:Widget">
+        <item name="background">@drawable/bg_meal_table</item>
+    </style>
+    <!-- // Sub Meal Table -->
+
+
+    <!-- // Table  -->
 </resources>

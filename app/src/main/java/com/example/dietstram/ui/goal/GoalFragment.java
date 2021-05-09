@@ -185,13 +185,13 @@ public class GoalFragment extends Fragment {
         ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_goal, menu);
 
         //Assign variables
-        menuItemEdit = menu.findItem(R.id.action_food_edit);
+        menuItemEdit = menu.findItem(R.id.action_edit);
 
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_food_edit) {
+        if (item.getItemId() == R.id.action_edit) {
             editGoal();
         }
 

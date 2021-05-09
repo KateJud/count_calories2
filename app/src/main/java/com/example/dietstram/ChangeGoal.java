@@ -70,10 +70,10 @@ public class ChangeGoal {
 
     private static int getEnergyDiet(DBAdapter db, String weeklyGoal, double bmr) {
         //Carefully or quickly
-        double doubleWeeklyGoal = weeklyGoal.equals("0") ? 0.2 : 0.3;
+        double doubleWeeklyGoal = weeklyGoal.equals("0") ? 0.1 : 0.2;
         double kcal = 0;
         double energyDiet = bmr;
-        kcal = bmr * doubleWeeklyGoal;
+        kcal = bmr * ( doubleWeeklyGoal);
 
         //long rowId = 0;
         String fields[] = new String[]{"goal_i_want_to"};
@@ -185,7 +185,7 @@ public class ChangeGoal {
 
         /*Calculate Energy*/
         double weight = Double.parseDouble(getTempWeight(db));
-//some
+//
 
         /*1: bmr*/
         double bmr = getBmr(db, weight);

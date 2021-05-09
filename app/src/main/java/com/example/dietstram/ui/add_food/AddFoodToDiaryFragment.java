@@ -67,11 +67,6 @@ public class AddFoodToDiaryFragment extends Fragment {
     /* My fields */
     Cursor listCategoryCursor;
     Cursor listCursorFood;
-    int error;
-
-    /* Action buttons */
-    MenuItem menuItemEdit;
-    MenuItem menuItemDelete;
 
     /* Holder on buttons on toolbar */
     private String currentCategoryId;
@@ -86,10 +81,6 @@ public class AddFoodToDiaryFragment extends Fragment {
     private String currentPortionSizeGram;
     private boolean lockPortionSizePCS = false;
     private boolean lockPortionSizeGram = false;
-
-
-
-
 
 
     private void setAllWidgets() {
@@ -152,7 +143,7 @@ public class AddFoodToDiaryFragment extends Fragment {
 
         //setHasOptionsMenu(true);
 
-        String action="";
+        String action = "";
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             currentMealNumber = bundle.getString("mealNumber");
@@ -160,9 +151,9 @@ public class AddFoodToDiaryFragment extends Fragment {
             action = bundle.getString("action");
 
         }
-        if(action.isEmpty()){
+        if (action.isEmpty()) {
             populateListCategory("0", "");
-        }else if(action.equals("foodInCategoryListItemClicked")){
+        } else if (action.equals("foodInCategoryListItemClicked")) {
             preFoodInCategoryListItemClicked();
         }
     }
@@ -274,7 +265,6 @@ public class AddFoodToDiaryFragment extends Fragment {
     }
 
 
-
     private void showFoodInCategory(String categoryId, String categoryName, String categoryParentId) {
         if (!categoryParentId.equals("0")) {
 
@@ -286,13 +276,13 @@ public class AddFoodToDiaryFragment extends Fragment {
             String[] fields = new String[]{
                 "_id",
                 "food_name",
-                "food_manufactor_name",
-                "food_description",
                 "food_serving_size_gram",
                 "food_serving_size_gram_measurement",
-                "food_serving_size_pcs",
-                "food_serving_size_pcs_measurement",
                 "food_energy_calculated",
+                "food_protein_calculated",
+                "food_carbohydrates_calculated",
+                "food_fat_calculated"
+
             };
             listCursorFood = db.select("food", fields, "", "", "food_name", "ASC");
 
@@ -316,7 +306,7 @@ public class AddFoodToDiaryFragment extends Fragment {
 
     private void foodInCategoryListItemClicked(int listItemFoodIndexClicked) {
 
-        //show edit button
+        //TODO show edit button
         //TODO madeMenuItemVisible();
 
         /* Change layout */
@@ -389,12 +379,6 @@ public class AddFoodToDiaryFragment extends Fragment {
         db.close();
         //HeadLine
         textViewFoodName.setText(name);
-
-        //SubHeadLine
-        textViewFoodManufactureName.setText(manufactureName);
-
-        //Image
-
 
         //Calculation line
         String about = servingSizeGram + " " + servingSizeGramMeasurement + "=" + servingSizePcs + " " + servingSizePCSMeasurement + ".";
@@ -538,7 +522,11 @@ public class AddFoodToDiaryFragment extends Fragment {
                     "food_serving_size_gram",
                     "food_serving_size_gram_measurement",
                     "food_serving_size_pcs",
-                    "food_serving_size_pcs_measurement"
+                    "food_serving_size_pcs_measurement",
+                    " food_energy_calculated ",
+                    " food_protein_calculated ",
+                    " food_carbohydrates_calculated ",
+                    " food_fat_calculated ",
                 };
 
                 DBAdapter db = getDbAdapter();
@@ -551,14 +539,44 @@ public class AddFoodToDiaryFragment extends Fragment {
                 String servingNameNumber = foodCursor.getString(3);
                 String servingNameWord = foodCursor.getString(4);
 
-                db.close();
 
                 // Have changed pcs
                 // Update gram
                 double doublePortionSizeGram = Math.round(doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber));
                 editTextPortionSizeGram.setText("" + doublePortionSizeGram);
+                updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
+
+
+                db.close();
+
+
+                //Per meal: 1000 kal -120 г
+                // x kal -10
+                //
             }
         }
+    }
+
+    private void updateTablePerN(Cursor foodCursor, String servingSize, double doublePortionSizeGram) {
+        //energy, size gram
+        //new energy= energyOld*newSize/oldSize
+        String energyOld = foodCursor.getString(5);
+        String proteinOld = foodCursor.getString(6);
+        String carbsOld = foodCursor.getString(7);
+        String fatOld = foodCursor.getString(8);
+
+
+        double koeff = doublePortionSizeGram / Double.parseDouble(servingSize);
+        String energyNew = String.valueOf(Double.parseDouble(energyOld) * koeff);
+        String proteinNew = String.valueOf(Double.parseDouble(proteinOld) * koeff);
+        String carbsNew = String.valueOf(Double.parseDouble(carbsOld) * koeff);
+        String fatNew = String.valueOf(Double.parseDouble(fatOld) * koeff);
+
+
+        textViewFoodEnergyPerN.setText(energyNew);
+        textViewFoodProteinsPerN.setText(proteinNew);
+        textViewFoodCarbsPerN.setText(carbsNew);
+        textViewFoodFatPerN.setText(fatNew);
     }
 
     public void editPortionSizeGramOnChanged() {
@@ -594,7 +612,11 @@ public class AddFoodToDiaryFragment extends Fragment {
                     "food_serving_size_gram",
                     "food_serving_size_gram_measurement",
                     "food_serving_size_pcs",
-                    "food_serving_size_pcs_measurement"
+                    "food_serving_size_pcs_measurement",
+                    " food_energy_calculated ",
+                    " food_protein_calculated ",
+                    " food_carbohydrates_calculated ",
+                    " food_fat_calculated "
                 };
 
                 DBAdapter db = getDbAdapter();
@@ -607,12 +629,16 @@ public class AddFoodToDiaryFragment extends Fragment {
                 String servingNameNumber = foodCursor.getString(3);
                 String servingNameWord = foodCursor.getString(4);
 
-                db.close();
 
                 // Have changed pcs
                 // Update gram
                 double doublePortionSizePCS = Math.round(doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize));
                 editTextPortionSizePCS.setText("" + doublePortionSizePCS);
+
+
+                updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
+
+                db.close();
 
             }
         }
@@ -781,8 +807,7 @@ public class AddFoodToDiaryFragment extends Fragment {
                     "fd_energy_calculated ," +
                     "fd_protein_calculated ," +
                     "fd_carbohydrates_calculated ," +
-                    "fd_fat_calculated "
-                   ;
+                    "fd_fat_calculated ";
             String values =
                 "NULL," +
                     fdDateSQL + "," +

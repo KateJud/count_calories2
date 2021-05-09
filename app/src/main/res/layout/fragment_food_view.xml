@@ -12,16 +12,53 @@
         android:layout_marginRight="24dp"
         android:orientation="vertical">
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp">
+
+
+        <ImageView
+            android:id="@+id/imageViewFoodAdd"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_menu_action_add" />
+
+            <TextView
+                android:id="@+id/textViewAddFoodToDiary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:layout_gravity="center_vertical"
+                android:text="@string/add_to_diary"
+                />
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/imageViewFoodImage"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:src="@drawable/logo"
+
+                />
+            <!-- //Logo -->
+        </TableRow>
+
+        <!-- HeadLine -->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="24dp">
+           >
 
             <!-- Hat of the table -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+             >
 
 
                 <!-- HeadLine -->
@@ -35,14 +72,6 @@
                     android:layout_weight="7"
                     />
 
-                <ImageView
-                    android:id="@+id/imageViewFoodAdd"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="3"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_menu_action_add" />
-
             </TableRow>
 
         </TableLayout>
@@ -52,17 +81,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/manufacture" />
-
-        <!-- Image -->
-        <ImageView
-            android:id="@+id/imageViewFoodImage"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:src="@drawable/logo" />
-        <!-- //Image -->
 
         <!-- Calories table -->
         <TextView
@@ -204,23 +222,46 @@
         <!-- //  Calories table -->
 
         <!-- About -->
-        <TextView
-            android:id="@+id/textViewFoodAbout"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:text="@string/about"
-            style="@style/Widget.TextViewSimple"
-            />
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/textViewFoodAboutSimple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+
+                style="@style/Widget.TextViewSimple" />
+            <TextView
+                android:id="@+id/textViewFoodAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+                android:textSize="18sp" />
+
+        </TableRow>
         <!-- //About -->
 
         <!-- Description -->
-        <TextView
-            android:id="@+id/textViewFoodDescription"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/description"
-            style="@style/Widget.TextViewSimple" />
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/textViewFoodDescriptionSimple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                style="@style/Widget.TextViewSimple" />
+            <TextView
+                android:id="@+id/textViewFoodDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                android:textSize="18sp" />
+        </TableRow>
         <!-- // Description -->
 
 

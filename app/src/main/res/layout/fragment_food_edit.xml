@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:text="@string/name"
+                    android:hint="@string/name"
                     android:textSize="18sp" />
 
                 <EditText
@@ -48,76 +48,6 @@
                     android:hint="@string/name" />
             </TableRow>
             <!-- //HeadLine -->
-
-            <!-- Manufacture -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/textViewManufacture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/manufacture"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/editTextManufacture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/manufacture" />
-            </TableRow>
-            <!-- // Manufacture -->
-
-            <!-- Description -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/textViewDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/manufacture"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/editTextDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/description" />
-            </TableRow>
-            <!-- // Description -->
-
-            <!-- Barcode -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/textViewBarcode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/barcode"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/editTextBarcode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="number"
-                    android:hint="@string/barcode" />
-            </TableRow>
-            <!-- //Barcode -->
 
             <!-- Category -->
             <TableRow
@@ -145,7 +75,7 @@
                     android:id="@+id/textViewMainCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/main"
                     android:textSize="18sp" />
 
@@ -199,7 +129,7 @@
                     android:id="@+id/textViewFoodSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/size"
                     android:textSize="18sp" />
 
@@ -208,6 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="3"
+                    android:text="@string/_100"
                     android:hint="@string/size"
                     android:inputType="number"/>
 
@@ -216,7 +147,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="3"
-                    android:hint="@string/blank" />
+                    android:text="@string/gram"
+                    android:hint="@string/measurement" />
             </TableRow>
             <!-- // Size & Measurement -->
 
@@ -240,14 +172,16 @@
                     android:layout_height="wrap_content"
                     android:ems="3"
                     android:inputType="number"
+                    android:text="@string/_1"
                     android:hint="@string/number" />
 
                 <EditText
                     android:id="@+id/editTextServingWord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="3"
-                    android:hint="@string/word" />
+                    android:ems="6"
+                    android:text="@string/portion"
+                    android:hint="@string/measurement" />
             </TableRow>
             <!-- // Number & Word -->
         </TableLayout>
@@ -330,34 +264,117 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@string/_0" />
+                    android:text="@string/_100" />
 
                 <EditText
                     android:id="@+id/editTextFoodProteinsPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@string/_0" />
+                    android:text="@string/_100" />
 
                 <EditText
                     android:id="@+id/editTextFoodCarbsPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@string/_0"/>
+                    android:text="@string/_100"/>
 
                 <EditText
                     android:id="@+id/editTextFoodFatPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@string/_0" />
+                    android:text="@string/_100" />
             </TableRow>
             <!-- // Per N -->
 
 
         </TableLayout>
         <!-- //  Calories table -->
+
+        <!-- General table -->
+        <TextView
+            android:id="@+id/textViewAdditional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/additional"
+            style="@style/Widget.TextViewBig" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <!-- Manufacture -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/textViewManufacture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="@string/manufacture"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextManufacture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/manufacture" />
+        </TableRow>
+        <!-- // Manufacture -->
+
+        <!-- Description -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:hint="@string/description"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/description" />
+        </TableRow>
+        <!-- // Description -->
+
+        <!-- Barcode -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/textViewBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/barcode"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="@string/barcode" />
+        </TableRow>
+        </TableLayout>
+        <!-- //Barcode -->
 
         <!-- Save button -->
         <Button
@@ -369,6 +386,8 @@
             android:text="@string/save"
             style="@style/Widget.MyButton"/>
         <!-- // Save button -->
+
+
 
 
     </LinearLayout>

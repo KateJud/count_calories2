@@ -23,27 +23,30 @@ public class FoodCursorAdapter extends android.widget.CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView textViewName = view.findViewById(R.id.textViewListName);
         TextView textViewNumber = view.findViewById(R.id.textViewListNumber);
+        TextView textViewListSubSizeGram = view.findViewById(R.id.textViewListSubSizeGram);
         TextView textViewSubName = view.findViewById(R.id.textViewListSubName);
 
 
         int getId = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String getName = cursor.getString(cursor.getColumnIndexOrThrow("food_name"));
-        String getManufacture = cursor.getString(cursor.getColumnIndexOrThrow("food_manufactor_name"));
-        String getDescription = cursor.getString(cursor.getColumnIndexOrThrow("food_description"));
-        String getServingSize = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram"));
-        String getServingMesurment = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram_measurement"));
-        String getServingNameNumber = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_pcs"));
-        String getServingNameWord = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_pcs_measurement"));
-        int getFoodEnergyCalculated = cursor.getInt(cursor.getColumnIndexOrThrow("food_energy_calculated"));
+        String getFoodSizeGramCalculated=cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram"));
+        String getServingMeasurement = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram_measurement"));
+        String getFoodSizeProteinCalculated=cursor.getString(cursor.getColumnIndexOrThrow("food_protein_calculated"));
+        String getFoodSizeCarbsCalculated=cursor.getString(cursor.getColumnIndexOrThrow("food_carbohydrates_calculated"));
+        String getFoodSizeFatCalculated=cursor.getString(cursor.getColumnIndexOrThrow("food_fat_calculated"));
+        String getFoodEnergyCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_energy_calculated"));
 
-        String subLine= getManufacture + ", "
-            + getServingMesurment + ", "
-            + getServingSize + " "
-            + getServingNameNumber + " "
-            + getServingNameWord;
+        //100 g \n
+        //  protein: , carbs: fat:ng,
+        String gramLine=getFoodSizeGramCalculated+" "+getServingMeasurement;
+
+        String subLine=  "protein: "+getFoodSizeProteinCalculated+"g," +
+            " carbs: "+getFoodSizeCarbsCalculated+"g," +
+            "fat: "+ getFoodSizeFatCalculated+"g";
 
         textViewName.setText(getName);
-        textViewNumber.setText(String.valueOf( getFoodEnergyCalculated));
+        textViewNumber.setText( getFoodEnergyCalculated);
+        textViewListSubSizeGram.setText(gramLine);
         textViewSubName.setText(subLine);
     }
 }

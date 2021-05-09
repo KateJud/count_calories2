@@ -1,9 +1,14 @@
 package com.example.dietstram.ui.food;
 //TODO падает пре редактировании на spinner
 
+import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -32,6 +38,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.dietstram.DBAdapter;
 import com.example.dietstram.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
+import com.example.dietstram.MySuggestionProvider;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
 import com.example.dietstram.ui.categories.CategoriesFragment;
@@ -40,7 +47,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class FoodFragment extends Fragment {
+public class FoodFragment  extends Fragment  {
 
     /*Necessary  fields*/
     EditText editTextName;
@@ -52,9 +59,11 @@ public class FoodFragment extends Fragment {
     MenuItem menuItemDelete;
     MenuItem menuItemAdd;
 
+    SearchView menuItemSearch;
+
 
     /* Holder on buttons on toolbar */
-    private String currentId="";
+    private String currentId = "";
     private String currentName;
     private String selectedMainCategoryName = "";
 
@@ -64,30 +73,31 @@ public class FoodFragment extends Fragment {
     private View mainView;
 
 
-private void preListItemClickedReadyCursor(){
-    DBAdapter db = getDbAdapter();
 
-    String[] fields = new String[]{
-        "_id",
-        "food_name",
-        "food_manufactor_name",
-        "food_description",
-        "food_serving_size_gram",
-        "food_serving_size_gram_measurement",
-        "food_serving_size_pcs",
-        "food_serving_size_pcs_measurement",
-        "food_energy_calculated"
-    };
-    listCursor = db.select("food", fields, "_id", db.quoteSmart(currentId), "food_name", "ASC");
 
-    //Close
-    db.close();
+    private void preListItemClickedReadyCursor() {
+        DBAdapter db = getDbAdapter();
 
-    makeMenuItemInvisible();
+        String[] fields = new String[]{
+            "_id",
+            "food_name",
+            "food_manufactor_name",
+            "food_description",
+            "food_serving_size_gram",
+            "food_serving_size_gram_measurement",
+            "food_serving_size_pcs",
+            "food_serving_size_pcs_measurement",
+            "food_energy_calculated"
+        };
+        listCursor = db.select("food", fields, "_id", db.quoteSmart(currentId), "food_name", "ASC");
 
-    listItemClicked(0);
+        //Close
+        db.close();
 
-}
+        //todo makeMenuItemInvisible();
+        listItemClicked(0);
+
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -107,35 +117,69 @@ private void preListItemClickedReadyCursor(){
         changeTitle("Food");
         setHasOptionsMenu(true);
 
-        Bundle bundle=this.getArguments();
-        if(bundle!=null){
-            currentId=bundle.getString("currentFoodId");
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            currentId = bundle.getString("currentFoodId");
         }
-        if(currentId.isEmpty()){
-            populateListFood();
 
-        }else {
-            //Came from another country
+        if (currentId.isEmpty()) {
+            populateListFood("");
+        } else {
+            //Came from another layout
             //And need a cursor
             preListItemClickedReadyCursor();
+            getFromCategoriesFlag = true;
         }
 
-
     }
+
+    boolean getFromCategoriesFlag = false;
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         //Inflate menu
-        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_food, menu);
+        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
 
         //Assign variables
-        menuItemEdit = menu.findItem(R.id.action_food_edit);
-        menuItemDelete = menu.findItem(R.id.action_food_delete);
-        menuItemAdd=menu.findItem(R.id.action_food_add);
+        menuItemEdit = menu.findItem(R.id.action_edit);
+        menuItemDelete = menu.findItem(R.id.action_delete);
+        menuItemAdd = menu.findItem(R.id.action_add);
+        //menuItemSearch = menu.findItem(R.id.search);
 
-        //Hide as default
-        makeMenuItemInvisible();
+
+        SearchManager searchManager = (SearchManager) getActivity(). getSystemService(Context.SEARCH_SERVICE);
+        menuItemSearch = (SearchView) menu.findItem(R.id.search).getActionView();
+        menuItemSearch.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        // Здесь можно указать будет ли строка поиска изначально развернута или свернута в значок
+        menuItemSearch.setIconifiedByDefault(true);
+        menuItemSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Обратный вызов при изменении текста, запрос - это текст после изменения
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getActivity(),
+                    MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+                suggestions.saveRecentQuery(query, null);
+
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Обратный вызов при отправке текста, newText - последний текст, отправленный для поиска
+                populateListFood(newText);
+                return false;
+            }
+        });
+
+
+
+
+        //Hide as default (if list)
+        if (!getFromCategoriesFlag || getActivity().findViewById(android.R.id.content) == getActivity().findViewById(R.id.layoutFood)) {
+            makeMenuItemInvisible();
+        } else {
+            //If food
+            makeMenuItemVisible();
+        }
 
     }
 
@@ -145,22 +189,22 @@ private void preListItemClickedReadyCursor(){
         return db;
     }
 
-    private void populateListFood() {
+    private void populateListFood(String filter) {
         /*DataBase*/
         DBAdapter db = getDbAdapter();
 
         String[] fields = new String[]{
             "_id",
             "food_name",
-            "food_manufactor_name",
-            "food_description",
             "food_serving_size_gram",
             "food_serving_size_gram_measurement",
-            "food_serving_size_pcs",
-            "food_serving_size_pcs_measurement",
             "food_energy_calculated",
+            "food_protein_calculated",
+            "food_carbohydrates_calculated",
+            "food_fat_calculated"
         };
-        listCursor = db.select("food", fields, "", "", "food_name", "ASC");
+        listCursor = db.selectFood("food", fields, filter);
+        //listCursor = db.selectFood("food", fields, "", "", "food_name", "ASC");
 
         ListView listView = getActivity().findViewById(R.id.listViewFood);
         FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursor);
@@ -180,13 +224,13 @@ private void preListItemClickedReadyCursor(){
 
 
     public void listItemClicked(int listItemIDClicked) {
-
-        //show edit button
-        makeMenuItemVisible();
-
         /* Change layout */
         changeLayout(R.layout.fragment_food_view);
 
+        //show edit button
+        if (menuItemEdit != null) {
+            makeMenuItemVisible();
+        }
 
         //Move to id selected
         listCursor.moveToPosition(listItemIDClicked);
@@ -295,7 +339,7 @@ private void preListItemClickedReadyCursor(){
         db.close();
 
         //set Listener
-        ImageView imageViewFoodAdd =getActivity().findViewById(R.id.imageViewFoodAdd);
+        ImageView imageViewFoodAdd = getActivity().findViewById(R.id.imageViewFoodAdd);
         imageViewFoodAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,7 +350,7 @@ private void preListItemClickedReadyCursor(){
     }
 
     private void addFoodToDiarySelectMealNumber() {
-    changeLayout(R.layout.fragment_home_select_meal_number);
+        changeLayout(R.layout.fragment_home_select_meal_number);
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentData = dateFormat.format(Calendar.getInstance().getTime());
@@ -344,7 +388,8 @@ private void preListItemClickedReadyCursor(){
 
 
     }
-    private  void addFoodToDiarySelectMealNumberMoveToAdd(int mealNumber){
+
+    private void addFoodToDiarySelectMealNumberMoveToAdd(int mealNumber) {
         Bundle bundle = new Bundle();
         bundle.putString("mealNumber", String.valueOf(mealNumber));
         bundle.putString("currentFoodId", currentId);
@@ -364,18 +409,19 @@ private void preListItemClickedReadyCursor(){
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_food_add) {
+        if (item.getItemId() == R.id.action_add) {
             addFood();
         }
-        if (item.getItemId() == R.id.action_food_edit) {
+        if (item.getItemId() == R.id.action_edit) {
             editFood();
         }
-        if (item.getItemId() == R.id.action_food_delete) {
+        if (item.getItemId() == R.id.action_delete) {
             deleteFood();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     /* Add food ----------------------------------------- */
     private void addFood() {
 
@@ -461,10 +507,6 @@ private void preListItemClickedReadyCursor(){
         EditText editTextManufacture = getActivity().findViewById(R.id.editTextManufacture);
         String stringManufacture = editTextManufacture.getText().toString();
         String stringManufactureSQL = db.quoteSmart(stringManufacture);
-        if (stringManufacture.isEmpty()) {
-            error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill manufacture", Toast.LENGTH_LONG).show();
-        }
 
         //Description
         EditText editTextDescription = getActivity().findViewById(R.id.editTextDescription);
@@ -476,10 +518,7 @@ private void preListItemClickedReadyCursor(){
         EditText editTextBarcode = getActivity().findViewById(R.id.editTextBarcode);
         String stringBarcode = editTextBarcode.getText().toString();
         String stringBarcodeSQL = db.quoteSmart(stringBarcode);
-        if (stringBarcode.isEmpty()) {
-            error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill Barcode", Toast.LENGTH_LONG).show();
-        }
+
 
         // SubCategory
         Spinner spinnerSubCategory = getActivity().findViewById(R.id.spinnerSubCategory);
@@ -510,8 +549,9 @@ private void preListItemClickedReadyCursor(){
         String stringMeasurement = editTextMeasurement.getText().toString();
         String stringMeasurementSQL = db.quoteSmart(stringMeasurement);
         if (stringMeasurement.isEmpty()) {
-            error = 1;
+
             Toast.makeText(getActivity(), "Error:  Please fill Measurement", Toast.LENGTH_LONG).show();
+            error = 1;
         }
 
         //Number
@@ -529,7 +569,7 @@ private void preListItemClickedReadyCursor(){
         String stringWordSQL = db.quoteSmart(stringWord);
         if (stringWord.isEmpty()) {
             error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill Word", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Error:  Please fill Number measurement", Toast.LENGTH_LONG).show();
         }
 
         //Energy
@@ -580,72 +620,95 @@ private void preListItemClickedReadyCursor(){
             String fatCalculatedSQL = db.quoteSmart("" + fatCalculated);
 
             String fields =
-                " food_name,"+
-                    " food_manufactor_name,"+
-                    " food_description,"+
-                    " food_serving_size_gram,"+
-                    " food_serving_size_gram_measurement,"+
-                    " food_serving_size_pcs,"+
-                    " food_serving_size_pcs_measurement,"+
-                    " food_energy,"+
-                    " food_protein,"+
-                    " food_carbohydrates,"+
-                    " food_fat,"+
-                    " food_energy_calculated,"+
-                    " food_protein_calculated,"+
-                    " food_carbohydrates_calculated,"+
-                    " food_fat_calculated,"+
-                    " food_barcode,"+
+                " food_name," +
+                    " food_manufactor_name," +
+                    " food_description," +
+                    " food_serving_size_gram," +
+                    " food_serving_size_gram_measurement," +
+                    " food_serving_size_pcs," +
+                    " food_serving_size_pcs_measurement," +
+                    " food_energy," +
+                    " food_protein," +
+                    " food_carbohydrates," +
+                    " food_fat," +
+                    " food_energy_calculated," +
+                    " food_protein_calculated," +
+                    " food_carbohydrates_calculated," +
+                    " food_fat_calculated," +
+                    " food_barcode," +
                     " food_category_id ";
-            String values = stringNameSQL+","+
-                stringManufactureSQL+","+
-                stringDescriptionSQL+","+
-                stringSizeSQL+","+
-                stringMeasurementSQL+","+
-                stringNumberSQL+","+
-                stringWordSQL+","+
-                stringEnergySQL+","+
-                stringProteinsSQL+","+
-                stringCarbsSQL+","+
-                stringFatSQL+","+
-                energyCalculatedSQL+","+
-                proteinsCalculatedSQL+","+
-                carbsCalculatedSQL+","+
-                fatCalculatedSQL+","+
-                stringBarcodeSQL+","+
+            String values = stringNameSQL + "," +
+                stringManufactureSQL + "," +
+                stringDescriptionSQL + "," +
+                stringSizeSQL + "," +
+                stringMeasurementSQL + "," +
+                stringNumberSQL + "," +
+                stringWordSQL + "," +
+                stringEnergySQL + "," +
+                stringProteinsSQL + "," +
+                stringCarbsSQL + "," +
+                stringFatSQL + "," +
+                energyCalculatedSQL + "," +
+                proteinsCalculatedSQL + "," +
+                carbsCalculatedSQL + "," +
+                fatCalculatedSQL + "," +
+                stringBarcodeSQL + "," +
                 subCategorySQL;
 
 
-            db.insert("food",  fields, values);
+            db.insert("food", fields, values);
             Toast.makeText(getActivity(), "Everything is saved", Toast.LENGTH_LONG).show();
 
+            db.close();
+            moveToCorrectLayout();
         }
 
-
-        db.close();
-        moveToCorrectLayout();
     }
     /* // Add food ----------------------------------------- */
 
     /* Delete food ----------------------------------------- */
     private void deleteFood() {
-        int id = R.layout.fragment_food_delete;
-        changeLayout(id);
+        createAlertDialog();
 
-        Button buttonDelete = getActivity().findViewById(R.id.buttonDelete);
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        int id = R.layout.fragment_food_delete;
+//        changeLayout(id);
+//
+//        Button buttonDelete = getActivity().findViewById(R.id.buttonDelete);
+//        buttonDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onDeleteClicked();
+//            }
+//        });
+//        Button buttonCancel = getActivity().findViewById(R.id.buttonCancel);
+//        buttonCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onCancelClicked();
+//            }
+//        });
+    }
+
+    private void createAlertDialog() {
+        String button1String = "Delete";
+        String button2String = "Cancel";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete");  // заголовок
+        builder.setMessage(R.string.delete_message); // сообщение
+        builder.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 onDeleteClicked();
             }
         });
-        Button buttonCancel = getActivity().findViewById(R.id.buttonCancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCancelClicked();
+        builder.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
             }
         });
+        builder.setCancelable(true);
+        builder.show();
+
     }
 
 
@@ -1136,6 +1199,13 @@ private void preListItemClickedReadyCursor(){
         menuItemEdit.setVisible(true);
         menuItemDelete.setVisible(true);
         menuItemAdd.setVisible(false);
+
+        //todo{
+//        menuItemSearch.setQuery("", false);
+//        menuItemSearch.onActionViewCollapsed();
+//        menuItemSearch.setVisibility(View.INVISIBLE);
+    
+
     }
 
 
@@ -1145,6 +1215,9 @@ private void preListItemClickedReadyCursor(){
         menuItemEdit.setVisible(false);
         menuItemDelete.setVisible(false);
         menuItemAdd.setVisible(true);
+
+//        menuItemSearch.setEnabled(true);
+//        menuItemSearch.setVisibility(View.VISIBLE);
     }
     /*//  Visible & invisible ----------------------------------------- */
 
@@ -1162,5 +1235,6 @@ private void preListItemClickedReadyCursor(){
         rootView.addView(mainView);
 
     }
+
 
 }

@@ -13,16 +13,14 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 25;
+    public static final int DATABASE_VERSION = 27;
 
-    /* 02 Database Variables ---------------------------------------------------------------------- */
-    private final Context context;
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
     /* 03 Class DBAdapter ------------------------------------------------------------------------- */
     public DBAdapter(Context context) {
-        this.context = context;
+        /* 02 Database Variables ---------------------------------------------------------------------- */
         DBHelper = new DatabaseHelper(context);
     }
 
@@ -422,6 +420,21 @@ public class DBAdapter {
         return mCursor;
 
     }
+
+    //Select with order
+    public Cursor selectFood(String table, String[] fields, String filter)
+        throws SQLException {
+
+        Cursor mCursor= db.query(true,table, fields, "food_name  LIKE ? OR food_manufactor_name LIKE? OR food_description LIKE ? ",
+            new String[] {"%"+ filter+ "%" }, null, null, "food_name ASC",
+            null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+
 
     /* 13 Delete ---------------------------------------------------------------------------------- */
     public int delete(String table, String primaryKey, long rowId) {

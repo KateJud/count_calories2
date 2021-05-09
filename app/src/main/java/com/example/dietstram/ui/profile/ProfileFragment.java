@@ -114,11 +114,11 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         //Inflate menu
-        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_food, menu);
+        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
 
         //Assign variables
-        menuItemEdit = menu.findItem(R.id.action_food_edit);
-        menuItemDelete = menu.findItem(R.id.action_food_delete);
+        menuItemEdit = menu.findItem(R.id.action_edit);
+        menuItemDelete = menu.findItem(R.id.action_delete);
 
         //Hide as default
         menuItemEdit.setVisible(false);

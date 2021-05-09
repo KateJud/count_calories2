@@ -1,6 +1,8 @@
 package com.example.dietstram.ui.categories;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,23 +40,20 @@ public class CategoriesFragment extends Fragment {
     private View mainView;
 
     /*My fields*/
-    Cursor listCursorCategory;
-    Cursor listCursorFood;
-    int error;
+    private Cursor listCursorCategory;
+    private Cursor listCursorFood;
+    private int error;
 
     /* Action buttons */
-    MenuItem menuItemEdit;
-    MenuItem menuItemDelete;
+    private MenuItem menuItemSearch;
+    private MenuItem menuItemEdit;
+    private MenuItem menuItemDelete;
 
     /* Holder on buttons on toolbar */
     private String currentCategoryId;
     private String currentCategoryName;
 
     private String currentFoodId;
-    private String currentFoodName;
-
-
-    private CategoriesViewModel categoriesViewModel;
 
 
     @Override
@@ -70,8 +69,7 @@ public class CategoriesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        categoriesViewModel =
-            ViewModelProviders.of(this).get(CategoriesViewModel.class);
+        CategoriesViewModel categoriesViewModel = ViewModelProviders.of(this).get(CategoriesViewModel.class);
         mainView = inflater.inflate(R.layout.fragment_categories, container, false);
         return mainView;
     }
@@ -82,29 +80,32 @@ public class CategoriesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        populateList("0", "");
+        populateList("0");
 
         setHasOptionsMenu(true);
     }
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         //Inflate menu
         ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
 
         //Assign variables
-        menuItemEdit = menu.findItem(R.id.action_edit);
-        menuItemDelete = menu.findItem(R.id.action_delete);
+        menuItemSearch=menu.findItem(R.id.search);
+        setMenuItemEdit(menu.findItem(R.id.action_edit));
+        setMenuItemDelete(menu.findItem(R.id.action_delete));
 
         //Hide as default
-        menuItemEdit.setVisible(false);
-        menuItemDelete.setVisible(false);
+        menuItemSearch.setVisible(false);
+        getMenuItemEdit().setVisible(false);
+        getMenuItemDelete().setVisible(false);
 
 
     }
 
 
-    private void populateList(String parentId, String parentName) {
+    private void populateList(String parentId) {
 
         /*DataBase*/
         DBAdapter db = getDbAdapter();
@@ -114,15 +115,15 @@ public class CategoriesFragment extends Fragment {
             "category_name",
             "category_parent_id"
         };
-        listCursorCategory = db.select("categories", fields, "category_parent_id", parentId, "category_name", "ASC");
+        setListCursorCategory(db.select("categories", fields, "category_parent_id", parentId, "category_name", "ASC"));
         ArrayList<String> values = new ArrayList<>();
 
 
         //Convert categories to string
-        int categoryCount = listCursorCategory.getCount();
+        int categoryCount = getListCursorCategory().getCount();
         for (int i = 0; i < categoryCount; i++) {
-            values.add(listCursorCategory.getString(listCursorCategory.getColumnIndex("category_name")));
-            listCursorCategory.moveToNext();
+            values.add(getListCursorCategory().getString(getListCursorCategory().getColumnIndex("category_name")));
+            getListCursorCategory().moveToNext();
 
         }
 
@@ -204,7 +205,7 @@ public class CategoriesFragment extends Fragment {
         arraySpinnerCategories[0] = "-";
 
         for (int i = 1; i < dbCursorCount + 1; i++) {
-            arraySpinnerCategories[i] = dbCursor.getString(1).toString();
+            arraySpinnerCategories[i] = dbCursor.getString(1);
             if (dbCursor.getString(0).equals(currentParentId)) {
                 intParentId = i;
             }
@@ -241,20 +242,19 @@ public class CategoriesFragment extends Fragment {
 
     private void editCategorySubmit() {
         DBAdapter db = getDbAdapter();
-        error = 0;
+        setError(0);
         String stringName = getName();
 
         //Parent
         String parentId = getParentId(db);
 
-        if (error == 0) {
+        if (getError() == 0) {
             //Insert into database
             //Ready variables
             long longCurrentIdSQL = db.quoteSmart(Long.parseLong(currentCategoryId));
 
             String stringNameSQL = db.quoteSmart(stringName);
             String parentIdSQL = db.quoteSmart(parentId);
-            String input = "NULL, " + stringNameSQL + ", " + parentIdSQL;
             db.update("categories", "_id", longCurrentIdSQL, "category_name", stringNameSQL);
             db.update("categories", "_id", longCurrentIdSQL, "category_parent_id", parentIdSQL);
 
@@ -270,39 +270,70 @@ public class CategoriesFragment extends Fragment {
         db.close();
     }
 
+    private void setAlertDialog() {
 
-    private void deleteCategory() {
-        int id = R.layout.fragment_categories_delete;
-        changeLayout(id);
 
-        Button buttonDelete = getActivity().findViewById(R.id.buttonCategoriesDelete);
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        String button1String = "Delete";
+        String button2String = "Cancel";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete");  // заголовок
+        builder.setMessage(R.string.delete_message);  // сообщение
+        builder.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO как возвратиться не на category, а на 1 назад?
                 onDeleteClicked();
             }
         });
-        Button buttonCancel = getActivity().findViewById(R.id.buttonCategoriesCancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCancelClicked();
+        builder.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
             }
         });
+        builder.setCancelable(true);
+        builder.show();
 
     }
 
-    private void onCancelClicked(){
+
+    private void deleteCategory() {
+        setAlertDialog();
+
+//
+//        int id = R.layout.fragment_categories_delete;
+//        changeLayout(id);
+//
+//        Button buttonDelete = getActivity().findViewById(R.id.buttonCategoriesDelete);
+//        buttonDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onDeleteClicked();
+//            }
+//        });
+//        Button buttonCancel = getActivity().findViewById(R.id.buttonCategoriesCancel);
+//        buttonCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onCancelClicked();
+//            }
+//        });
+
+    }
+
+    private void onCancelClicked() {
         moveToCategoryLayout();
     }
 
-    private void onDeleteClicked(){
+    private void onDeleteClicked() {
         //Delete Form Sql
         DBAdapter db = getDbAdapter();
 
-        //Insert into database
-        //Ready variables
+        String[] fields={"category_parent_id"};
         long longCurrentIdSQL = db.quoteSmart(Long.parseLong(currentCategoryId));
+
+        Cursor cursor=db.select("categories", fields,"_id", longCurrentIdSQL);
+        String parentId=cursor.getString(0);
+
         db.delete("categories", "_id", longCurrentIdSQL);
 
         /* Close */
@@ -313,9 +344,6 @@ public class CategoriesFragment extends Fragment {
 
         //Move user back to correct layout
         moveToCategoryLayout();
-        int id = R.layout.fragment_categories;
-        setMainView(id);
-
 
     }
 
@@ -374,13 +402,13 @@ public class CategoriesFragment extends Fragment {
 
     private void createNewCategorySubmit() {
         DBAdapter db = getDbAdapter();
-        error = 0;
+        setError(0);
         String stringName = getName();
 
         //Parent
         String parentId = getParentId(db);
 
-        if (error == 0) {
+        if (getError() == 0) {
             //Insert into database
             //Ready variables
             String stringNameSQL = db.quoteSmart(stringName);
@@ -409,9 +437,8 @@ public class CategoriesFragment extends Fragment {
     private String getParentId(DBAdapter db) {
         Spinner spinner = getActivity().findViewById(R.id.spinnerCategoryParent);
         String stringSpinnerCategoryParent = spinner.getSelectedItem().toString();
-        String parentId;
         if (stringSpinnerCategoryParent.equals("-")) {
-            parentId = "0";
+            return "0";
         } else {
             //Find id from the text
             String stringSpinnerCategoryParentSQL = db.quoteSmart(stringSpinnerCategoryParent);
@@ -423,10 +450,9 @@ public class CategoriesFragment extends Fragment {
             };
 
             Cursor findParentId = db.select("categories", fields, "category_name", stringSpinnerCategoryParentSQL);
-            parentId = findParentId.getString(0).toString();
+            return findParentId.getString(0).toString();
 
         }
-        return parentId;
     }
 
     private String getName() {
@@ -436,7 +462,7 @@ public class CategoriesFragment extends Fragment {
         if (stringName.isEmpty()) {
             Toast.makeText(getActivity(), "Please fill a name", Toast.LENGTH_SHORT).show();
 
-            error = 1;
+            setError(1);
         }
         return stringName;
     }
@@ -453,26 +479,22 @@ public class CategoriesFragment extends Fragment {
 
 
     private void changeMenuItemVisibility(String parentId) {
-        if (parentId.equals("0")) {
-            //Remove edit button
-        } else {
+        if (!parentId.equals("0")) {
             //Show edit button
-            menuItemEdit.setVisible(true);
-            menuItemDelete.setVisible(true);
-        }
+            getMenuItemEdit().setVisible(true);
+            getMenuItemDelete().setVisible(true);
+        }  //Remove edit button
+
     }
 
     public void listItemClicked(int arg2) {
-//        categoryCursor.move(1);
-//        Toast.makeText(getActivity(), "id^ " + arg2, Toast.LENGTH_SHORT).show();
-
         //Move to id selected
-        listCursorCategory.moveToPosition(arg2);
+        getListCursorCategory().moveToPosition(arg2);
 
         //GetId and name from cursor
-        String id = listCursorCategory.getString(0);
-        String name = listCursorCategory.getString(1);
-        String parentId = listCursorCategory.getString(2);
+        String id = getListCursorCategory().getString(0);
+        String name = getListCursorCategory().getString(1);
+        String parentId = getListCursorCategory().getString(2);
 
         //Change Title
 
@@ -482,10 +504,10 @@ public class CategoriesFragment extends Fragment {
         currentCategoryName = name;
 
         //Move to subclass
-        populateList(id, name);
+        populateList(id);
 
         //show food in diary
-        showFoodInCategory(currentCategoryId, currentCategoryName,  parentId);
+        showFoodInCategory(currentCategoryId, currentCategoryName, parentId);
 
     }
 
@@ -501,18 +523,17 @@ public class CategoriesFragment extends Fragment {
             String[] fields = new String[]{
                 "_id",
                 "food_name",
-                "food_manufactor_name",
-                "food_description",
                 "food_serving_size_gram",
                 "food_serving_size_gram_measurement",
-                "food_serving_size_pcs",
-                "food_serving_size_pcs_measurement",
                 "food_energy_calculated",
+                "food_protein_calculated",
+                "food_carbohydrates_calculated",
+                "food_fat_calculated"
             };
-            listCursorFood = db.select("food", fields, "", "", "food_name", "ASC");
+            setListCursorFood(db.select("food", fields, "food_category_id", categoryId, "food_name", "ASC"));
 
             ListView listViewFood = getActivity().findViewById(R.id.listViewFood);
-            FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursorFood);
+            FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), getListCursorFood());
 
             //Attach cursor adapter to the ListView
             listViewFood.setAdapter(foodCursorAdapter);
@@ -520,7 +541,7 @@ public class CategoriesFragment extends Fragment {
             listViewFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    foodListItemClicked(position);
+                    foodListItemClicked();
                 }
             });
 
@@ -532,21 +553,17 @@ public class CategoriesFragment extends Fragment {
         }
     }
 
-        public void foodListItemClicked(int listItemIDClicked){
-            //We should use Food
-            currentFoodId=listCursorFood.getString(0);
-            currentFoodName=listCursorFood.getString(1);
+    public void foodListItemClicked() {
+        //We should use Food
+        currentFoodId = getListCursorFood().getString(0);
+        String currentFoodName = getListCursorFood().getString(1);
 
-            /* Change fragment to FoodView */
-            //Initialize fragment
-            moveToFoodFragmentLayout();
+        /* Change fragment to FoodView */
+        //Initialize fragment
+        moveToFoodFragmentLayout();
 
+    }
 
-            Toast.makeText(getActivity(), "Error:  Please fill name", Toast.LENGTH_LONG).show();
-
-
-
-        }
     private void moveToFoodFragmentLayout() {
         Bundle bundle = new Bundle();
         bundle.putString("currentFoodId", String.valueOf(currentFoodId));
@@ -557,6 +574,46 @@ public class CategoriesFragment extends Fragment {
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
+
+    public Cursor getListCursorCategory() {
+        return listCursorCategory;
     }
+
+    public void setListCursorCategory(Cursor listCursorCategory) {
+        this.listCursorCategory = listCursorCategory;
+    }
+
+    public Cursor getListCursorFood() {
+        return listCursorFood;
+    }
+
+    public void setListCursorFood(Cursor listCursorFood) {
+        this.listCursorFood = listCursorFood;
+    }
+
+    public int getError() {
+        return error;
+    }
+
+    public void setError(int error) {
+        this.error = error;
+    }
+
+    public MenuItem getMenuItemEdit() {
+        return menuItemEdit;
+    }
+
+    public void setMenuItemEdit(MenuItem menuItemEdit) {
+        this.menuItemEdit = menuItemEdit;
+    }
+
+    public MenuItem getMenuItemDelete() {
+        return menuItemDelete;
+    }
+
+    public void setMenuItemDelete(MenuItem menuItemDelete) {
+        this.menuItemDelete = menuItemDelete;
+    }
+}
 
 

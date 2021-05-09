@@ -2,26 +2,34 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Search -->
+    <item android:id="@+id/search"
+        android:title="@string/write_name_of_food"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
+    <!-- // Search -->
+
     <!-- Add -->
     <item android:id="@+id/action_add"
         android:icon="@drawable/ic_menu_action_add"
         android:title="@string/add"
         app:showAsAction="ifRoom"/>
-    <!-- //Add -->
+    <!-- // Add -->
 
     <!-- Edit -->
     <item android:id="@+id/action_edit"
         android:icon="@drawable/ic_menu_action_edit"
         android:title="@string/edit"
         app:showAsAction="ifRoom"/>
-    <!-- //Edit -->
+    <!-- // Edit -->
 
     <!-- Delete -->
     <item android:id="@+id/action_delete"
         android:icon="@drawable/ic_menu_action_delete"
         android:title="@string/delete"
         app:showAsAction="ifRoom"/>
-    <!-- //Delete -->
+    <!-- // Delete -->
 
 
 </menu>

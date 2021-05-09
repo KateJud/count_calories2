@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dietstram.ui.categories.CategoriesFragment;
@@ -14,6 +16,7 @@ import com.example.dietstram.ui.home.HomeFragment;
 import com.example.dietstram.ui.profile.ProfileFragment;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -70,6 +73,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 
         /* Navigation */
+        //Bottom
+        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //NavigationView
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         //ActionBarDrawerToggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -120,14 +128,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (numRows < 1) {
             i = new Intent(MainActivity.this, SignUp.class);
             startActivity(i);
-        }else {
-//            i = new Intent(MainActivity.this, HomeFragment.class);
-//            startActivity(i);
         }
-
-
         /*Close*/
         db.close();
+
+
+        View header = navigationView.getHeaderView(0);
+//        TextView HeaderName = (TextView) header.findViewById(R.id.txt_namedisplay);
+//        TextView HeaderEmail = (TextView) header.findViewById(R.id.textView);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,7 +156,58 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 //
 //  }
 
-    @Override
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+        = new BottomNavigationView.OnNavigationItemSelectedListener() {  @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        Fragment fragment = null;
+        Class fragmentClass = null;
+
+        //Menu item
+        if (id == R.id.nav_home) {
+            fragmentClass = HomeFragment.class;
+
+        } else if (id == R.id.nav_profile) {
+            fragmentClass = ProfileFragment.class;
+
+        } else if (id == R.id.nav_categories) {
+            fragmentClass = CategoriesFragment.class;
+
+        } else if (id == R.id.nav_food) {
+            fragmentClass = FoodFragment.class;
+
+        }else if (id == R.id.nav_goal) {
+            fragmentClass = GoalFragment.class;
+
+        }
+
+        //Try add item fragment
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //Try to show that content
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        try {
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+
+    }};
+
+
+        @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 

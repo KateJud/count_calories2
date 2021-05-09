@@ -8,5 +8,7 @@
     <color name="login_form_details_light">#E0F9C3</color>
     <color name="login_form_details_medium">#859886</color>
     <color name="gray">#878A87</color>
+    <color name="white">#F2F8F2</color>
+
 
 </resources>

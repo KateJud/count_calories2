@@ -1,6 +1,7 @@
 package com.example.dietstram.ui.home;
 
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -18,13 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.WrapperListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +41,7 @@ import com.example.dietstram.DBSetupInsert;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
-import com.example.dietstram.ui.categories.CategoriesFragment;
+import com.example.dietstram.ui.food.FoodFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -143,6 +146,20 @@ public class HomeFragment extends Fragment {
 
         /* Set title */
         changeTitle(getActivity(), "Home");
+
+    }
+
+    private void setHi() {
+        TextView textViewHi = getActivity().findViewById(R.id.textViewHi);
+        String[] fields = {"user_email"};
+        DBAdapter db = getDbAdapter();
+        Cursor cursor = db.select("users", fields, "_id", 1);
+        if (cursor.getCount() != 0) {
+            String userName = cursor.getString(0);
+            textViewHi.setText(String.format(getActivity().getString(R.string.hi), userName));
+        }
+        db.close();
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -233,6 +250,7 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         setAllWidgets();
+        setHi();
         initializeHome();
         setHasOptionsMenu(true);
     }
@@ -316,7 +334,6 @@ public class HomeFragment extends Fragment {
         imageViewError.setVisibility(View.GONE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void writeAllMealNames() {
         DBAdapter db = getDbAdapter();
         String[] fieldsMeal = {"_id," +
@@ -324,17 +341,21 @@ public class HomeFragment extends Fragment {
         Cursor c = db.select("meal", fieldsMeal, "meal_date", db.quoteSmart(currentData));
         db.close();
 
-        //TODO отрисовать все завтраки обеды и ужины
         TableLayout tableLayoutMain = getActivity().findViewById(R.id.tableLayoutHomeMain);
         for (int i = 0; i < c.getCount(); i++) {
 
             final String mealId = c.getString(0);
 
+            final TableLayout tableLayoutHeaderStyle = new TableLayout(getActivity());
+            tableLayoutHeaderStyle.setBackground(getActivity().getDrawable(R.drawable.bg_meal_table));
+
+//new ContextThemeWrapper(getActivity(), R.style.Widget_MyButtonAdd), null, 0
+
             TableLayout tableLayoutHeader = new TableLayout(getActivity());
             TableRow tableRowMealName = new TableRow(getActivity());
 
             /* Button */
-            TableRow.LayoutParams buttonParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2f);
+            TableRow.LayoutParams buttonParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
             ImageButton buttonAdd = new ImageButton(new ContextThemeWrapper(getActivity(), R.style.Widget_MyButtonAdd), null, 0);
             buttonAdd.setImageResource(R.drawable.ic_menu_action_add);
             buttonAdd.setForegroundGravity(Gravity.CENTER_VERTICAL);
@@ -349,7 +370,7 @@ public class HomeFragment extends Fragment {
 
 
             /* Name */
-            TableRow.LayoutParams textNameParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 8f);
+            TableRow.LayoutParams textNameParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 7f);
             TextView textViewMealName = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewBig), null, 0);
             textViewMealName.setText(c.getString(1));
             textViewMealName.setOnLongClickListener(new View.OnLongClickListener() {
@@ -363,25 +384,82 @@ public class HomeFragment extends Fragment {
             tableRowMealName.addView(textViewMealName, textNameParams);
 
             /* Kcal */
-            TableRow.LayoutParams textEnergyParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2f);
+            TableRow.LayoutParams textEnergyParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
             TextView textViewEnergy = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewBig), null, 0);
             tableRowMealName.addView(textViewEnergy, textEnergyParams);
 
-            tableLayoutHeader.addView(tableRowMealName);
+            /* Total Fat,Protein,Carbs */
+            TableLayout tableLayoutSubHeader = new TableLayout(getActivity());
+            TableRow tableRowSubHeader = new TableRow(getActivity());
 
-            //Add table layout из употребленной пищи
-            TableLayout tableLayoutSub = new TableLayout(getActivity());
-            updateTableItems(mealId, tableLayoutSub, textViewEnergy);
+            TableRow.LayoutParams textComponentsParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            TextView textViewComponents = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewBigComponents), null, 0);
 
-            tableLayoutHeader.addView(tableLayoutSub);
+            tableRowSubHeader.addView(textViewComponents, textComponentsParams);
+            tableLayoutSubHeader.addView(tableRowSubHeader);
+
+            //Add table rows
+            tableLayoutHeaderStyle.addView(tableRowMealName);
+            tableLayoutHeaderStyle.addView(tableLayoutSubHeader);
+
+//todo убрать при переходе на другой layout
+
+            /* Sub table layout */
+            final TableLayout tableLayoutSub = new TableLayout(getActivity());
+            tableLayoutSub.setBackground(getActivity().getDrawable(R.drawable.bf_meal_sub_table));
+            updateTableItems(mealId, tableLayoutSub, textViewEnergy, textViewComponents);
+
+            /* Button popUp  */
+            TableRow.LayoutParams buttonMoreLessParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            final ImageButton buttonMoreLess = new ImageButton(new ContextThemeWrapper(getActivity(), R.style.Widget_MyButtonAdd), null, 0);
+            buttonMoreLess.setImageResource(R.drawable.ic_down);
+            buttonMoreLess.setForegroundGravity(Gravity.BOTTOM);
+            tableRowMealName.addView(buttonMoreLess, buttonMoreLessParams);
+            final boolean[] showFlag = {false};
+            final PopupWindow popupWindow = new PopupWindow(getActivity());
+            buttonMoreLess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showFlag[0] = !showFlag[0];
+                    if (showFlag[0]) {
+                        showPopup(popupWindow, tableLayoutSub, tableLayoutHeaderStyle);
+                        buttonMoreLess.setImageResource(R.drawable.ic_up);
+
+                    } else {
+                        buttonMoreLess.setImageResource(R.drawable.ic_down);
+                        popupWindow.dismiss();
+                    }
+                }
+            });
+
+
+            //tableLayoutHeader.addView(tableLayoutSub);
 
             //Очередной заполненный Meal
-            tableLayoutMain.addView(tableLayoutHeader);
+            tableLayoutMain.addView(tableLayoutHeaderStyle);
+
+            //Sub  push to popUp
+            //tableLayoutMain.addView(tableLayoutSub);
             c.moveToNext();
         }
+    }
 
+    @Override
+    public void onDetach() {
+
+//todo закрыть menu
+        super.onDetach();
+    }
+
+    // The method that displays the popup.
+    private void showPopup(PopupWindow popupWindow, TableLayout tableLayoutSub, TableLayout tableLayoutHeader) {
+
+        //((ViewGroup) tableLayoutSub.getParent()).removeView(tableLayoutSub);
+        popupWindow.setContentView(tableLayoutSub);
+        popupWindow.showAsDropDown(tableLayoutHeader);
 
     }
+
 
     private void createAlertDialog(final int mealId) {
         String button1String = "Delete";
@@ -493,21 +571,31 @@ public class HomeFragment extends Fragment {
 
 
     private void moveToAddFoodToDiaryLayout(int mealNumber) {
+
+        Class fragmentClass = AddFoodToDiaryFragment.class;
+
+
         Bundle bundle = new Bundle();
         bundle.putString("mealNumber", String.valueOf(mealNumber));
         bundle.putString("currentFoodId", "");
         bundle.putString("action", "");
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Fragment fragment = new AddFoodToDiaryFragment();
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
 
         //Need to pass meal number
         fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment, AddFoodToDiaryFragment.class.getName()).commit();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 
 
     /* Update Table */
-    private void updateTableItems(String mealNumber, TableLayout tableLayout, TextView textViewEnergyX) {
+    private void updateTableItems(String mealNumber, TableLayout tableLayout, TextView textViewEnergyX, TextView textViewComponents) {
 
         DBAdapter db = getDbAdapter();
 
@@ -531,12 +619,10 @@ public class HomeFragment extends Fragment {
         String[] fdceWhereAndOr = {" AND "};
 
 
-        int errorFdce = 0;
         Cursor cursorFdce;
         cursorFdce = db.select("food_diary_cal_eaten", fieldsFdce, fdceWhereClause, fdceWhereCondition, fdceWhereAndOr);
 
         if (cursorFdce.getCount() == 0) {
-            errorFdce = 1;
             String insertFields = "_id ," +
                 "fdce_date ," +
                 "fdce_meal_no ," +
@@ -591,10 +677,10 @@ public class HomeFragment extends Fragment {
 
         //Ready variables for sum
 
-        int fdceEatenEnergy = 0;
-        int fdceEatenProteins = 0;
-        int fdceEatenCarbs = 0;
-        int fdceEatenFat = 0;
+        double fdceEatenEnergy = 0;
+        double fdceEatenProteins = 0;
+        double fdceEatenCarbs = 0;
+        double fdceEatenFat = 0;
 
         //Loop through cursor
         for (int i = 0; i < cursorFd.getCount(); i++) {
@@ -612,15 +698,8 @@ public class HomeFragment extends Fragment {
 
             //food name
             cursorFood = db.select("food", fieldsFood, "_id", db.quoteSmart(fdId));
-            final String foodName = cursorFood.getColumnName(1);
+            final String foodName = cursorFood.getString(1);
             String foodManufacture = cursorFood.getString(2);
-
-
-            String subLine = foodManufacture + ", " +
-                fdServingSizeGram + ", " +
-                fdServingSizeGramMeasurement + " " +
-                fdServingSizePcs + " " +
-                fdServingSizePcsMeasurement;
 
 
             TableRow tableRow = new TableRow(getActivity());
@@ -638,14 +717,24 @@ public class HomeFragment extends Fragment {
             textViewEnergy.setText(fdEnergyCalculated);
             tableRow.addView(textViewEnergy);
 
-            //TextView SubLine
-//            TextView textViewSubLine = new TextView(getActivity());
-//            textViewEnergy.setText(subLine);
-//            TableRow subTableRow=new TableRow(getActivity());
-//            subTableRow.addView(textViewSubLine);
-//            tableRow.addView(subTableRow);
+            //TextView Components
+            TableRow tableRowSub = new TableRow(getActivity());
+            tableRowSub.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+
+
+            TextView textViewSubLine = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewSmallComponents), null, 0);
+            String subLine = String.format(getActivity().getString(R.string.components),
+                fdProteinCalculated,
+                fdCarbsCalculated,
+                fdFatCalculated);
+            textViewSubLine.setText(subLine);
+            TableRow subTableRow = new TableRow(getActivity());
+            subTableRow.addView(textViewSubLine);
+
 
             tableLayout.addView(tableRow);
+            tableLayout.addView(subTableRow);
+
             tableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -662,6 +751,12 @@ public class HomeFragment extends Fragment {
 
             cursorFd.moveToNext();
         }
+
+        /* Total Fat,Protein,Carbs */
+        textViewComponents.setText(String.format(getActivity().getString(R.string.total_components),
+            String.valueOf(fdceEatenProteins),
+            String.valueOf(fdceEatenCarbs),
+            String.valueOf(fdceEatenFat)));
 
         //Update view table
         textViewEnergyX.setText("" + fdceEatenEnergy);
@@ -687,6 +782,7 @@ public class HomeFragment extends Fragment {
 
     /* Add food ------------------------------------ */
     private void addFood(int mealNumber) {
+
         moveToAddFoodToDiaryLayout(mealNumber);
     }
 
@@ -1091,21 +1187,22 @@ public class HomeFragment extends Fragment {
             "goal_energy_with_activity_and_diet"
         };
         Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
-        String stringGoal = cursorGoal.getString(0);
+        if (cursorGoal.getCount() != 0) {
+            String stringGoal = cursorGoal.getString(0);
 
-        String[] fieldsSum = {
-            "fd_sum_energy"
-        };
-        Cursor cursorSum = db.select("food_diary_sum", fieldsSum, "fd_sum_date", db.quoteSmart(currentData));
-        String stringEaten = cursorSum.getString(0);
+            String[] fieldsSum = {
+                "fd_sum_energy"
+            };
+            Cursor cursorSum = db.select("food_diary_sum", fieldsSum, "fd_sum_date", db.quoteSmart(currentData));
+            String stringEaten = cursorSum.getString(0);
 
-        int left = Integer.parseInt(stringGoal) - Integer.parseInt(stringEaten);
-        String stringLeft = String.valueOf(left);
+            int left = Integer.parseInt(stringGoal) - Integer.parseInt(stringEaten);
+            String stringLeft = String.valueOf(left);
 
-        textViewGoalWithActivityBody.setText(stringGoal);
-        textViewFoodBody.setText(stringEaten);
-        textViewSumBody.setText(stringLeft);
-
+            textViewGoalWithActivityBody.setText(stringGoal);
+            textViewFoodBody.setText(stringEaten);
+            textViewSumBody.setText(stringLeft);
+        }
         db.close();
 
     }
