@@ -181,7 +181,7 @@
     <string name="additional">Additional</string>
     <string name="_1">1</string>
     <string name="portion">portion</string>
-    <string name="hi">Hi, %s :)</string>
+    <string name="hi">Hi, %s :)\n%s</string>
     <string name="total_components"> total proteins: %s, total carbs:  %s, total fat:  %s </string>
     <string name="components"> proteins: %s, carbs:  %s, fat:  %s </string>
     <string name="write_name_of_food">write name of food here</string>
@@ -189,7 +189,7 @@
     <string name="format_kcal">%s kcal</string>
     <string name="format_g">%s g</string>
 
-    <string name="format_progres_kcal">%s/%s kcal</string>
-    <string name="format_progres_g">%s/%s g</string>
+    <string name="format_progress_kcal">%s/%s kcal</string>
+    <string name="format_progress_g">%s/%s g</string>
 
 </resources>

@@ -1,12 +1,10 @@
 package com.example.dietstram.ui.home;
 
 import android.app.AlertDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,10 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
@@ -33,7 +30,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,10 +37,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.dietstram.DBAdapter;
 import com.example.dietstram.DBSetupInsert;
+import com.example.dietstram.Idioms;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
-import com.example.dietstram.ui.food.FoodFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -122,10 +118,10 @@ public class HomeFragment extends Fragment {
     private void setAllWidgets() {
 
         //Progress bar
-         progressBarEnergy= getView().findViewById(R.id.progressBarEnergy);
-       progressBarProtein= getView().findViewById(R.id.progressBarProtein);
-        progressBarCarbs= getView().findViewById(R.id.progressBarCarbs);
-         progressBarFat= getView().findViewById(R.id.progressBarFat);
+        progressBarEnergy = getView().findViewById(R.id.progressBarEnergy);
+        progressBarProtein = getView().findViewById(R.id.progressBarProtein);
+        progressBarCarbs = getView().findViewById(R.id.progressBarCarbs);
+        progressBarFat = getView().findViewById(R.id.progressBarFat);
 
 
         textViewFoodName = getView().findViewById(R.id.textViewFoodName);
@@ -175,7 +171,8 @@ public class HomeFragment extends Fragment {
         Cursor cursor = db.select("users", fields, "_id", 1);
         if (cursor.getCount() != 0) {
             String userName = cursor.getString(0);
-            textViewHi.setText(String.format(getActivity().getString(R.string.hi), userName));
+            Idioms idioms=new Idioms();
+            textViewHi.setText(String.format(getActivity().getString(R.string.hi), userName,idioms.currentIdiom));
         }
         db.close();
 
@@ -365,12 +362,20 @@ public class HomeFragment extends Fragment {
 
             final String mealId = c.getString(0);
 
+            //Zero row (Grey Line View)
+            View view = new View(getActivity());
+            TableRow.LayoutParams viewParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+
+            viewParams.height = 40;
+            view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_all));
+            tableLayoutMain.addView(view, viewParams);
+
+            /* Header : Row [Name+ button] + Row [LinearLayout] */
             final TableLayout tableLayoutHeaderStyle = new TableLayout(getActivity());
-            tableLayoutHeaderStyle.setBackground(getActivity().getDrawable(R.drawable.bg_meal_table));
+            tableLayoutHeaderStyle.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_meal_table));
 
-//new ContextThemeWrapper(getActivity(), R.style.Widget_MyButtonAdd), null, 0
 
-            TableLayout tableLayoutHeader = new TableLayout(getActivity());
+            //First Row
             TableRow tableRowMealName = new TableRow(getActivity());
 
             /* Button */
@@ -401,32 +406,25 @@ public class HomeFragment extends Fragment {
                 }
             });
             tableRowMealName.addView(textViewMealName, textNameParams);
+            // //First Row
 
-            /* Kcal */
-            TableRow.LayoutParams textEnergyParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-            TextView textViewEnergy = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewBig), null, 0);
-            tableRowMealName.addView(textViewEnergy, textEnergyParams);
-
-            /* Total Fat,Protein,Carbs */
-            TableLayout tableLayoutSubHeader = new TableLayout(getActivity());
-            TableRow tableRowSubHeader = new TableRow(getActivity());
-
-            TableRow.LayoutParams textComponentsParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-            TextView textViewComponents = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewBigComponents), null, 0);
-
-            tableRowSubHeader.addView(textViewComponents, textComponentsParams);
-            tableLayoutSubHeader.addView(tableRowSubHeader);
+            //Second Row -- components total
+            TableRow.LayoutParams linearLayoutParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            linearLayoutParams.setMarginStart(100);
+            LinearLayout linearLayoutSubLine = new LinearLayout(getContext());
+            linearLayoutSubLine.setLayoutParams(linearLayoutParams);
 
             //Add table rows
             tableLayoutHeaderStyle.addView(tableRowMealName);
-            tableLayoutHeaderStyle.addView(tableLayoutSubHeader);
+            tableLayoutHeaderStyle.addView(linearLayoutSubLine, linearLayoutParams);
+            //  tableLayoutHeaderStyle.addView(tableLayoutSubHeader);
 
 //todo убрать при переходе на другой layout
 
             /* Sub table layout */
             final TableLayout tableLayoutSub = new TableLayout(getActivity());
-            tableLayoutSub.setBackground(getActivity().getDrawable(R.drawable.bf_meal_sub_table));
-            updateTableItems(mealId, tableLayoutSub, textViewEnergy, textViewComponents);
+            tableLayoutSub.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bf_meal_sub_table));
+            updateTableItems(mealId, tableLayoutSub, linearLayoutSubLine);
 
             /* Button popUp  */
             TableRow.LayoutParams buttonMoreLessParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
@@ -614,7 +612,7 @@ public class HomeFragment extends Fragment {
 
 
     /* Update Table */
-    private void updateTableItems(String mealNumber, TableLayout tableLayout, TextView textViewEnergyX, TextView textViewComponents) {
+    private void updateTableItems(String mealNumber, TableLayout tableLayout, LinearLayout linearLayoutSubLineTotal) {
 
         DBAdapter db = getDbAdapter();
 
@@ -706,10 +704,6 @@ public class HomeFragment extends Fragment {
             //Variables from food_diary
             String fdId = cursorFd.getString(1);
 
-            String fdServingSizeGram = cursorFd.getString(2);
-            String fdServingSizeGramMeasurement = cursorFd.getString(3);
-            String fdServingSizePcs = cursorFd.getString(4);
-            String fdServingSizePcsMeasurement = cursorFd.getString(5);
             String fdEnergyCalculated = cursorFd.getString(6);
             String fdProteinCalculated = cursorFd.getString(7);
             String fdCarbsCalculated = cursorFd.getString(8);
@@ -728,31 +722,13 @@ public class HomeFragment extends Fragment {
             TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
             final TextView textViewName = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewSimple), null, 0);
             textViewName.setText(foodName);
-            textViewName.setTextColor(getResources().getColor(R.color.login_form_details));
             tableRow.addView(textViewName, params);
 
-            //TextView Energy
-            TextView textViewEnergy = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewSimple), null, 0);
-            textViewEnergy.setText(fdEnergyCalculated);
-            tableRow.addView(textViewEnergy);
-
-            //TextView Components
-            TableRow tableRowSub = new TableRow(getActivity());
-            tableRowSub.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
-
-
-            TextView textViewSubLine = new TextView(new ContextThemeWrapper(getActivity(), R.style.Widget_TextViewSmallComponents), null, 0);
-            String subLine = String.format(getActivity().getString(R.string.components),
-                fdProteinCalculated,
-                fdCarbsCalculated,
-                fdFatCalculated);
-            textViewSubLine.setText(subLine);
-            TableRow subTableRow = new TableRow(getActivity());
-            subTableRow.addView(textViewSubLine);
+            LinearLayout linearLayoutSubLineFood = getSubLine(getContext(), fdEnergyCalculated, fdProteinCalculated, fdCarbsCalculated, fdFatCalculated);
 
 
             tableLayout.addView(tableRow);
-            tableLayout.addView(subTableRow);
+            tableLayout.addView(linearLayoutSubLineFood);
 
             tableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -772,13 +748,9 @@ public class HomeFragment extends Fragment {
         }
 
         /* Total Fat,Protein,Carbs */
-        textViewComponents.setText(String.format(getActivity().getString(R.string.total_components),
-            String.valueOf(fdceEatenProteins),
-            String.valueOf(fdceEatenCarbs),
-            String.valueOf(fdceEatenFat)));
-
-        //Update view table
-        textViewEnergyX.setText("" + fdceEatenEnergy);
+        TableRow.LayoutParams linearLayoutParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        linearLayoutParams.setMarginStart(30);
+        linearLayoutSubLineTotal.addView(getSubLine(getContext(), String.valueOf(fdceEatenEnergy), String.valueOf(fdceEatenProteins), String.valueOf(fdceEatenCarbs), String.valueOf(fdceEatenFat)), linearLayoutParams);
 
         if (!fdceId.equals("-1")) {
             //TODO
@@ -892,7 +864,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    //TODO EDIT OR DELETE
     private void rowOnClickEditDeleteLine(String stringTableRowTextName) {
 
         //show edit button
@@ -1196,6 +1167,134 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    LinearLayout getSubLine(Context context, String stringEnergy, String stringProtein, String stringCarbs, String stringFat) {
+
+        DBAdapter db = new DBAdapter(context);
+        db.open();
+        String[] fieldsGoal = {
+            "goal_energy_with_activity_and_diet",
+            "goal_energy_with_activity_and_diet",
+            "goal_energy_with_activity_and_diet",
+            "goal_energy_with_activity_and_diet",
+        };
+        Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
+        String stringEnergyGoal = cursorGoal.getString(0);
+        String stringProteinGoal = cursorGoal.getString(1);
+        String stringCarbsGoal = cursorGoal.getString(2);
+        String stringFatGoal = cursorGoal.getString(3);
+        db.close();
+
+
+        LinearLayout linearLayout = new LinearLayout(context);
+
+        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageParams.height = 70;
+        imageParams.width = 70;
+        //imageParams.setMargins(10, 0, 0, 0);
+
+        //Energy
+        ImageView imageViewEnergy = new ImageView(context);
+        imageViewEnergy.setLayoutParams(imageParams);
+        imageViewEnergy.setImageResource(R.drawable.ic_energy);
+        TextView textViewEnergy = new TextView(context, null, R.style.Widget_TextViewSmallComponents);
+        textViewEnergy.setText(String.format(context.getResources().getString(R.string.format_kcal), stringEnergy));
+
+        //~300
+        if (Double.parseDouble(stringEnergy) * 8 < Double.parseDouble(stringEnergyGoal)) {
+            textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
+        } else if (Double.parseDouble(stringEnergy) * 4 < Double.parseDouble(stringEnergyGoal)) {
+            //~500
+            textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
+
+        } else {
+            //>500
+            textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_red)));
+
+        }
+
+        linearLayout.addView(imageViewEnergy);
+        linearLayout.addView(textViewEnergy);
+
+        // //Energy
+
+        //Protein
+        ImageView imageViewProtein = new ImageView(context);
+        imageViewProtein.setLayoutParams(imageParams);
+        imageViewProtein.setImageResource(R.drawable.ic_protein);
+        TextView textViewProtein = new TextView(context, null, R.style.Widget_TextViewSmallComponents);
+        textViewProtein.setText(String.format(context.getResources().getString(R.string.format_g), stringProtein));
+
+        //~300
+        if (Double.parseDouble(stringProtein) * 8 < Double.parseDouble(stringProteinGoal)) {
+            textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
+        } else if (Double.parseDouble(stringProtein) * 4 < Double.parseDouble(stringProteinGoal)) {
+            //~500
+            textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
+
+        } else {
+            //>500
+            textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_red)));
+
+        }
+
+        linearLayout.addView(imageViewProtein);
+        linearLayout.addView(textViewProtein);
+
+        // //Protein
+
+        //Carbs
+        ImageView imageViewCarbs = new ImageView(context);
+        imageViewCarbs.setLayoutParams(imageParams);
+        imageViewCarbs.setImageResource(R.drawable.ic_carbs);
+        TextView textViewCarbs = new TextView(context, null, R.style.Widget_TextViewSmallComponents);
+        textViewCarbs.setText(String.format(context.getResources().getString(R.string.format_g), stringCarbs));
+
+        //~300
+        if (Double.parseDouble(stringCarbs) * 8 < Double.parseDouble(stringCarbsGoal)) {
+            textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
+        } else if (Double.parseDouble(stringCarbs) * 4 < Double.parseDouble(stringCarbsGoal)) {
+            //~500
+            textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
+
+        } else {
+            //>500
+            textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_red)));
+
+        }
+
+        linearLayout.addView(imageViewCarbs);
+        linearLayout.addView(textViewCarbs);
+
+        // //Carbs
+
+        //Fat
+        ImageView imageViewFat = new ImageView(context);
+        imageViewFat.setLayoutParams(imageParams);
+        imageViewFat.setImageResource(R.drawable.ic_fat);
+        TextView textViewFat = new TextView(context, null, R.style.Widget_TextViewSmallComponents);
+        textViewFat.setText(String.format(context.getResources().getString(R.string.format_g), stringFat));
+
+        //~300
+        if (Double.parseDouble(stringFat) * 8 < Double.parseDouble(stringFatGoal)) {
+            textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
+        } else if (Double.parseDouble(stringFat) * 4 < Double.parseDouble(stringFatGoal)) {
+            //~500
+            textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
+
+        } else {
+            //>500
+            textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_red)));
+
+        }
+
+        linearLayout.addView(imageViewFat);
+        linearLayout.addView(textViewFat);
+
+        // //Fat
+
+        return linearLayout;
+    }
+
     void updateUpperTable() {
 
         DBAdapter db = getDbAdapter();
@@ -1271,15 +1370,15 @@ public class HomeFragment extends Fragment {
             }
 
 
-            TextView textViewProgressEnergy=getView().findViewById(R.id.textViewProgressEnergy);
-            TextView textViewProgressProtein=getView().findViewById(R.id.textViewProgressProtein);
-            TextView textViewProgressCarbs=getView().findViewById(R.id.textViewProgressCarbs);
-            TextView textViewProgressFat=getView().findViewById(R.id.textViewProgressFat);
+            TextView textViewProgressEnergy = getView().findViewById(R.id.textViewProgressEnergy);
+            TextView textViewProgressProtein = getView().findViewById(R.id.textViewProgressProtein);
+            TextView textViewProgressCarbs = getView().findViewById(R.id.textViewProgressCarbs);
+            TextView textViewProgressFat = getView().findViewById(R.id.textViewProgressFat);
 
-            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progres_kcal),stringGoalEnergy,stringEatenEnergy));
-            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progres_g),stringGoalProtein,stringEatenProtein));
-            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progres_g),stringGoalCarbs,stringEatenCarbs));
-            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progres_g),stringGoalFat,stringEatenFat));
+            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progress_kcal), stringGoalEnergy, stringEatenEnergy));
+            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringGoalProtein, stringEatenProtein));
+            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringGoalCarbs, stringEatenCarbs));
+            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringGoalFat, stringEatenFat));
 
 
         }

@@ -56,6 +56,14 @@
         <item name="android:textSize">15sp</item>
     </style>
     <!-- // Text Small Components-->
+
+    <!-- Text Hi-->
+    <style name="Widget.TextViewHi" parent="android:Widget">
+        <item name="android:textColor">@color/login_form_details</item>
+        <item name="android:textStyle"> italic|bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <!-- // Text Small Components-->
     <!-- // Text View -->
 
     <!-- Image-->
@@ -75,7 +83,7 @@
     <!-- // EditText -->
 
     <!-- Button -->
-    <style name="Widget.MyButton" parent="android:Widget">
+    <style name="Widget.MyButton" parent="Widget.AppCompat.Button">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/login_form_details</item>
         <item name="background">@drawable/btn_bg</item>
