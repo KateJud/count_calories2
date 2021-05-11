@@ -10,5 +10,12 @@
     <color name="gray">#878A87</color>
     <color name="white">#F2F8F2</color>
 
+    <color name="my_green">#4CAF50</color>
+    <color name="my_yellow">#FFC107</color>
+    <color name="my_red">#F44336</color>
+
+    <color name="light_green">#B9ECB9</color>
+    <color name="light_blue">#B9ECF2</color>
+
 
 </resources>

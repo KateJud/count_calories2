@@ -91,6 +91,7 @@
         <item name="background">@drawable/bg_meal_table</item>
     </style>
     <!-- // Meal Table -->
+
     <!-- Sub Meal Table -->
     <style name="Widget.TableMealSub" parent="android:Widget">
         <item name="background">@drawable/bg_meal_table</item>

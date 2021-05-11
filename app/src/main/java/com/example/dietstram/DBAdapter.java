@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 27;
+    public static final int DATABASE_VERSION = 28;
 
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -30,7 +30,6 @@ public class DBAdapter {
         DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
-
 
         @Override
         public void onCreate(SQLiteDatabase db) {

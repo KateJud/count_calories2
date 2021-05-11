@@ -13,6 +13,7 @@
         android:orientation="vertical"
         >
 
+        <!-- Hi -->
         <TextView
             android:id="@+id/textViewHi"
             android:layout_width="match_parent"
@@ -21,81 +22,173 @@
             android:layout_weight="80"
             android:text="@string/hi"
             android:textSize="18sp" />
+        <!-- // Hi -->
 
-        <!-- Today result -->
+        <!-- Progress bar -->
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="14dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="24dp">
+            android:layout_height="wrap_content">
 
-            <!-- Head result -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <!-- Energy -->
+            <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_energy" />
 
-                <TextView
-                    android:id="@+id/textViewGoalWithActivity"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="80"
-                    android:text="@string/goal"
-                    android:textSize="18sp" />
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp" >
 
-                <TextView
-                    android:id="@+id/textViewFood"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="80"
-                    android:text="@string/eaten"
-                    android:textSize="18sp" />
+                    <ProgressBar
+                        android:id="@+id/progressBarEnergy"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/custom_progress_bar" />
 
-                <TextView
-                    android:id="@+id/textViewSum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="80"
-                    android:text="@string/left"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/textViewProgressEnergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/_100"
+                        android:textColor="@android:color/white" />
+                </RelativeLayout>
             </TableRow>
-            <!--// Head result -->
-            <!-- Body result -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <!-- // Energy -->
 
-                <TextView
-                    android:id="@+id/textViewGoalWithActivityBody"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="@string/goal_with_activity"
-                    android:textSize="18sp" />
+            <!-- Protein -->
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_protein" />
 
-                <TextView
-                    android:id="@+id/textViewFoodBody"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="@string/food"
-                    android:textSize="18sp" />
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp" >
 
-                <TextView
-                    android:id="@+id/textViewSumBody"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:text="@string/sum"
-                    android:textSize="18sp" />
+                    <ProgressBar
+                        android:id="@+id/progressBarProtein"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/custom_progress_bar" />
+
+                    <TextView
+                        android:id="@+id/textViewProgressProtein"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/_100"
+                        android:textColor="@android:color/white" />
+                </RelativeLayout>
             </TableRow>
-            <!-- // Body result -->
+            <!-- // Protein -->
+
+            <!-- Carbs -->
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_carbs" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp" >
+
+                    <ProgressBar
+                        android:id="@+id/progressBarCarbs"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/custom_progress_bar" />
+
+                    <TextView
+                        android:id="@+id/textViewProgressCarbs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/_100"
+                        android:textColor="@android:color/white" />
+                </RelativeLayout>
+            </TableRow>
+            <!-- // Carbs -->
+
         </TableLayout>
+        <!-- // Progress bar -->
 
-        <!-- // Today result -->
+        <!-- Fat -->
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_fat" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp" >
+
+                <ProgressBar
+                    android:id="@+id/progressBarFat"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/custom_progress_bar" />
+
+                <TextView
+                    android:id="@+id/textViewProgressFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="@string/_100"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+        </TableRow>
+        <!-- // Fat -->
+
+
 
         <!-- Today result -->
         <TableLayout
