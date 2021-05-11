@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -60,6 +63,13 @@ public class HomeFragment extends Fragment {
     Cursor listCursor;
     Cursor listCursorFood;
 
+    /* ProgressBar */
+    ProgressBar progressBarEnergy;
+    ProgressBar progressBarProtein;
+    ProgressBar progressBarCarbs;
+    ProgressBar progressBarFat;
+
+
     /* TextView */
     TextView textViewFoodName;//.findViewById(R.id.textViewFoodName);
     TextView textViewFoodManufactureName;//.findViewById(R.id.textViewManufacture);
@@ -75,6 +85,7 @@ public class HomeFragment extends Fragment {
     TextView textViewFoodProteinsPerN;//.findViewById(R.id.textViewFoodProteinsPerN);
     TextView textViewFoodCarbsPerN;//.findViewById(R.id.textViewFoodCarbsPerN);
     TextView textViewFoodFatPerN;//.findViewById(R.id.textViewFoodFatPerN);
+
 
     /* EditText */
     EditText editTextPortionSizePCS;
@@ -109,6 +120,14 @@ public class HomeFragment extends Fragment {
 
 
     private void setAllWidgets() {
+
+        //Progress bar
+         progressBarEnergy= getView().findViewById(R.id.progressBarEnergy);
+       progressBarProtein= getView().findViewById(R.id.progressBarProtein);
+        progressBarCarbs= getView().findViewById(R.id.progressBarCarbs);
+         progressBarFat= getView().findViewById(R.id.progressBarFat);
+
+
         textViewFoodName = getView().findViewById(R.id.textViewFoodName);
         textViewFoodManufactureName = getView().findViewById(R.id.textViewManufacture);
         textViewFoodAbout = getView().findViewById(R.id.textViewFoodAbout);
@@ -1178,30 +1197,91 @@ public class HomeFragment extends Fragment {
     }
 
     void updateUpperTable() {
-        TextView textViewGoalWithActivityBody = getActivity().findViewById(R.id.textViewGoalWithActivityBody);
-        TextView textViewFoodBody = getActivity().findViewById(R.id.textViewFoodBody);
-        TextView textViewSumBody = getActivity().findViewById(R.id.textViewSumBody);
 
         DBAdapter db = getDbAdapter();
         String[] fieldsGoal = {
-            "goal_energy_with_activity_and_diet"
+            "goal_energy_with_activity_and_diet",
+            "goal_proteins_with_activity_and_diet",
+            "goal_carbs_with_activity_and_diet",
+            "goal_fat_with_activity_and_diet",
         };
         Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
         if (cursorGoal.getCount() != 0) {
-            String stringGoal = cursorGoal.getString(0);
+            String stringGoalEnergy = cursorGoal.getString(0);
+            String stringGoalProtein = cursorGoal.getString(1);
+            String stringGoalCarbs = cursorGoal.getString(2);
+            String stringGoalFat = cursorGoal.getString(3);
+
 
             String[] fieldsSum = {
-                "fd_sum_energy"
+                "fd_sum_energy",
+                "fd_sum_proteins",
+                "fd_sum_carbs",
+                "fd_sum_fat",
             };
             Cursor cursorSum = db.select("food_diary_sum", fieldsSum, "fd_sum_date", db.quoteSmart(currentData));
-            String stringEaten = cursorSum.getString(0);
+            String stringEatenEnergy = cursorSum.getString(0);
+            String stringEatenProtein = cursorSum.getString(1);
+            String stringEatenCarbs = cursorSum.getString(2);
+            String stringEatenFat = cursorSum.getString(3);
 
-            int left = Integer.parseInt(stringGoal) - Integer.parseInt(stringEaten);
-            String stringLeft = String.valueOf(left);
 
-            textViewGoalWithActivityBody.setText(stringGoal);
-            textViewFoodBody.setText(stringEaten);
-            textViewSumBody.setText(stringLeft);
+            progressBarEnergy.setMax(Integer.parseInt(stringGoalEnergy));
+            progressBarEnergy.setProgress(Integer.parseInt(stringEatenEnergy));
+            double energyLeft = Double.parseDouble(stringGoalEnergy) - Double.parseDouble(stringEatenEnergy);
+            if (energyLeft > 30) {
+                progressBarEnergy.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
+            } else if (energyLeft > -100) {
+                progressBarEnergy.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_yellow)));
+            } else {
+                progressBarEnergy.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
+            }
+
+            progressBarProtein.setMax(Integer.parseInt(stringGoalProtein));
+            progressBarProtein.setProgress(Integer.parseInt(stringEatenProtein));
+            double proteinLeft = Double.parseDouble(stringGoalProtein) - Double.parseDouble(stringEatenProtein);
+            if (proteinLeft > 10) {
+                progressBarProtein.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
+            } else if (proteinLeft > -10) {
+                progressBarProtein.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_yellow)));
+            } else {
+                progressBarProtein.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
+            }
+
+            progressBarCarbs.setMax(Integer.parseInt(stringGoalCarbs));
+            progressBarCarbs.setProgress(Integer.parseInt(stringEatenCarbs));
+            double carbsLeft = Double.parseDouble(stringGoalCarbs) - Double.parseDouble(stringEatenCarbs);
+            if (carbsLeft > 10) {
+                progressBarCarbs.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
+            } else if (carbsLeft > -10) {
+                progressBarCarbs.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_yellow)));
+            } else {
+                progressBarCarbs.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
+            }
+
+            progressBarFat.setMax(Integer.parseInt(stringGoalFat));
+            progressBarFat.setProgress(Integer.parseInt(stringEatenFat));
+            double fatLeft = Double.parseDouble(stringGoalFat) - Double.parseDouble(stringEatenFat);
+            if (fatLeft > 10) {
+                progressBarFat.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
+            } else if (fatLeft > -10) {
+                progressBarFat.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_yellow)));
+            } else {
+                progressBarFat.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
+            }
+
+
+            TextView textViewProgressEnergy=getView().findViewById(R.id.textViewProgressEnergy);
+            TextView textViewProgressProtein=getView().findViewById(R.id.textViewProgressProtein);
+            TextView textViewProgressCarbs=getView().findViewById(R.id.textViewProgressCarbs);
+            TextView textViewProgressFat=getView().findViewById(R.id.textViewProgressFat);
+
+            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progres_kcal),stringGoalEnergy,stringEatenEnergy));
+            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progres_g),stringGoalProtein,stringEatenProtein));
+            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progres_g),stringGoalCarbs,stringEatenCarbs));
+            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progres_g),stringGoalFat,stringEatenFat));
+
+
         }
         db.close();
 

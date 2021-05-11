@@ -186,4 +186,7 @@
     <string name="components"> proteins: %s, carbs:  %s, fat:  %s </string>
     <string name="write_name_of_food">write name of food here</string>
 
+    <string name="format_progres_kcal">%s/%s kcal</string>
+    <string name="format_progres_g">%s/%s g</string>
+
 </resources>
