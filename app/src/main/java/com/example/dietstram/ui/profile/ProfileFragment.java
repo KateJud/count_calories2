@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -45,13 +46,14 @@ public class ProfileFragment extends Fragment {
     /* EditText --------------------------------------------------------------------------------- */
     private EditText editTextHeightCm;
     private EditText editTextHeightInches;
+    private EditText editTextNickName;
 
+    /* DataPicker ---------------------------------------------------------------------------------- */
+    private DatePicker dataPicker;
 
     /* Spinner ---------------------------------------------------------------------------------- */
     private Spinner spinnerMeasurement;
-    private Spinner spinnerDOBYear;
-    private Spinner spinnerDOBMonth;
-    private Spinner spinnerDOBDay;
+
     /* RadioGroup ------------------------------------------------------------------------------- */
     private RadioGroup radioGroupGender;
 
@@ -69,14 +71,14 @@ public class ProfileFragment extends Fragment {
     private void setAllWidgets() {
         /* Spinner -------------------------------------------------------------------------------- */
         spinnerMeasurement = getActivity().findViewById(R.id.spinnerMeasurement);
-        spinnerDOBDay = getActivity().findViewById(R.id.spinnerDOBDay);
-        spinnerDOBYear = getActivity().findViewById(R.id.spinnerDOBYear);
-        spinnerDOBMonth = getActivity().findViewById(R.id.spinnerDOBMonth);
         /* RadioGroup ---------------------------------------------------------------------------- */
         radioGroupGender = getActivity().findViewById(R.id.radioGroupGender);
         /* EditText ------------------------------------------------------------------------------- */
         editTextHeightCm = getActivity().findViewById(R.id.editTextHeightCm);
         editTextHeightInches = getActivity().findViewById(R.id.editTextHeightInches);
+        editTextNickName = getActivity().findViewById(R.id.editTextNickName);
+        /* DataPicker ------------------------------------------------------------------------------- */
+        dataPicker = getActivity().findViewById(R.id.datePicker);
     }
 
     @Override
@@ -111,28 +113,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        //Inflate menu
-        ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
-
-        //Assign variables
-        menuItemEdit = menu.findItem(R.id.action_edit);
-        menuItemDelete = menu.findItem(R.id.action_delete);
-
-        //Hide as default
-        menuItemEdit.setVisible(false);
-        menuItemDelete.setVisible(false);
-
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private DBAdapter getDbAdapter() {
         DBAdapter db = new DBAdapter(getActivity());
         db.open();
@@ -147,7 +127,6 @@ public class ProfileFragment extends Fragment {
         setAllWidgets();
         initializeData();
 
-//        setHasOptionsMenu(true);
     }
 
     public void initializeData() {
@@ -157,32 +136,31 @@ public class ProfileFragment extends Fragment {
         DBAdapter db = getDbAdapter();
 
         long longRowId = 1;
-        String fields[] = {
+        String[] fields = {
             "_id",
             "user_dob",
             "user_gender",
             "user_height",
-            "user_measurement"
+            "user_measurement",
+            "user_email"
         };
         Cursor cursor = db.select("users", fields, "_id", longRowId);
         String stringUserDOB = cursor.getString(1);
         String stringUserGender = cursor.getString(2);
         String stringUserHeight = cursor.getString(3);
         String stringUserMeasurement = cursor.getString(4);
+        String stringUserEmail = cursor.getString(5);
+
+        /* NickName */
+        editTextNickName.setText(stringUserEmail);
 
         /* DOB */
-
         String[] items = stringUserDOB.split("-");
         String stringYear = items[0];
         String stringMonth = items[1];
         String stringDay = items[2];
+        dataPicker.init(Integer.parseInt(stringYear), Integer.parseInt(stringMonth), Integer.parseInt(stringDay), null);
 
-        /* DOB: Day */
-        fillDays(stringDay);
-        /* DOB: Month */
-        fillMonth(stringMonth);
-        /* DOB: year */
-        fillYears(stringYear);
 
         /* Gender */
         RadioButton radioButtonGenderMale = getActivity().findViewById(R.id.radioButtonGenderMale);
@@ -220,6 +198,11 @@ public class ProfileFragment extends Fragment {
 
     private void buttonSaveOnClick() {
 
+        String nickName = editTextNickName.getText().toString();
+        if (nickName.isEmpty()) {
+            errorMessage = "NickName mustn't be empty";
+        }
+
         //DateOfBirth
         String stringDateOfBirth = getDOB();
 
@@ -233,25 +216,25 @@ public class ProfileFragment extends Fragment {
         String measurement = spinnerMeasurement.getSelectedItem().toString().toLowerCase();
 
         //Error handling
-        tryFinishSave(stringDateOfBirth, stringGender, height, measurement);
+        tryFinishSave(nickName, stringDateOfBirth, stringGender, height, measurement);
 
 
     }
 
-    private void tryFinishSave(String stringDateOfBirth, String stringGender,
+    private void tryFinishSave(String nickName, String stringDateOfBirth, String stringGender,
                                double height, String measurement) {
 
         //Нет ошибки
         if (errorMessage.isEmpty()) {
             //Put data into database
-            putDataToDB(stringDateOfBirth, stringGender, height, measurement);
+            putDataToDB(nickName, stringDateOfBirth, stringGender, height, measurement);
 
         } else {
             Toast.makeText(getActivity(), "Error: " + errorMessage, Toast.LENGTH_LONG).show();
         }
     }
 
-    private void putDataToDB(String stringDateOfBirth, String stringGender, double height, String measurement) {
+    private void putDataToDB(String nickName, String stringDateOfBirth, String stringGender, double height, String measurement) {
         //TODO
         long id = 1;
         DBAdapter db = new DBAdapter(getActivity());
@@ -262,13 +245,15 @@ public class ProfileFragment extends Fragment {
         String stringGenderSQL = db.quoteSmart(stringGender);
         String heightSQL = db.quoteSmart("" + height);
         String measurementSQL = db.quoteSmart(measurement);
+        String nickNameSQL = db.quoteSmart(nickName);
 
 
         String[] fieldsUser = {"user_dob",
             "user_gender",
             "user_height",
-            "user_measurement"};
-        String[] values = {stringDateOfBirthSQL, stringGenderSQL, heightSQL, measurementSQL};
+            "user_measurement",
+            "user_email"};
+        String[] values = {stringDateOfBirthSQL, stringGenderSQL, heightSQL, measurementSQL, nickNameSQL};
 
 
         db.update("users", "_id", id, fieldsUser, values);
@@ -304,118 +289,22 @@ public class ProfileFragment extends Fragment {
         int selectedId = radioGroupGender.getCheckedRadioButtonId();
         //find button by id
         RadioButton radioButtonGender = getActivity().findViewById(selectedId);
-        String stringGender = (radioButtonGender.getText().toString()).toLowerCase(Locale.ROOT);
-        return stringGender;
+        return (radioButtonGender.getText().toString()).toLowerCase(Locale.ROOT);
     }
 
     private String getDOB() {
         //DateOfBirth Day
-        String stringDOBDay = spinnerDOBDay.getSelectedItem().toString();
-        int DOBDay;
-        try {
-            DOBDay = Integer.parseInt(stringDOBDay);
-            if (DOBDay < 10) {
-                stringDOBDay = "0" + DOBDay;
-            }
-        } catch (NumberFormatException nfe) {
-            System.out.println("Could not be parse");
-            errorMessage = "Please select a day for your birthday correctly";
-        }
+        String stringDOBDay = String.valueOf(dataPicker.getDayOfMonth());
 
         //DateOfBirth Month
-        String stringDOBMonth = spinnerDOBMonth.getSelectedItem().toString();
-        stringDOBMonth = convertMonthToNumber(stringDOBMonth);
+        String stringDOBMonth = String.valueOf(dataPicker.getMonth());
 
         //DateOfBirth Year
-        String stringDOBYear = spinnerDOBYear.getSelectedItem().toString();
+        String stringDOBYear = String.valueOf(dataPicker.getYear());
 
         //Put date of birth together
         String dateOfBirth = stringDOBYear + "-" + stringDOBMonth + "-" + stringDOBDay;
         return dateOfBirth;
-    }
-
-    private String convertMonthToNumber(String stringDOBMonth) {
-        if (stringDOBMonth.startsWith("Jan")) {
-            stringDOBMonth = "01";
-        }
-        if (stringDOBMonth.startsWith("Feb")) {
-            stringDOBMonth = "02";
-        }
-        if (stringDOBMonth.startsWith("Mar")) {
-            stringDOBMonth = "03";
-        }
-        if (stringDOBMonth.startsWith("Apr")) {
-            stringDOBMonth = "04";
-        }
-        if (stringDOBMonth.startsWith("May")) {
-            stringDOBMonth = "05";
-        }
-        if (stringDOBMonth.startsWith("Jun")) {
-            stringDOBMonth = "06";
-        }
-        if (stringDOBMonth.startsWith("Jul")) {
-            stringDOBMonth = "07";
-        }
-        if (stringDOBMonth.startsWith("Jul")) {
-            stringDOBMonth = "08";
-        }
-        if (stringDOBMonth.startsWith("Jul")) {
-            stringDOBMonth = "09";
-        }
-        if (stringDOBMonth.startsWith("Jul")) {
-            stringDOBMonth = "10";
-        }
-        if (stringDOBMonth.startsWith("Nov")) {
-            stringDOBMonth = "11";
-        }
-        if (stringDOBMonth.startsWith("Dec")) {
-            stringDOBMonth = "12";
-        }
-        return stringDOBMonth;
-    }
-
-
-    private final String[] arraySpinnerDOBDay = new String[31];
-    private final String[] arraySpinnerDOBYear = new String[68]; //13-80
-
-
-    private void fillYears(String stringYear) {
-        //13-80
-        int spinnerYearSelectedIndex = 0;
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR) - 13;
-        int yearEnd = year - 68;
-        for (int k = 0, i = yearEnd; i < year; k++, i++) {
-            arraySpinnerDOBYear[67 - k] = "" + i;
-            if (stringYear.equals(arraySpinnerDOBYear[67 - k])) {
-                spinnerYearSelectedIndex = 67 - k;
-            }
-        }
-
-        ArrayAdapter<String> adapterYear = new ArrayAdapter<String>(getActivity(),
-            android.R.layout.simple_spinner_item, arraySpinnerDOBYear);
-        spinnerDOBYear.setAdapter(adapterYear);
-        spinnerDOBYear.setSelection(spinnerYearSelectedIndex);
-    }
-
-    private void fillDays(String stringDay) {
-        int spinnerDaySelectedIndex = 0;
-        String[] arraySpinnerDay = new String[31];
-        for (int i = 0; i < 31; i++) {
-            arraySpinnerDay[i] = "" + (i + 1);
-            if (stringDay.equals("0" + arraySpinnerDay[i]) || stringDay.equals(arraySpinnerDay[i])) {
-                spinnerDaySelectedIndex = i;
-            }
-        }
-        //Populate spinner
-
-        ArrayAdapter<String> adapterDay = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arraySpinnerDay);
-        spinnerDOBDay.setAdapter(adapterDay);
-        spinnerDOBDay.setSelection(spinnerDaySelectedIndex);
-    }
-
-    private void fillMonth(String stringMonth) {
-        spinnerDOBMonth.setSelection(Integer.parseInt(stringMonth) - 1);
     }
 
     private boolean isMetric() {

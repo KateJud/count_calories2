@@ -56,7 +56,7 @@
                     android:layout_marginRight="8dp"
                     android:inputType="number"
                     android:text="@string/user_weight"
-                    style="@style/Widget.EditTextBlank"
+                    style="@style/Widget.EditTextBlankBlue"
                     android:textSize="18sp"
                     android:layout_marginEnd="8dp" />
 
@@ -89,7 +89,7 @@
                     android:layout_marginRight="8dp"
                     android:inputType="number"
                     android:text="@string/user_target_weight"
-                    style="@style/Widget.EditTextBlank" />
+                    style="@style/Widget.EditTextBlankBlue" />
 
                 <TextView
                     android:id="@+id/textViewGoalKg2"

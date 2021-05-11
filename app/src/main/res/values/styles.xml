@@ -64,8 +64,7 @@
         <item name="android:textSize">20sp</item>
     </style>
     <!-- // Text Small Components-->
-    <!-- // Text View -->
-
+    <!-- // Text View ***************************** -->
     <!-- Image-->
     <style name="Widget.ImageView" parent="android:Widget">
         <item name="android:width">30dp</item>
@@ -74,14 +73,15 @@
     <!-- //Image-->
 
     <!-- EditText -->
-    <style name="Widget.EditTextBlank" parent="android:Widget">
+    <style name="Widget.EditTextBlankBlue" parent="android:Widget.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/login_form_details</item>
-     <item name="background">@drawable/et_bg_blank</item>
-        <item name="android:ems">4</item>
+        <item name="backgroundTint">@color/light_blue</item>
+        <item name="android:ems">5</item>
     </style>
     <!-- // EditText -->
 
+    <!-- Button *********************************************-->
     <!-- Button -->
     <style name="Widget.MyButton" parent="Widget.AppCompat.Button">
         <item name="android:textSize">18sp</item>
@@ -97,10 +97,30 @@
         <item name="android:foregroundGravity">center_vertical</item>
         <item name="android:padding">16dp</item>
     </style>
-    <!-- // Button  -->
+    <!-- // Button ********************************************* -->
 
 
-    <!-- Table -->
+    <!-- RadioButton ++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- RadioButton Blue -->
+    <style name="Widget.RadioButtonBlue" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="buttonTint">@color/light_blue</item>
+    </style>
+    <!-- // RadioButton Blue -->
+    <!-- RadioButton ********************************************* -->
+
+    <!-- DataPicker ++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- DataPicker Blue -->
+    <style name="Widget.DataPickerBlue" parent="android:Widget.CompoundButton.RadioButton">
+        <!-- Text color -->
+        <item name="android:textColorPrimary">@color/my_green</item>
+        <!-- Divider color -->
+        <item name="colorControlNormal">@color/light_blue</item>
+    </style>
+    <!-- // DataPicker Blue -->
+    <!-- DataPicker ********************************************* -->
+
+
+    <!-- Table ++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Meal Table -->
     <style name="Widget.TableMeal" parent="android:Widget">
         <item name="background">@drawable/bg_meal_table</item>
@@ -112,7 +132,8 @@
         <item name="background">@drawable/bg_meal_table</item>
     </style>
     <!-- // Sub Meal Table -->
+    <!-- // Table ********************************************* -->
 
 
-    <!-- // Table  -->
+
 </resources>
