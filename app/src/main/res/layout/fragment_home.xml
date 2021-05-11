@@ -210,7 +210,9 @@
             android:id="@+id/tableLayoutHomeMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           android:layout_marginTop="24dp">
+           android:layout_marginTop="24dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
 
         </TableLayout>
 
@@ -228,112 +230,6 @@
             android:textColor="@color/login_form_details_medium"
             android:text="@string/add_meal" />
         <!-- //Submit button -->
-
-
-
-        <!--        <TableLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <TableRow-->
-<!--                android:id="@+id/tableLayoutBreakfast"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/imageButtonBreakfastAdd"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:foregroundGravity="center_vertical"-->
-<!--                    android:src="@drawable/ic_menu_action_add" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewBreakfast"-->
-<!--                    style="@style/Widget.TextViewSimple"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="@string/breakfast" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewBreakfastEnergy"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="10"-->
-<!--                    android:text="@string/breakfast"-->
-<!--                    android:textSize="18sp" />-->
-
-<!--            </TableRow>-->
-<!--        </TableLayout>-->
-<!--        &lt;!&ndash;  Breakfast items &ndash;&gt;-->
-<!--        <TableLayout-->
-<!--            android:id="@+id/tableLayoutBreakfastItems"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <TableRow-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewBreakfastItemsName"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="24dp"-->
-<!--                    android:text="@string/name"-->
-<!--                    android:textSize="18sp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewBreakfastItemsKcal"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="24dp"-->
-<!--                    android:layout_weight="80"-->
-<!--                    android:text="@string/blank"-->
-<!--                    android:textSize="18sp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewBreakfastItemsEnergy"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="24dp"-->
-<!--                    android:layout_weight="10"-->
-<!--                    android:text="@string/breakfast"-->
-<!--                    android:textSize="18sp" />-->
-
-<!--            </TableRow>-->
-<!--        </TableLayout>-->
-<!--        &lt;!&ndash; // Breakfast items &ndash;&gt;-->
-<!--        &lt;!&ndash; Breakfast Items Sub &ndash;&gt;-->
-<!--        <TableLayout-->
-<!--            android:id="@+id/tableLayoutBreakfastItemsSub"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <TableRow-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textViewBreakfastItemsSubName"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/name" />-->
-
-
-<!--            </TableRow>-->
-<!--        </TableLayout>-->
-        <!-- // Breakfast items sub -->
-        <!-- // Breakfast -->
-
-        <!-- Lunch -->
-        <!-- // Lunch -->
-
-        <!-- Supper -->
-        <!-- // Supper -->
-
-        <!-- Snacks -->
-        <!-- // Snack -->
     </LinearLayout>
 
 </ScrollView>
