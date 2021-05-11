@@ -516,7 +516,7 @@ public class HomeFragment extends Fragment {
             "_id ",
             "fd_sum_date ",
             "fd_sum_energy ",
-            "fd_sum_proteins ",
+            "fd_sum_protein ",
             "fd_sum_carbs ",
             "fd_sum_fat "
         };
@@ -532,7 +532,7 @@ public class HomeFragment extends Fragment {
         //Считаем сумму через food_diary
         String[] fieldsFDCE = {
             "fdce_eaten_energy ",
-            "fdce_eaten_proteins ",
+            "fdce_eaten_protein ",
             "fdce_eaten_carbs ",
             "fdce_eaten_fat "};
         Cursor cursorFdce = db.select("food_diary_cal_eaten", fieldsFDCE, "fdce_date", currentDateSQL);
@@ -551,7 +551,7 @@ public class HomeFragment extends Fragment {
             String insertFields = "_id ," +
                 "fd_sum_date ," +
                 "fd_sum_energy ," +
-                "fd_sum_proteins ," +
+                "fd_sum_protein ," +
                 "fd_sum_carbs ," +
                 "fd_sum_fat ";
             String insertValues = "NULL," +
@@ -567,7 +567,7 @@ public class HomeFragment extends Fragment {
             // Update
 
             String[] updateFields = {"fd_sum_energy ",
-                "fd_sum_proteins ",
+                "fd_sum_protein ",
                 "fd_sum_carbs ",
                 "fd_sum_fat "};
             String[] updateValues = {db.quoteSmart("" + fdceEatenEnergy),
@@ -625,7 +625,7 @@ public class HomeFragment extends Fragment {
             "fdce_date ",
             "fdce_meal_no ",
             "fdce_eaten_energy ",
-            "fdce_eaten_proteins ",
+            "fdce_eaten_protein ",
             "fdce_eaten_carbs ",
             "fdce_eaten_fat "
         };
@@ -644,7 +644,7 @@ public class HomeFragment extends Fragment {
                 "fdce_date ," +
                 "fdce_meal_no ," +
                 "fdce_eaten_energy ," +
-                "fdce_eaten_proteins ," +
+                "fdce_eaten_protein ," +
                 "fdce_eaten_carbs ," +
                 "fdce_eaten_fat ";
             String insertValues = "Null," +
@@ -757,7 +757,7 @@ public class HomeFragment extends Fragment {
 
             //Update fdce_table
             String[] updateFields = {"fdce_eaten_energy ",
-                "fdce_eaten_proteins ",
+                "fdce_eaten_protein ",
                 "fdce_eaten_carbs ",
                 "fdce_eaten_fat "};
             String[] updateValues = {db.quoteSmart("" + fdceEatenEnergy),
@@ -1300,7 +1300,7 @@ public class HomeFragment extends Fragment {
         DBAdapter db = getDbAdapter();
         String[] fieldsGoal = {
             "goal_energy_with_activity_and_diet",
-            "goal_proteins_with_activity_and_diet",
+            "goal_protein_with_activity_and_diet",
             "goal_carbs_with_activity_and_diet",
             "goal_fat_with_activity_and_diet",
         };
@@ -1314,7 +1314,7 @@ public class HomeFragment extends Fragment {
 
             String[] fieldsSum = {
                 "fd_sum_energy",
-                "fd_sum_proteins",
+                "fd_sum_protein",
                 "fd_sum_carbs",
                 "fd_sum_fat",
             };

@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 28;
+    public static final int DATABASE_VERSION = 29;
 
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -44,19 +44,19 @@ public class DBAdapter {
                     "goal_weekly_goal VARCHAR," +
                     "goal_date DATE," +
                     "goal_energy_bmr INT," +
-                    "goal_proteins_bmr INT," +
+                    "goal_protein_bmr INT," +
                     "goal_carbs_bmr INT," +
                     "goal_fat_bmr INT," +
                     "goal_energy_diet INT," +
-                    "goal_proteins_diet INT," +
+                    "goal_protein_diet INT," +
                     "goal_carbs_diet INT," +
                     "goal_fat_diet INT," +
                     "goal_energy_with_activity INT," +
-                    "goal_proteins_with_activity INT," +
+                    "goal_protein_with_activity INT," +
                     "goal_carbs_with_activity INT," +
                     "goal_fat_with_activity INT," +
                     "goal_energy_with_activity_and_diet INT," +
-                    "goal_proteins_with_activity_and_diet INT," +
+                    "goal_protein_with_activity_and_diet INT," +
                     "goal_carbs_with_activity_and_diet INT," +
                     "goal_fat_with_activity_and_diet INT," +
                     "goal_notes VARCHAR" +
@@ -70,19 +70,19 @@ public class DBAdapter {
                     "t_goal_i_want_to VARCHAR," +
                     "t_goal_weekly_goal VARCHAR," +
                     "t_goal_energy_bmr INT," +
-                    "t_goal_proteins_bmr INT," +
+                    "t_goal_protein_bmr INT," +
                     "t_goal_carbs_bmr INT," +
                     "t_goal_fat_bmr INT," +
                     "t_goal_energy_diet INT," +
-                    "t_goal_proteins_diet INT," +
+                    "t_goal_protein_diet INT," +
                     "t_goal_carbs_diet INT," +
                     "t_goal_fat_diet INT," +
                     "t_goal_energy_with_activity INT," +
-                    "t_goal_proteins_with_activity INT," +
+                    "t_goal_protein_with_activity INT," +
                     "t_goal_carbs_with_activity INT," +
                     "t_goal_fat_with_activity INT," +
                     "t_goal_energy_with_activity_and_diet INT," +
-                    "t_goal_proteins_with_activity_and_diet INT," +
+                    "t_goal_protein_with_activity_and_diet INT," +
                     "t_goal_carbs_with_activity_and_diet INT," +
                     "t_goal_fat_with_activity_and_diet INT" +
                     ");");
@@ -112,7 +112,7 @@ public class DBAdapter {
                     "fdce_date DATE," +
                     "fdce_meal_no INT," +
                     "fdce_eaten_energy INT," +
-                    "fdce_eaten_proteins INT," +
+                    "fdce_eaten_protein INT," +
                     "fdce_eaten_carbs INT," +
                     "fdce_eaten_fat INT" +
                     ");");
@@ -123,7 +123,7 @@ public class DBAdapter {
                     "fd_sum_date DATE," +
                     "fd_sum_meal_no INT," +
                     "fd_sum_energy INT," +
-                    "fd_sum_proteins INT," +
+                    "fd_sum_protein INT," +
                     "fd_sum_carbs INT," +
                     "fd_sum_fat INT" +
                     ");");
@@ -392,7 +392,7 @@ public class DBAdapter {
         }
 
 
-            Cursor mCursor = db.query(table, fields, where.toString(),
+        Cursor mCursor = db.query(table, fields, where.toString(),
             null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();

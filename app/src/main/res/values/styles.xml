@@ -108,6 +108,14 @@
     <!-- // RadioButton Blue -->
     <!-- RadioButton ********************************************* -->
 
+    <!-- CheckBox ++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- CheckBox Blue -->
+    <style name="Widget.CheckBoxBlue" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/light_blue</item>
+    </style>
+    <!-- // CheckBox Blue -->
+    <!-- CheckBox ********************************************* -->
+
     <!-- DataPicker ++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- DataPicker Blue -->
     <style name="Widget.DataPickerBlue" parent="android:Widget.CompoundButton.RadioButton">

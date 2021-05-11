@@ -11,7 +11,7 @@ public class ChangeGoal {
 
     public static void updateGoalDBMain(DBAdapter db, double targetWeight, String weeklyGoal) {
 
-       // long rowId = 0;
+        // long rowId = 0;
         String[] fields = new String[]{"user_activity_level"};
         Cursor c = db.select("users",fields, "_id", goalId);
         String activity = c.getString(0);
@@ -40,24 +40,24 @@ public class ChangeGoal {
         int energyBmrSQL = db.quoteSmart(bmr);
         db.update("goal", "_id", goalId, "goal_energy_bmr", energyBmrSQL);
         updateDbEnergyFatsCarbsProteins(db, bmr,
-            new String[]{"goal_fat_bmr", "goal_carbs_bmr", "goal_proteins_bmr"}, "goal_energy_bmr");
+            new String[]{"goal_fat_bmr", "goal_carbs_bmr", "goal_protein_bmr"}, "goal_energy_bmr");
 
         /*2: with diet*/
-       int energyDiet = getEnergyDiet(db, weeklyGoal, bmr);
+        int energyDiet = getEnergyDiet(db, weeklyGoal, bmr);
         updateDbEnergyFatsCarbsProteins(db, energyDiet,
-            new String[]{"goal_fat_diet", "goal_carbs_diet", "goal_proteins_diet"}, "goal_energy_diet");
+            new String[]{"goal_fat_diet", "goal_carbs_diet", "goal_protein_diet"}, "goal_energy_diet");
 
         /*3: with activity*/
         int bmrWithActivity = getBmrWithActivity(bmr, activity);
         updateDbEnergyFatsCarbsProteins(db, bmrWithActivity,
             new String[]{"goal_fat_with_activity", "goal_carbs_with_activity",
-                "goal_proteins_with_activity"}, "goal_energy_with_activity");
+                "goal_protein_with_activity"}, "goal_energy_with_activity");
 
         /*4: with_activity_and_diet*/
         int bmrGoal = getEnergyDiet(db, weeklyGoal, bmrWithActivity);
         updateDbEnergyFatsCarbsProteins(db, bmrGoal,
             new String[]{"goal_fat_with_activity_and_diet", "goal_carbs_with_activity_and_diet",
-                "goal_proteins_with_activity_and_diet"}, "goal_energy_with_activity_and_diet");
+                "goal_protein_with_activity_and_diet"}, "goal_energy_with_activity_and_diet");
 
     }
 
@@ -139,17 +139,17 @@ public class ChangeGoal {
 
         db.update("goal", "_id", goalId, mainField, energyBmrSQL);
 
-        double proteinsBmr = Math.round(bmr * 14 / 100);
+        double proteinBmr = Math.round(bmr * 14 / 100);
         double carbsBmr = Math.round(bmr * 70 / 100);
         double fatBmr = Math.round(bmr * 16 / 100);
 
-        double proteinsBmrSQL = db.quoteSmart(proteinsBmr);
+        double proteinBmrSQL = db.quoteSmart(proteinBmr);
         double carbsBmrSQL = db.quoteSmart(carbsBmr);
         double fatBmrSQL = db.quoteSmart(fatBmr);
 
         db.update("goal", "_id", goalId, fields[0], fatBmrSQL);
         db.update("goal", "_id", goalId, fields[1], carbsBmrSQL);
-        db.update("goal", "_id", goalId, fields[2], proteinsBmrSQL);
+        db.update("goal", "_id", goalId, fields[2], proteinBmrSQL);
     }
 
     private static void updateGoalDB(double targetWeight, String weeklyGoal, DBAdapter db) {
@@ -192,24 +192,24 @@ public class ChangeGoal {
         double energyBmrSQL = db.quoteSmart(bmr);
         db.update("temp_goal", "_id", goalId, "t_goal_energy_bmr", energyBmrSQL);
         updateTempDbEnergyFatsCarbsProteins(db, bmr,
-            new String[]{"t_goal_fat_bmr", "t_goal_carbs_bmr", "t_goal_proteins_bmr"}, "t_goal_energy_bmr");
+            new String[]{"t_goal_fat_bmr", "t_goal_carbs_bmr", "t_goal_protein_bmr"}, "t_goal_energy_bmr");
 
         /*2: with diet*/
         double energyDiet = getEnergyDiet(db, weeklyGoal, bmr);
         updateTempDbEnergyFatsCarbsProteins(db, energyDiet,
-            new String[]{"t_goal_fat_diet", "t_goal_carbs_diet", "t_goal_proteins_diet"}, "t_goal_energy_diet");
+            new String[]{"t_goal_fat_diet", "t_goal_carbs_diet", "t_goal_protein_diet"}, "t_goal_energy_diet");
 
         /*3: with activity*/
         double bmrWithActivity = getBmrWithActivity(bmr, activity);
         updateTempDbEnergyFatsCarbsProteins(db, bmrWithActivity,
             new String[]{"t_goal_fat_with_activity", "t_goal_carbs_with_activity",
-                "t_goal_proteins_with_activity"}, "t_goal_energy_with_activity");
+                "t_goal_protein_with_activity"}, "t_goal_energy_with_activity");
 
         /*4: with_activity_and_diet*/
         double bmrGoal = getEnergyDiet(db, weeklyGoal, bmrWithActivity);
         updateTempDbEnergyFatsCarbsProteins(db, bmrGoal,
             new String[]{"t_goal_fat_with_activity_and_diet", "t_goal_carbs_with_activity_and_diet",
-                "t_goal_proteins_with_activity_and_diet"}, "t_goal_energy_with_activity_and_diet");
+                "t_goal_protein_with_activity_and_diet"}, "t_goal_energy_with_activity_and_diet");
 
     }
 
@@ -225,17 +225,17 @@ public class ChangeGoal {
 
         db.update("temp_goal", "_id", goalId, mainField, energyBmrSQL);
 
-        double proteinsBmr = Math.round(bmr * 25 / 100);
+        double proteinBmr = Math.round(bmr * 25 / 100);
         double carbsBmr = Math.round(bmr * 50 / 100);
         double fatBmr = Math.round(bmr * 25 / 100);
 
-        double proteinsBmrSQL = db.quoteSmart(proteinsBmr);
+        double proteinBmrSQL = db.quoteSmart(proteinBmr);
         double carbsBmrSQL = db.quoteSmart(carbsBmr);
         double fatBmrSQL = db.quoteSmart(fatBmr);
 
         db.update("temp_goal", "_id", goalId, fields[0], fatBmrSQL);
         db.update("temp_goal", "_id", goalId, fields[1], carbsBmrSQL);
-        db.update("temp_goal", "_id", goalId, fields[2], proteinsBmrSQL);
+        db.update("temp_goal", "_id", goalId, fields[2], proteinBmrSQL);
     }
 
     private static void updateTempGoalDB(double targetWeight, String weeklyGoal, DBAdapter db) {

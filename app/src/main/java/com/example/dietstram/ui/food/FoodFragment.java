@@ -616,7 +616,7 @@ public class FoodFragment  extends Fragment  {
             double fatCalculated = Math.round((size * Double.parseDouble(stringFat)) / 100);
 
             String energyCalculatedSQL = db.quoteSmart("" + energyCalculated);
-            String proteinsCalculatedSQL = db.quoteSmart("" + proteinCalculated);
+            String proteinCalculatedSQL = db.quoteSmart("" + proteinCalculated);
             String carbsCalculatedSQL = db.quoteSmart("" + carbsCalculated);
             String fatCalculatedSQL = db.quoteSmart("" + fatCalculated);
 
@@ -650,7 +650,7 @@ public class FoodFragment  extends Fragment  {
                 stringCarbsSQL + "," +
                 stringFatSQL + "," +
                 energyCalculatedSQL + "," +
-                proteinsCalculatedSQL + "," +
+                proteinCalculatedSQL + "," +
                 carbsCalculatedSQL + "," +
                 fatCalculatedSQL + "," +
                 stringBarcodeSQL + "," +
@@ -1138,7 +1138,7 @@ public class FoodFragment  extends Fragment  {
             double fatCalculated = Math.round((size * Double.parseDouble(stringFat)) / 100);
 
             String energyCalculatedSQL = db.quoteSmart("" + energyCalculated);
-            String proteinsCalculatedSQL = db.quoteSmart("" + proteinCalculated);
+            String proteinCalculatedSQL = db.quoteSmart("" + proteinCalculated);
             String carbsCalculatedSQL = db.quoteSmart("" + carbsCalculated);
             String fatCalculatedSQL = db.quoteSmart("" + fatCalculated);
 
@@ -1173,7 +1173,7 @@ public class FoodFragment  extends Fragment  {
                 stringCarbsSQL,
                 stringFatSQL,
                 energyCalculatedSQL,
-                proteinsCalculatedSQL,
+                proteinCalculatedSQL,
                 carbsCalculatedSQL,
                 fatCalculatedSQL,
                 stringBarcodeSQL,
@@ -1205,7 +1205,7 @@ public class FoodFragment  extends Fragment  {
 //        menuItemSearch.setQuery("", false);
 //        menuItemSearch.onActionViewCollapsed();
 //        menuItemSearch.setVisibility(View.INVISIBLE);
-    
+
 
     }
 

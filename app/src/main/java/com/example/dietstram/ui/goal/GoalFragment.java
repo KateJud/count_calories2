@@ -46,8 +46,6 @@ public class GoalFragment extends Fragment {
     MenuItem menuItemAdd;
 
 
-    private String currentId;
-    private String currentName;
     private View mainView;
 
     private GoalViewModel goalViewModel;
@@ -91,9 +89,18 @@ public class GoalFragment extends Fragment {
     /* EditText */
     EditText editTextUserWeight;
     EditText editTextUserTargetWeight;
+    EditText editTextEnergyGoal;
+    EditText editTextProteinGoal;
+    EditText editTextCarbsGoal;
+    EditText editTextFatGoal;
+
 
     /* Check box */
     CheckBox checkBoxAdvanced;
+    CheckBox checkBoxEnergyGoal;
+    CheckBox checkBoxProteinGoal;
+    CheckBox checkBoxCarbsGoal;
+    CheckBox checkBoxFatGoal;
 
     private void setAllWidgets() {
         //Loose|gain Table

@@ -173,7 +173,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="6dp"
-                    android:text="@string/proteins" />
+                    android:text="@string/protein" />
 
                 <TextView
                     android:id="@+id/textViewFoodCarbs"
@@ -216,7 +216,7 @@
                     android:padding="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/proteins" />
+                    android:text="@string/protein" />
 
                 <TextView
                     android:id="@+id/textViewFoodCarbsPerN"
@@ -259,7 +259,7 @@
                     android:padding="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/proteins" />
+                    android:text="@string/protein" />
 
                 <TextView
                     android:id="@+id/textViewFoodCarbsPerHundred"

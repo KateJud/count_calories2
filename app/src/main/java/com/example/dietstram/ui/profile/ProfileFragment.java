@@ -57,15 +57,7 @@ public class ProfileFragment extends Fragment {
     /* RadioGroup ------------------------------------------------------------------------------- */
     private RadioGroup radioGroupGender;
 
-    /* Action buttons */
-    MenuItem menuItemEdit;
-    MenuItem menuItemDelete;
-
-    private ProfileViewModel profileViewModel;
     private View mainView;
-
-////Todo
-//    privite  OnFragmentInteractionListener mListener;
 
 
     private void setAllWidgets() {
@@ -96,8 +88,7 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        profileViewModel =
-            ViewModelProviders.of(this).get(ProfileViewModel.class);
+        ProfileViewModel profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         mainView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         return mainView;
@@ -131,7 +122,6 @@ public class ProfileFragment extends Fragment {
 
     public void initializeData() {
 
-
         /* Get data from data base */
         DBAdapter db = getDbAdapter();
 
@@ -161,7 +151,6 @@ public class ProfileFragment extends Fragment {
         String stringDay = items[2];
         dataPicker.init(Integer.parseInt(stringYear), Integer.parseInt(stringMonth), Integer.parseInt(stringDay), null);
 
-
         /* Gender */
         RadioButton radioButtonGenderMale = getActivity().findViewById(R.id.radioButtonGenderMale);
         RadioButton radioButtonGenderFemale = getActivity().findViewById(R.id.radioButtonGenderFemale);
@@ -184,7 +173,6 @@ public class ProfileFragment extends Fragment {
         /* Height */
         editTextHeightCm.setText(stringUserHeight);
 
-
         Button buttonSave = getActivity().findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +180,6 @@ public class ProfileFragment extends Fragment {
                 buttonSaveOnClick();
             }
         });
-
 
     }
 
@@ -255,11 +242,8 @@ public class ProfileFragment extends Fragment {
             "user_email"};
         String[] values = {stringDateOfBirthSQL, stringGenderSQL, heightSQL, measurementSQL, nickNameSQL};
 
-
         db.update("users", "_id", id, fieldsUser, values);
         Toast.makeText(getActivity(), "Everything was saved :)", Toast.LENGTH_LONG).show();
-
-
 
         /* UpdateGoal Db */
         String[] fieldsGoal = {"goal_target_weight",
@@ -279,7 +263,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void moveToHomeLayout() {
-        //TODO (убрать выделение Profile Fragment)
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).commit();
     }
@@ -382,7 +365,6 @@ public class ProfileFragment extends Fragment {
             }
 
         } else {
-
             //Metric
             editTextHeightInches.setVisibility(View.GONE);
             textViewCm.setText(R.string.cm);
@@ -391,8 +373,6 @@ public class ProfileFragment extends Fragment {
             if (!stringHeightCm.isEmpty() && !stringHeightInches.isEmpty()) {
                 editTextHeightCm.setText("" + convertFeetInchesToCm(stringHeightCm, stringHeightInches));
             }
-
         }
-
     }//public void measureChanged
 }
