@@ -5,7 +5,7 @@ import java.util.Random;
 public class Idioms {
    public String currentIdiom;
 
-    private String[] idioms={
+    private final String[] idioms={
         "After dinner sit a while, after supper walk a mile.",
             "Don’t live to eat, but eat to live.",
             "Eat at pleasure, drink with measure.",
@@ -29,7 +29,7 @@ public class Idioms {
             "The rotten apple injures its neighbors.",
             "The appetite comes with eating ."
     };
-   final private Random random=new Random();
+   private final Random random=new Random();
     public  Idioms(){
         currentIdiom=idioms[random.nextInt(idioms.length)];
     }

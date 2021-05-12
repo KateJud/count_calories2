@@ -174,7 +174,7 @@ public class CategoriesFragment extends Fragment {
             "category_parent_id"
         };
         Cursor findParentId = db.select("categories", fields, "_id", db.quoteSmart(currentCategoryId));
-        String currentParentId = findParentId.getString(0).toString();
+        String currentParentId = findParentId.getString(0);
         int intParentId = 0;
 
         /* Fill Name */
@@ -209,7 +209,7 @@ public class CategoriesFragment extends Fragment {
         }
 
         //Populate spinner
-        Spinner spinnerParent = (Spinner) getActivity().findViewById(R.id.spinnerCategoryParent);
+        Spinner spinnerParent = getActivity().findViewById(R.id.spinnerCategoryParent);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arraySpinnerCategories);
 
         spinnerParent.setAdapter(adapter);
@@ -276,12 +276,14 @@ public class CategoriesFragment extends Fragment {
         builder.setTitle("Delete");  // заголовок
         builder.setMessage(R.string.delete_message);  // сообщение
         builder.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 //TODO как возвратиться не на category, а на 1 назад?
                 onDeleteClicked();
             }
         });
         builder.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
 
             }
@@ -367,12 +369,12 @@ public class CategoriesFragment extends Fragment {
         arraySpinnerCategories[0] = "-";
 
         for (int i = 1; i < dbCursorCount + 1; i++) {
-            arraySpinnerCategories[i] = dbCursor.getString(1).toString();
+            arraySpinnerCategories[i] = dbCursor.getString(1);
             dbCursor.moveToNext();
         }
 
         //Populate spinner
-        Spinner spinnerParent = (Spinner) getActivity().findViewById(R.id.spinnerCategoryParent);
+        Spinner spinnerParent = getActivity().findViewById(R.id.spinnerCategoryParent);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arraySpinnerCategories);
 
         spinnerParent.setAdapter(adapter);
@@ -446,7 +448,7 @@ public class CategoriesFragment extends Fragment {
             };
 
             Cursor findParentId = db.select("categories", fields, "category_name", stringSpinnerCategoryParentSQL);
-            return findParentId.getString(0).toString();
+            return findParentId.getString(0);
 
         }
     }

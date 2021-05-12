@@ -77,9 +77,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView textViewName;
-        private TextView textViewListSubSizeGram;
-        private LinearLayout linearLayoutSubLine;
+        private final TextView textViewName;
+        private final TextView textViewListSubSizeGram;
+        private final LinearLayout linearLayoutSubLine;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);

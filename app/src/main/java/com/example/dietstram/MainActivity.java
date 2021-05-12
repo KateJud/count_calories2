@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 //
 //  }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
         = new BottomNavigationView.OnNavigationItemSelectedListener() {  @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();

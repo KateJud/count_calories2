@@ -78,7 +78,7 @@ public class ChangeGoal {
         kcal = bmr * ( doubleWeeklyGoal);
 
         //long rowId = 0;
-        String fields[] = new String[]{"goal_i_want_to"};
+        String[] fields = new String[]{"goal_i_want_to"};
         Cursor c = db.select("goal",fields, "_id", goalId);
         String iWantTo = c.getString(0);
 
@@ -94,7 +94,7 @@ public class ChangeGoal {
 
     private static int getBmr(DBAdapter db, double weight) {
         long rowId = 0;
-        String fields[] = new String[]{
+        String[] fields = new String[]{
             "_id",
             "user_dob",
             "user_gender",

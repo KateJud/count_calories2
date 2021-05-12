@@ -186,6 +186,7 @@ public class HomeFragment extends Fragment {
 
     private MenuItem menuItemAddFood;
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         //Inflate menu
@@ -494,6 +495,7 @@ public class HomeFragment extends Fragment {
         builder.setTitle("Delete");  // заголовок
         builder.setMessage("Do you want to delete this meal item?"); // сообщение
         builder.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 DBAdapter db = getDbAdapter();
                 db.delete("meal", "_id", mealId);
@@ -505,6 +507,7 @@ public class HomeFragment extends Fragment {
             }
         });
         builder.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
 
             }
@@ -606,7 +609,7 @@ public class HomeFragment extends Fragment {
         bundle.putString("action", "");
         Fragment fragment = null;
         try {
-            fragment = (Fragment) fragmentClass.newInstance();
+            fragment = fragmentClass.newInstance();
 
         } catch (Exception e) {
             System.out.println(e.getStackTrace());

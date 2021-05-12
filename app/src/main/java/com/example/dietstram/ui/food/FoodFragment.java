@@ -453,7 +453,7 @@ public class FoodFragment extends Fragment  {
         String[] arraySpinnerMainCategories = new String[dbCursorCount];
 
         for (int i = 0; i < dbCursorCount; i++) {
-            arraySpinnerMainCategories[i] = dbCursorMain.getString(1).toString();
+            arraySpinnerMainCategories[i] = dbCursorMain.getString(1);
             dbCursorMain.moveToNext();
         }
 
@@ -681,11 +681,13 @@ public class FoodFragment extends Fragment  {
         builder.setTitle("Delete");  // заголовок
         builder.setMessage(R.string.delete_message); // сообщение
         builder.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 onDeleteClicked();
             }
         });
         builder.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
 
             }
@@ -870,10 +872,10 @@ public class FoodFragment extends Fragment  {
         int selectedSubCategoryIndex = 0;
 
         for (int i = 0; i < dbCursorCount; i++) {
-            arraySpinnerCategoriesSub[i] = dbCursorSub.getString(1).toString();
+            arraySpinnerCategoriesSub[i] = dbCursorSub.getString(1);
             if (dbCursorSub.getString(0).equals(categoryId)) {
                 selectedSubCategoryIndex = i;
-                selectedSubCategoryParentId = dbCursorSub.getString(2).toString();
+                selectedSubCategoryParentId = dbCursorSub.getString(2);
             }
             dbCursorSub.moveToNext();
         }
@@ -898,7 +900,7 @@ public class FoodFragment extends Fragment  {
         int selectedMainCategoryIndex = 0;
 
         for (int i = 0; i < dbCursorCount; i++) {
-            arraySpinnerMainCategories[i] = dbCursorMain.getString(1).toString();
+            arraySpinnerMainCategories[i] = dbCursorMain.getString(1);
             if (dbCursorMain.getString(0).equals(selectedSubCategoryParentId)) {
                 selectedMainCategoryIndex = i;
                 selectedMainCategoryName = dbCursorMain.getString(1);
@@ -974,7 +976,7 @@ public class FoodFragment extends Fragment  {
             String[] arraySpinnerCategoriesSub = new String[dbCursorCount];
 
             for (int i = 0; i < dbCursorCount; i++) {
-                arraySpinnerCategoriesSub[i] = dbCursorSub.getString(1).toString();
+                arraySpinnerCategoriesSub[i] = dbCursorSub.getString(1);
                 dbCursorSub.moveToNext();
             }
 
