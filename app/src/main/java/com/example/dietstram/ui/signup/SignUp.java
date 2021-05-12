@@ -1,4 +1,4 @@
-package com.example.dietstram;
+package com.example.dietstram.ui.signup;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.example.dietstram.database.DBAdapter;
+import com.example.dietstram.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

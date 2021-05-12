@@ -1,4 +1,4 @@
-package com.example.dietstram;
+package com.example.dietstram.ui.signup;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -13,6 +13,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.example.dietstram.ui.goal.ChangeGoal;
+import com.example.dietstram.database.DBAdapter;
+import com.example.dietstram.MainActivity;
+import com.example.dietstram.R;
 
 public class SignUpGoal extends AppCompatActivity {
 

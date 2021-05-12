@@ -1,4 +1,4 @@
-package com.example.dietstram;
+package com.example.dietstram.database;
 
 import java.util.Random;
 

@@ -24,17 +24,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.example.dietstram.ChangeGoal;
-import com.example.dietstram.DBAdapter;
+import com.example.dietstram.database.DBAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 
 import java.util.Arrays;
 
-import static com.example.dietstram.OpenCloseDB.changeTitle;
-import static com.example.dietstram.OpenCloseDB.convertKgToPounds;
+import static com.example.dietstram.helpers.ConverClass.changeTitle;
+import static com.example.dietstram.helpers.ConverClass.convertKgToPounds;
 
 //TODO SUbmiT??
 public class GoalFragment extends Fragment {
@@ -47,8 +45,6 @@ public class GoalFragment extends Fragment {
 
 
     private View mainView;
-
-    private GoalViewModel goalViewModel;
 
     /*TextView --------------------------------------------- */
     //Loose|gain Table
@@ -310,8 +306,7 @@ public class GoalFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        goalViewModel =
-            ViewModelProviders.of(this).get(GoalViewModel.class);
+
         mainView = inflater.inflate(R.layout.fragment_goal, container, false);
 
         return mainView;

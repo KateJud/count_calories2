@@ -1,6 +1,8 @@
-package com.example.dietstram;
+package com.example.dietstram.database;
 
 import android.content.Context;
+
+import com.example.dietstram.database.DBAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

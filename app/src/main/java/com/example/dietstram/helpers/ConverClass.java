@@ -1,8 +1,10 @@
-package com.example.dietstram;
+package com.example.dietstram.helpers;
 
 import android.app.Activity;
 
-public class OpenCloseDB {
+import com.example.dietstram.MainActivity;
+
+public class ConverClass {
 
     public static void changeTitle(Activity activity, String title) {
         ((MainActivity)activity).getSupportActionBar().setTitle(title);

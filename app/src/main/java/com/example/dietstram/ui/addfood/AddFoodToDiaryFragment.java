@@ -23,10 +23,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dietstram.DBAdapter;
-import com.example.dietstram.FoodCursorAdapter;
+import com.example.dietstram.database.DBAdapter;
+import com.example.dietstram.adapters.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
-import com.example.dietstram.MySuggestionProvider;
+import com.example.dietstram.helpers.MySuggestionProvider;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.home.HomeFragment;
 
@@ -34,7 +34,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static com.example.dietstram.OpenCloseDB.changeTitle;
+import static com.example.dietstram.helpers.ConverClass.changeTitle;
 
 
 public class AddFoodToDiaryFragment extends Fragment {

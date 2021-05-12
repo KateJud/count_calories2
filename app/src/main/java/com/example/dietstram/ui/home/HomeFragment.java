@@ -33,11 +33,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.example.dietstram.DBAdapter;
-import com.example.dietstram.DBSetupInsert;
-import com.example.dietstram.Idioms;
+import com.example.dietstram.database.DBAdapter;
+import com.example.dietstram.database.DBSetupInsert;
+import com.example.dietstram.database.Idioms;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.addfood.AddFoodToDiaryFragment;
@@ -46,7 +45,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static com.example.dietstram.OpenCloseDB.changeTitle;
+import static com.example.dietstram.helpers.ConverClass.changeTitle;
 
 public class HomeFragment extends Fragment {
 
@@ -153,8 +152,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private HomeViewModel homeViewModel;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,11 +175,10 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel.class);
         mainView = inflater.inflate(R.layout.fragment_home, container, false);
 
         return mainView;

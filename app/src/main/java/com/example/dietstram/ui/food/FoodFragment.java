@@ -31,14 +31,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dietstram.DBAdapter;
-import com.example.dietstram.FoodCursorAdapter;
+import com.example.dietstram.database.DBAdapter;
+import com.example.dietstram.adapters.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
-import com.example.dietstram.MySuggestionProvider;
+import com.example.dietstram.helpers.MySuggestionProvider;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.addfood.AddFoodToDiaryFragment;
 
@@ -94,7 +93,6 @@ public class FoodFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FoodViewModel foodViewModel = ViewModelProviders.of(this).get(FoodViewModel.class);
         mainView = inflater.inflate(R.layout.fragment_food, container, false);
         return mainView;
     }

@@ -1,4 +1,4 @@
-package com.example.dietstram;
+package com.example.dietstram.helpers;
 
 import android.content.SearchRecentSuggestionsProvider;
 

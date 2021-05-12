@@ -23,10 +23,10 @@
                 android:resource="@xml/searchable" />
         </activity>
         <provider
-            android:authorities="com.example.dietstram.MySuggestionProvider"
-            android:name=".MySuggestionProvider"  />
-        <activity android:name=".SignUp" />
-        <activity android:name=".SignUpGoal" />
+            android:authorities="com.example.dietstram.helpers.MySuggestionProvider"
+            android:name=".helpers.MySuggestionProvider"  />
+        <activity android:name=".ui.signup.SignUp" />
+        <activity android:name=".ui.signup.SignUpGoal" />
 
 
     </application>

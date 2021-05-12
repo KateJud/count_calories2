@@ -23,11 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dietstram.DBAdapter;
-import com.example.dietstram.FoodCursorAdapter;
+import com.example.dietstram.database.DBAdapter;
+import com.example.dietstram.adapters.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.food.FoodFragment;
@@ -69,7 +68,6 @@ public class CategoriesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        CategoriesViewModel categoriesViewModel = ViewModelProviders.of(this).get(CategoriesViewModel.class);
         mainView = inflater.inflate(R.layout.fragment_categories, container, false);
         return mainView;
     }

@@ -4,13 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,20 +20,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.example.dietstram.ChangeGoal;
-import com.example.dietstram.DBAdapter;
+import com.example.dietstram.ui.goal.ChangeGoal;
+import com.example.dietstram.database.DBAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
 import com.example.dietstram.ui.home.HomeFragment;
 
-import java.util.Calendar;
 import java.util.Locale;
 
-import static com.example.dietstram.OpenCloseDB.convertCmToFeetInchesFEET;
-import static com.example.dietstram.OpenCloseDB.convertCmToFeetInchesINCHES;
-import static com.example.dietstram.OpenCloseDB.convertFeetInchesToCm;
+import static com.example.dietstram.helpers.ConverClass.convertCmToFeetInchesFEET;
+import static com.example.dietstram.helpers.ConverClass.convertCmToFeetInchesINCHES;
+import static com.example.dietstram.helpers.ConverClass.convertFeetInchesToCm;
 
 public class ProfileFragment extends Fragment {
 
@@ -86,9 +80,10 @@ public class ProfileFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+
         mainView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         return mainView;

@@ -1,6 +1,8 @@
-package com.example.dietstram;
+package com.example.dietstram.ui.goal;
 
 import android.database.Cursor;
+
+import com.example.dietstram.database.DBAdapter;
 
 import java.util.Calendar;
 
