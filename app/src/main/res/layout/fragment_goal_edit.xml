@@ -288,6 +288,7 @@
                             android:id="@+id/spinnerWeeklyGoal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:spinnerMode="dialog"
                             android:entries="@array/array_weekly_goal_kg" />
                     </TableRow>
 

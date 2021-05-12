@@ -26,11 +26,19 @@
         <item name="android:clickable">true</item>
         <item name="android:textColor">@color/login_form_details</item>
     </style>
-    <!-- Text View -->
+
+    <!-- Text View ++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Text Simple -->
+    <style name="Widget.TextViewItalic" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/login_form_details</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <!-- // Text Simple -->
     <!-- Text Simple -->
     <style name="Widget.TextViewSimple" parent="android:Widget">
         <item name="android:textColor">@color/login_form_details</item>
-        <item name="android:padding">6dp</item>
+        <item name="android:padding">6sp</item>
         <item name="android:textSize">18sp</item>
     </style>
     <!-- // Text Simple -->
@@ -38,21 +46,21 @@
     <style name="Widget.TextViewBig" parent="android:Widget">
         <item name="android:textColor">@color/login_form_details</item>
         <item name="android:textSize">24sp</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">16sp</item>
     </style>
     <!-- // Text Big -->
     <!-- Text Big Components-->
     <style name="Widget.TextViewBigComponents" parent="android:Widget">
         <item name="android:textColor">@color/login_form_details</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">16sp</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!-- // Text Big Components-->
     <!-- Text Small Components-->
     <style name="Widget.TextViewSmallComponents" parent="android:Widget">
         <item name="android:textColor">@color/login_form_details</item>
-        <item name="android:padding">1dp</item>
+        <item name="android:padding">1sp</item>
         <item name="android:textSize">15sp</item>
     </style>
     <!-- // Text Small Components-->
@@ -67,8 +75,8 @@
     <!-- // Text View ***************************** -->
     <!-- Image-->
     <style name="Widget.ImageView" parent="android:Widget">
-        <item name="android:width">30dp</item>
-        <item name="android:height">30dp</item>
+        <item name="android:width">30sp</item>
+        <item name="android:height">30sp</item>
     </style>
     <!-- //Image-->
 
@@ -95,7 +103,7 @@
         <item name="android:textColor">@color/login_form_details</item>
         <item name="background">@color/gray</item>
         <item name="android:foregroundGravity">center_vertical</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">16sp</item>
     </style>
     <!-- // Button ********************************************* -->
 

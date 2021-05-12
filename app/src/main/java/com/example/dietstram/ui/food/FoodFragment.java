@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietstram.DBAdapter;
@@ -48,7 +49,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class FoodFragment  extends Fragment  {
+public class FoodFragment extends Fragment {
 
     /*Necessary  fields*/
     EditText editTextName;
@@ -72,8 +73,6 @@ public class FoodFragment  extends Fragment  {
     Cursor listCursor;
     int error;
     private View mainView;
-
-
 
 
     private void preListItemClickedReadyCursor() {
@@ -148,7 +147,7 @@ public class FoodFragment  extends Fragment  {
         //menuItemSearch = menu.findItem(R.id.search);
 
 
-        SearchManager searchManager = (SearchManager) getActivity(). getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         menuItemSearch = (SearchView) menu.findItem(R.id.search).getActionView();
         menuItemSearch.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         // Здесь можно указать будет ли строка поиска изначально развернута или свернута в значок
@@ -163,6 +162,7 @@ public class FoodFragment  extends Fragment  {
 
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Обратный вызов при отправке текста, newText - последний текст, отправленный для поиска
@@ -170,8 +170,6 @@ public class FoodFragment  extends Fragment  {
                 return false;
             }
         });
-
-
 
 
         //Hide as default (if list)
@@ -207,16 +205,20 @@ public class FoodFragment  extends Fragment  {
         listCursor = db.selectFood("food", fields, filter);
         //listCursor = db.selectFood("food", fields, "", "", "food_name", "ASC");
 
-        ListView listView = getActivity().findViewById(R.id.listViewFood);
+        // set up the RecyclerView
+        RecyclerView recyclerView = getActivity().findViewById(R.id.listViewFood);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursor);
-        listView.setAdapter(foodCursorAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        foodCursorAdapter.setOnEntryClickListener(new FoodCursorAdapter.OnEntryClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onEntryClick(View view, int position) {
+
                 listItemClicked(position);
             }
         });
+
+        recyclerView.setAdapter(foodCursorAdapter);
+
 
         //Close
         db.close();
@@ -304,9 +306,6 @@ public class FoodFragment  extends Fragment  {
         //SubHeadLine
         TextView textViewFoodManufactureName = getView().findViewById(R.id.textViewManufacture);
         textViewFoodManufactureName.setText(manufactureName);
-
-        //Image
-
 
         //Calculation line
         TextView textViewFoodAbout = getView().findViewById(R.id.textViewFoodAbout);

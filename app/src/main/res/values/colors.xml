@@ -4,9 +4,9 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="login_form_details">#424E43</color>
+    <color name="login_form_details">#292E29</color>
     <color name="login_form_details_light">#E0F9C3</color>
-    <color name="login_form_details_medium">#859886</color>
+    <color name="login_form_details_medium">#707D71</color>
     <color name="gray">#878A87</color>
     <color name="white">#FFFFFF</color>
 
@@ -14,7 +14,7 @@
     <color name="my_yellow">#FF9800</color>
     <color name="my_red">#F44336</color>
 
-    <color name="light_green">#D1F5D1</color>
+    <color name="light_green">#B6D9B6</color>
     <color name="light_blue">#B9ECF2</color>
 
 

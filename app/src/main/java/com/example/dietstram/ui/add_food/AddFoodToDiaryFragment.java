@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -286,15 +287,14 @@ public class AddFoodToDiaryFragment extends Fragment {
             };
             listCursorFood = db.select("food", fields, "", "", "food_name", "ASC");
 
-            ListView listView = getActivity().findViewById(R.id.listViewFood);
+
+            RecyclerView recyclerView = getActivity().findViewById(R.id.listViewFood);
             FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursorFood);
+            recyclerView.setAdapter(foodCursorAdapter);
 
-            //Attach cursor adapter to the ListView
-            listView.setAdapter(foodCursorAdapter);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            foodCursorAdapter.setOnEntryClickListener(new FoodCursorAdapter.OnEntryClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onEntryClick(View view, int position) {
                     foodInCategoryListItemClicked(position);
                 }
             });

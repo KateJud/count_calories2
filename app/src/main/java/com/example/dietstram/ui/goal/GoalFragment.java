@@ -415,25 +415,25 @@ public class GoalFragment extends Fragment {
 
         //Energy
         editTextEnergyGoal.setText(stringGoalEnergy);
-        if (stringGoalEnergy.equals("1")) {
+        if (stringUserSaveEnergy.equals("1")) {
             checkBoxEnergyGoal.setChecked(true);
         }
 
         //Protein
         editTextProteinGoal.setText(stringGoalProtein);
-        if (stringGoalProtein.equals("1")) {
+        if (stringUserSaveProtein.equals("1")) {
             checkBoxProteinGoal.setChecked(true);
         }
 
         //Carbs
         editTextCarbsGoal.setText(stringGoalCarbs);
-        if (stringGoalCarbs.equals("1")) {
+        if (stringUserSaveCarbs.equals("1")) {
             checkBoxCarbsGoal.setChecked(true);
         }
 
         //Fat
         editTextFatGoal.setText(stringGoalFat);
-        if (stringGoalFat.equals("1")) {
+        if (stringUserSaveFat.equals("1")) {
             checkBoxFatGoal.setChecked(true);
         }
 
@@ -867,8 +867,12 @@ public class GoalFragment extends Fragment {
         /* Spinner WeeklyGoal*/
         String stringWeeklyGoal = spinnerWeeklyGoal.getSelectedItem().toString();
 
+        /* Spinner ActivityLevel */
+        String stringActivityLevel = spinnerActivityLevel.getSelectedItem().toString();
+
+
         //Error handling
-        tryFinishSubmit(doubleTargetWeight, stringWeeklyGoal);
+        tryFinishSubmit(doubleTargetWeight, stringWeeklyGoal,stringActivityLevel);
 
     }
 
@@ -884,20 +888,19 @@ public class GoalFragment extends Fragment {
         return doubleTargetWeight;
     }
 
-    private void tryFinishSubmit(double targetWeight, String weeklyGoal) {
+    private void tryFinishSubmit(double targetWeight, String weeklyGoal,String activityLevel) {
         //Нет ошибки
 
         if (errorMessage.isEmpty()) {
             //Update database
-            // updateGoalWithCheckBoxSave();
 
             DBAdapter db = getDbAdapter();
             String weight = editTextUserWeight.getText().toString();
             db.update("goal", "_id", goalId, "goal_current_weight", db.quoteSmart(weight));
+            db.update("goal", "_id", goalId, "goal_activity_level", db.quoteSmart(activityLevel));
 
             ChangeGoal.updateGoalDBMain(db, targetWeight, weeklyGoal);
             db.close();
-
 
             //Move to Goal (not edit)
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

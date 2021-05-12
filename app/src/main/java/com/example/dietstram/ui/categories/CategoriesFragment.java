@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietstram.DBAdapter;
 import com.example.dietstram.FoodCursorAdapter;
@@ -532,18 +533,18 @@ public class CategoriesFragment extends Fragment {
             };
             setListCursorFood(db.select("food", fields, "food_category_id", categoryId, "food_name", "ASC"));
 
-            ListView listViewFood = getActivity().findViewById(R.id.listViewFood);
-            FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), getListCursorFood());
 
-            //Attach cursor adapter to the ListView
-            listViewFood.setAdapter(foodCursorAdapter);
+            RecyclerView recyclerView = getActivity().findViewById(R.id.listViewFood);
+            FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursorFood);
+            recyclerView.setAdapter(foodCursorAdapter);
 
-            listViewFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            foodCursorAdapter.setOnEntryClickListener(new FoodCursorAdapter.OnEntryClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onEntryClick(View view, int position) {
                     foodListItemClicked();
                 }
             });
+
 
             //Close
             db.close();

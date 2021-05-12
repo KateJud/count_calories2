@@ -4,13 +4,13 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:layout_marginBottom="70dp">
+    android:layout_marginBottom="70sp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24sp"
+        android:layout_marginRight="24sp"
         android:orientation="vertical">
 
         <!-- Status -->
@@ -56,8 +56,8 @@
                     style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8sp"
+                    android:layout_marginRight="8sp"
                     android:text="@string/user_weight" />
             </TableRow>
             <!-- // Weight -->
@@ -115,7 +115,7 @@
                     style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="8sp"
                     android:text="@string/activity_level" />
 
                 <TextView
@@ -169,7 +169,7 @@
             <!-- Loose weight -->
             <TextView
                 android:id="@+id/textViewLooseWeight"
-                style="@style/Widget.TextViewSimple"
+                style="@style/Widget.TextViewItalic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/to_loose_weight" />
@@ -187,7 +187,7 @@
                         android:id="@+id/textViewBlank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/blank"
                         android:textSize="18sp" />
 
@@ -202,7 +202,7 @@
                         android:id="@+id/textViewProteins"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/protein"
                         android:textSize="18sp" />
 
@@ -210,7 +210,7 @@
                         android:id="@+id/textViewCarbs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/carbs"
                         android:textSize="18sp" />
 
@@ -218,7 +218,7 @@
                         android:id="@+id/textViewFat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/fat"
                         android:textSize="18sp" />
                 </TableRow>
@@ -233,7 +233,7 @@
                         android:id="@+id/textViewWithoutActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/without_activity"
                         android:textSize="18sp" />
 
@@ -241,7 +241,7 @@
                         android:id="@+id/textViewEnergyLooseWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/energy"
                         android:textSize="18sp" />
 
@@ -249,7 +249,7 @@
                         android:id="@+id/textViewProteinsLooseWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/protein"
                         android:textSize="18sp" />
 
@@ -257,7 +257,7 @@
                         android:id="@+id/textViewCarbsLooseWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/carbs"
                         android:textSize="18sp" />
 
@@ -265,7 +265,7 @@
                         android:id="@+id/textViewFatLooseWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/fat"
                         android:textSize="18sp" />
                 </TableRow>
@@ -280,7 +280,7 @@
                         android:id="@+id/textViewWithActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/with_activity"
                         android:textSize="18sp" />
 
@@ -288,7 +288,7 @@
                         android:id="@+id/textViewEnergyLooseWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/energy"
                         android:textSize="18sp" />
 
@@ -296,7 +296,7 @@
                         android:id="@+id/textViewProteinsLooseWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/protein"
                         android:textSize="18sp" />
 
@@ -304,7 +304,7 @@
                         android:id="@+id/textViewCarbsLooseWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/carbs"
                         android:textSize="18sp" />
 
@@ -312,7 +312,7 @@
                         android:id="@+id/textViewFatLooseWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/fat"
                         android:textSize="18sp" />
                 </TableRow>
@@ -324,7 +324,7 @@
             <!-- Keep weight -->
             <TextView
                 android:id="@+id/textViewKeepWeight"
-                style="@style/Widget.TextViewSimple"
+                style="@style/Widget.TextViewItalic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/to_keep_weight" />
@@ -342,7 +342,7 @@
                         android:id="@+id/textViewKeepBlank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/blank"
                         android:textSize="18sp" />
 
@@ -350,7 +350,7 @@
                         android:id="@+id/textViewEnergyKeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/energy"
                         android:textSize="18sp" />
 
@@ -358,7 +358,7 @@
                         android:id="@+id/textViewProteinsKeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/protein"
                         android:textSize="18sp" />
 
@@ -366,7 +366,7 @@
                         android:id="@+id/textViewCarbsKeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/carbs"
                         android:textSize="18sp" />
 
@@ -374,7 +374,7 @@
                         android:id="@+id/textViewFatKeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/fat"
                         android:textSize="18sp" />
                 </TableRow>
@@ -389,7 +389,7 @@
                         android:id="@+id/textViewKeepWithoutActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/without_activity"
                         android:textSize="18sp" />
 
@@ -397,7 +397,7 @@
                         android:id="@+id/textViewEnergyKeepWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/energy"
                         android:textSize="18sp" />
 
@@ -405,7 +405,7 @@
                         android:id="@+id/textViewProteinsKeepWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/protein"
                         android:textSize="18sp" />
 
@@ -413,7 +413,7 @@
                         android:id="@+id/textViewCarbsKeepWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/carbs"
                         android:textSize="18sp" />
 
@@ -421,7 +421,7 @@
                         android:id="@+id/textViewFatKeepWithout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/fat"
                         android:textSize="18sp" />
                 </TableRow>
@@ -436,7 +436,7 @@
                         android:id="@+id/textViewKeepWithActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/with_activity"
                         android:textSize="18sp" />
 
@@ -444,7 +444,7 @@
                         android:id="@+id/textViewEnergyKeepWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/energy"
                         android:textSize="18sp" />
 
@@ -452,7 +452,7 @@
                         android:id="@+id/textViewProteinsKeepWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/protein"
                         android:textSize="18sp" />
 
@@ -460,7 +460,7 @@
                         android:id="@+id/textViewCarbsKeepWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/carbs"
                         android:textSize="18sp" />
 
@@ -468,7 +468,7 @@
                         android:id="@+id/textViewFatKeepWith"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="8sp"
                         android:text="@string/fat"
                         android:textSize="18sp" />
                 </TableRow>

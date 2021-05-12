@@ -11,27 +11,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class FoodCursorAdapter extends android.widget.CursorAdapter {
+public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.RecyclerViewHolder> {
 
+    private Cursor cursor;
+    private LayoutInflater layoutInflater;
+    private Context context;
 
     public FoodCursorAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+        this.context = context;
+        this.cursor = c;
+
+        //super(context, c, 0);
+    }
+
+    @NonNull
+    @Override
+    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_food_list_items, parent, false);
+        RecyclerViewHolder viewHolder = new RecyclerViewHolder(v);
+        return viewHolder;
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.fragment_food_list_items, parent, false);
-    }
-
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        TextView textViewName = view.findViewById(R.id.textViewListName);
-        // TextView textViewNumber = view.findViewById(R.id.textViewListNumber);
-        TextView textViewListSubSizeGram = view.findViewById(R.id.textViewListSubSizeGram);
-        LinearLayout linearLayoutSubLine = view.findViewById(R.id.linearLayoutSubLine);
-
+    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+        cursor.moveToPosition(position);
 
         int getId = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String getName = cursor.getString(cursor.getColumnIndexOrThrow("food_name"));
@@ -46,17 +53,97 @@ public class FoodCursorAdapter extends android.widget.CursorAdapter {
         //  protein: , carbs: fat:ng,
         String gramLine = getFoodSizeGramCalculated + " " + getServingMeasurement;
 
-        String subLine = "protein: " + getFoodSizeProteinCalculated + "g," +
-            " carbs: " + getFoodSizeCarbsCalculated + "g," +
-            "fat: " + getFoodSizeFatCalculated + "g";
+        holder.textViewName.setText(getName);
+        holder.textViewListSubSizeGram.setText(gramLine);
 
-        textViewName.setText(getName);
+        holder.linearLayoutSubLine.addView(getSubLine(context, getFoodEnergyCalculated, getFoodSizeProteinCalculated, getFoodSizeCarbsCalculated, getFoodSizeFatCalculated));
 
-        textViewListSubSizeGram.setText(gramLine);
-
-
-        linearLayoutSubLine.addView(getSubLine(context, getFoodEnergyCalculated, getFoodSizeProteinCalculated, getFoodSizeCarbsCalculated, getFoodSizeFatCalculated));
+        holder.setIsRecyclable(false);
     }
+
+    @Override
+    public int getItemCount() {
+        return cursor.getCount();
+    }
+
+    private OnEntryClickListener mOnEntryClickListener;
+
+    public interface OnEntryClickListener {
+        void onEntryClick(View view, int position);
+    }
+
+    public void setOnEntryClickListener(OnEntryClickListener onEntryClickListener) {
+        mOnEntryClickListener = onEntryClickListener;
+    }
+
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView textViewName;
+        private TextView textViewListSubSizeGram;
+        private LinearLayout linearLayoutSubLine;
+
+        public RecyclerViewHolder(View itemView) {
+            super(itemView);
+
+            // we do this because we want to check when an item has been clicked:
+            itemView.setOnClickListener(this);
+
+            textViewName = itemView.findViewById(R.id.textViewListName);
+            textViewListSubSizeGram = itemView.findViewById(R.id.textViewListSubSizeGram);
+            linearLayoutSubLine = itemView.findViewById(R.id.linearLayoutSubLine);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            // The user may not set a click listener for list items, in which case our listener
+            // will be null, so we need to check for this
+            if (mOnEntryClickListener != null) {
+                mOnEntryClickListener.onEntryClick(v, getLayoutPosition());
+            }
+        }
+    }
+
+
+//    @Override
+//    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+//        return LayoutInflater.from(context).inflate(R.layout.fragment_food_list_items, parent, false);
+//    }
+
+//    @Override
+//    public void bindView(View view, Context context, Cursor cursor) {
+//        TextView textViewName = view.findViewById(R.id.textViewListName);
+//        // TextView textViewNumber = view.findViewById(R.id.textViewListNumber);
+//        TextView textViewListSubSizeGram = view.findViewById(R.id.textViewListSubSizeGram);
+//        LinearLayout linearLayoutSubLine = view.findViewById(R.id.linearLayoutSubLine);
+//
+//
+//        int getId = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+//        String getName = cursor.getString(cursor.getColumnIndexOrThrow("food_name"));
+//        String getFoodSizeGramCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram"));
+//        String getServingMeasurement = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram_measurement"));
+//        String getFoodSizeProteinCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_protein_calculated"));
+//        String getFoodSizeCarbsCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_carbohydrates_calculated"));
+//        String getFoodSizeFatCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_fat_calculated"));
+//        String getFoodEnergyCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_energy_calculated"));
+//
+//        //100 g \n
+//        //  protein: , carbs: fat:ng,
+//        String gramLine = getFoodSizeGramCalculated + " " + getServingMeasurement;
+//
+//        String subLine = "protein: " + getFoodSizeProteinCalculated + "g," +
+//            " carbs: " + getFoodSizeCarbsCalculated + "g," +
+//            "fat: " + getFoodSizeFatCalculated + "g";
+//
+//        textViewName.setText(getName);
+//
+//        textViewListSubSizeGram.setText(gramLine);
+//
+//
+//        linearLayoutSubLine.addView(getSubLine(context, getFoodEnergyCalculated, getFoodSizeProteinCalculated, getFoodSizeCarbsCalculated, getFoodSizeFatCalculated));
+//
+//
+//    }
 
     LinearLayout getSubLine(Context context, String stringEnergy, String stringProtein, String stringCarbs, String stringFat) {
 
