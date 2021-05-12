@@ -52,6 +52,7 @@
             </TableRow>
         </TableLayout>
         <!-- //Error handling -->
+
         <!-- Nickname -->
         <TableRow
             android:layout_width="match_parent"
@@ -59,13 +60,12 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp">
 
-
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/et_bg"
-                android:hint="@string/nickname"
+                android:hint="@string/nickname_"
                 android:inputType="textPersonName"
                 android:padding="16dp"
                 android:textColorHint="@color/login_form_details_medium" />
@@ -78,96 +78,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp">
-
-
-            <!-- Date of birth -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    android:id="@+id/textView8"
-                    style="@style/Widget.TextViewSimple"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="@string/date_of_birth" />
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <Spinner
-                        android:id="@+id/spinnerDOBDay"
-                        style="@style/Widget.Spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="12dp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerDOBMonth"
-                        style="@style/Widget.Spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:entries="@array/array_months"
-                        android:padding="12dp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerDOBYear"
-                        style="@style/Widget.Spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="12dp" />
-                </TableRow>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/blank" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:text="@string/day"
-                        android:textColor="@color/login_form_details_medium" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginLeft="30dp"
-                        android:text="@string/month"
-                        android:textColor="@color/login_form_details_medium" />
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginLeft="30dp"
-                        android:text="@string/year"
-                        android:textColor="@color/login_form_details_medium" />
-                </TableRow>
-            </TableRow>
-            <!-- //Date of birth -->
-
 
             <!-- Gender -->
             <TableRow
@@ -197,20 +107,20 @@
 
                         <RadioButton
                             android:id="@+id/radioButtonGenderMale"
+                            style="@style/Widget.RadioButtonBlue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
                             android:checked="true"
                             android:text="@string/male"
                             android:textColor="@color/login_form_details" />
 
                         <RadioButton
                             android:id="@+id/radioButtonGenderFemale"
+                            style="@style/Widget.RadioButtonBlue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
                             android:text="@string/female"
                             android:textColor="@color/login_form_details" />
                     </RadioGroup>
@@ -219,6 +129,30 @@
 
             </TableRow>
             <!-- //Gender -->
+
+            <!-- DOB -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewDOB"
+                    style="@style/Widget.TextViewSimple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/date_of_birth" />
+
+                <DatePicker
+                    android:id="@+id/datePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:theme="@style/Widget.DataPickerBlue" />
+            </TableRow>
+
+            <!-- // DOB -->
 
             <!-- Measurement -->
             <TableRow
@@ -265,18 +199,20 @@
 
                     <EditText
                         android:id="@+id/editTextHeightCm"
+                        style="@style/Widget.EditTextBlankBlue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/et_bg"
+
                         android:ems="3"
                         android:inputType="number"
                         android:padding="16dp" />
 
                     <EditText
                         android:id="@+id/editTextHeightInches"
+                        style="@style/Widget.EditTextBlankBlue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/et_bg"
+
                         android:ems="3"
                         android:inputType="number"
                         android:padding="16dp" />
@@ -316,7 +252,7 @@
                         android:id="@+id/editTextWeight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/et_bg"
+                        style="@style/Widget.EditTextBlankBlue"
                         android:ems="3"
                         android:inputType="number"
                         android:padding="16dp" />
@@ -372,11 +308,10 @@
             android:layout_marginBottom="24dp"
             android:background="@drawable/btn_bg"
             android:text="@string/sign_up"
-            android:textColor="@color/login_form_details_medium" />
+            />
         <!-- //Submit button -->
 
 
     </LinearLayout>
-    <!--    </android.support.constraint.ConstraintLayout>-->
 
 </ScrollView>

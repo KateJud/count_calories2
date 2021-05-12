@@ -10,36 +10,36 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:orientation="vertical">
         <!-- Table layout -->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="24dp">
 
-        <!-- Name -->
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <TextView
-                android:id="@+id/textViewName"
+            <!-- Name -->
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.TextViewBig"
-                android:text="@string/name"/>
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/name"
-                android:inputType="textPersonName"/>
-        </TableRow>
-        <!-- //Name -->
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    style="@style/Widget.TextViewBig"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name" />
+
+                <EditText
+                    android:id="@+id/editTextName"
+                    style="@style/Widget.EditTextBlankBlue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName" />
+            </TableRow>
+            <!-- //Name -->
 
             <!-- Parent -->
             <TableRow
@@ -49,27 +49,26 @@
 
                 <TextView
                     android:id="@+id/textViewParent"
+                    style="@style/Widget.TextViewBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.TextViewBig"
-                    android:text="@string/parent"/>
+                    android:text="@string/parent" />
+
                 <Spinner
                     android:id="@+id/spinnerCategoryParent"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-
+                    android:layout_height="wrap_content" />
 
             </TableRow>
             <!-- //Parent -->
+
             <!-- Save -->
-
-                <Button
-                    android:id="@+id/buttonCategoriesSubmit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save"/>
-
+            <Button
+                android:id="@+id/buttonCategoriesSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg"
+                android:text="@string/save" />
             <!-- //Save -->
 
         </TableLayout>

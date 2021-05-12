@@ -191,5 +191,6 @@
 
     <string name="format_progress_kcal">%s/%s kcal</string>
     <string name="format_progress_g">%s/%s g</string>
+    <string name="nickname_">NickName*</string>
 
 </resources>

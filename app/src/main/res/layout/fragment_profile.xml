@@ -31,7 +31,6 @@
                 style="@style/Widget.TextViewSimple"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:text="@string/general"
                 android:textSize="24sp" />
         </TableRow>
@@ -41,7 +40,6 @@
             android:layout_height="match_parent">
 
             <!-- NickName -->
-
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -61,7 +59,6 @@
                     android:inputType="none" />
 
             </TableRow>
-
             <!-- // NickName -->
 
             <!-- Gender -->
@@ -85,7 +82,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
 
                         <RadioButton
                             android:id="@+id/radioButtonGenderMale"
@@ -131,8 +127,8 @@
                     android:datePickerMode="spinner"
                     android:theme="@style/Widget.DataPickerBlue" />
             </TableRow>
-
             <!-- // DOB -->
+
             <!-- Measurement -->
             <TableRow
                 android:layout_width="match_parent"
@@ -153,7 +149,6 @@
                     android:entries="@array/array_measurements" />
             </TableRow>
             <!-- //Measurement -->
-
 
             <!-- Height -->
             <TableRow
@@ -195,12 +190,10 @@
                         android:layout_height="match_parent"
                         android:singleLine="false"
                         android:text="@string/cm" />
-
                 </TableRow>
+
             </TableRow>
-
             <!-- //Height -->
-
 
         </TableLayout>
         <!-- // General -->
@@ -215,7 +208,6 @@
             android:background="@drawable/btn_bg"
             android:text="@string/save" />
         <!-- //Submit button -->
-
 
     </LinearLayout>
 

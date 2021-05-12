@@ -17,8 +17,9 @@
 
         <TextView
             android:id="@+id/textViewFoodName"
+            style="@style/Widget.TextViewBig"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="12dp"
             android:layout_weight="1"
             android:text="@string/name"
@@ -36,32 +37,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="24dp">
 
-            <!-- Pcs -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/textViewPortionSizePCS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/portion_size" />
-
-                <EditText
-                    android:id="@+id/editTextPortionSizePCS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name" />
-
-                <TextView
-                    android:id="@+id/textViewServingSizePcsMeasurement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name" />
-
-            </TableRow>
-            <!--// Pcs -->
             <!-- Gram -->
             <TableRow
                 android:layout_width="match_parent"
@@ -70,6 +45,7 @@
 
                 <TextView
                     android:id="@+id/textViewPortionSizeGram"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/portion_size" />
@@ -78,16 +54,48 @@
                     android:id="@+id/editTextPortionSizeGram"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/blank" />
+                    android:text="@string/blank"
+                    style="@style/Widget.EditTextBlankBlue"/>
 
                 <TextView
                     android:id="@+id/textViewServingSizeMeasurement"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gram" />
 
             </TableRow>
             <!--// Gram -->
+
+            <!-- Pcs -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/textViewPortionSizePCS"
+                    style="@style/Widget.TextViewSimple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/portion_size" />
+
+                <EditText
+                    android:id="@+id/editTextPortionSizePCS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.EditTextBlankBlue" />
+
+                <TextView
+                    android:id="@+id/textViewServingSizePcsMeasurement"
+                    style="@style/Widget.TextViewSimple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name" />
+
+            </TableRow>
+            <!--// Pcs -->
+
 
         </TableLayout>
 
@@ -109,12 +117,18 @@
                     android:id="@+id/buttonSubmitEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/btn_bg"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
                     android:text="@string/edit" />
 
                 <Button
                     android:id="@+id/buttonSubmitDelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/btn_bg"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
                     android:text="@string/unlink" />
 
             </TableRow>
