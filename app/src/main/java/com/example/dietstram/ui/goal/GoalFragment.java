@@ -83,24 +83,24 @@ public class GoalFragment extends Fragment {
     TextView textViewFatKeepWith; //textViewFatKeepWith);
 
     /*Spinner */
-    Spinner spinnerWeeklyGoal;
-    Spinner spinnerActivityLevel;
+    private Spinner spinnerWeeklyGoal;
+    private Spinner spinnerActivityLevel;
 
     /* EditText */
-    EditText editTextUserWeight;
-    EditText editTextUserTargetWeight;
-    EditText editTextEnergyGoal;
-    EditText editTextProteinGoal;
-    EditText editTextCarbsGoal;
-    EditText editTextFatGoal;
+    private EditText editTextUserWeight;
+    private EditText editTextUserTargetWeight;
+    private EditText editTextEnergyGoal;
+    private EditText editTextProteinGoal;
+    private EditText editTextCarbsGoal;
+    private EditText editTextFatGoal;
 
 
     /* Check box */
-    CheckBox checkBoxAdvanced;
-    CheckBox checkBoxEnergyGoal;
-    CheckBox checkBoxProteinGoal;
-    CheckBox checkBoxCarbsGoal;
-    CheckBox checkBoxFatGoal;
+    private CheckBox checkBoxAdvanced;
+    private CheckBox checkBoxEnergyGoal;
+    private CheckBox checkBoxProteinGoal;
+    private CheckBox checkBoxCarbsGoal;
+    private CheckBox checkBoxFatGoal;
 
     private void setAllWidgets() {
         //Loose|gain Table
@@ -142,8 +142,159 @@ public class GoalFragment extends Fragment {
         editTextUserWeight = getActivity().findViewById(R.id.editTextUserWeight);
         editTextUserTargetWeight = getActivity().findViewById(R.id.editTextUserTargetWeight);
 
+        editTextEnergyGoal = getActivity().findViewById(R.id.editTextEnergyGoal);
+        editTextProteinGoal = getActivity().findViewById(R.id.editTextProteinGoal);
+        editTextCarbsGoal = getActivity().findViewById(R.id.editTextCarbsGoal);
+        editTextFatGoal = getActivity().findViewById(R.id.editTextFatGoal);
+
+
         //CheckBox
         checkBoxAdvanced = getActivity().findViewById(R.id.checkboxAdvanced);
+
+        checkBoxEnergyGoal = getActivity().findViewById(R.id.checkboxEnergySave);
+        checkBoxProteinGoal = getActivity().findViewById(R.id.checkboxProteinSave);
+        checkBoxCarbsGoal = getActivity().findViewById(R.id.checkboxCarbsSave);
+        checkBoxFatGoal = getActivity().findViewById(R.id.checkboxFatSave);
+
+    }
+
+    private void setListeners() {
+
+        //Energy
+        editTextEnergyGoal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkBoxEnergyGoal.setEnabled(!editTextEnergyGoal.getText().toString().isEmpty());
+            }
+        });
+
+        checkBoxEnergyGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DBAdapter db = getDbAdapter();
+                if (isChecked) {
+                    editTextEnergyGoal.setEnabled(false);
+                    //Energy
+                    db.update("goal", "_id", goalId, "goal_user_energy", 1);
+                    db.update("goal", "_id", goalId, "goal_energy_with_activity_and_diet", 1);
+                } else {
+                    editTextEnergyGoal.setEnabled(true);
+                    db.update("goal", "_id", goalId, "goal_user_energy", 0);
+                }
+                db.close();
+            }
+        });
+
+        //Protein
+        editTextProteinGoal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkBoxProteinGoal.setEnabled(!editTextProteinGoal.getText().toString().isEmpty());
+            }
+        });
+
+        checkBoxProteinGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DBAdapter db = getDbAdapter();
+                if (isChecked) {
+                    editTextProteinGoal.setEnabled(false);
+                    //Protein
+                    db.update("goal", "_id", goalId, "goal_user_protein", 1);
+                    db.update("goal", "_id", goalId, "goal_protein_with_activity_and_diet", 1);
+                } else {
+                    editTextProteinGoal.setEnabled(true);
+                    db.update("goal", "_id", goalId, "goal_user_protein", 0);
+                }
+                db.close();
+            }
+        });
+
+        //Carbs
+        editTextCarbsGoal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkBoxCarbsGoal.setEnabled(!editTextCarbsGoal.getText().toString().isEmpty());
+            }
+        });
+
+        checkBoxCarbsGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DBAdapter db = getDbAdapter();
+                if (isChecked) {
+                    editTextCarbsGoal.setEnabled(false);
+                    //Carbs
+                    db.update("goal", "_id", goalId, "goal_user_carbs", 1);
+                    db.update("goal", "_id", goalId, "goal_carbs_with_activity_and_diet", 1);
+                } else {
+                    editTextCarbsGoal.setEnabled(true);
+                    db.update("goal", "_id", goalId, "goal_user_carbs", 0);
+                }
+                db.close();
+            }
+        });
+
+        //Fat
+
+        editTextFatGoal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkBoxFatGoal.setEnabled(!editTextFatGoal.getText().toString().isEmpty());
+            }
+        });
+
+        checkBoxFatGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                DBAdapter db = getDbAdapter();
+
+                if (isChecked) {
+                    editTextFatGoal.setEnabled(false);
+                    //Fat
+                    db.update("goal", "_id", goalId, "goal_user_fat", 1);
+                    db.update("goal", "_id", goalId, "goal_fat_with_activity_and_diet", 1);
+                } else {
+                    editTextFatGoal.setEnabled(true);
+                    db.update("goal", "_id", goalId, "goal_user_fat", 0);
+                }
+                db.close();
+            }
+
+        });
     }
 
     @Override
@@ -225,16 +376,25 @@ public class GoalFragment extends Fragment {
         /* Change layout */
         changeLayout(R.layout.fragment_goal_edit);
         setAllWidgets();
+        setListeners();
 
         /* Get data from database */
         DBAdapter db = getDbAdapter();
 
-        String fields[] = {
+        String[] fields = {
             "_id",
             "goal_current_weight",
             "goal_target_weight",
             "goal_i_want_to",
             "goal_weekly_goal",
+            "goal_energy_with_activity_and_diet ",
+            "goal_protein_with_activity_and_diet ",
+            "goal_carbs_with_activity_and_diet ",
+            "goal_fat_with_activity_and_diet ",
+            "goal_user_energy",
+            "goal_user_protein",
+            "goal_user_carbs",
+            "goal_user_fat",
 
         };
         Cursor cursor = db.select("goal", fields, "_id", goalId);
@@ -242,6 +402,40 @@ public class GoalFragment extends Fragment {
         String stringGoalTargetWeight = cursor.getString(2);
         String stringGoalIWantTo = cursor.getString(3);
         String stringGoalWeeklyGoal = cursor.getString(4);
+
+        String stringGoalEnergy = cursor.getString(5);
+        String stringGoalProtein = cursor.getString(6);
+        String stringGoalCarbs = cursor.getString(7);
+        String stringGoalFat = cursor.getString(8);
+
+        String stringUserSaveEnergy = cursor.getString(9);
+        String stringUserSaveProtein = cursor.getString(10);
+        String stringUserSaveCarbs = cursor.getString(11);
+        String stringUserSaveFat = cursor.getString(12);
+
+        //Energy
+        editTextEnergyGoal.setText(stringGoalEnergy);
+        if (stringGoalEnergy.equals("1")) {
+            checkBoxEnergyGoal.setChecked(true);
+        }
+
+        //Protein
+        editTextProteinGoal.setText(stringGoalProtein);
+        if (stringGoalProtein.equals("1")) {
+            checkBoxProteinGoal.setChecked(true);
+        }
+
+        //Carbs
+        editTextCarbsGoal.setText(stringGoalCarbs);
+        if (stringGoalCarbs.equals("1")) {
+            checkBoxCarbsGoal.setChecked(true);
+        }
+
+        //Fat
+        editTextFatGoal.setText(stringGoalFat);
+        if (stringGoalFat.equals("1")) {
+            checkBoxFatGoal.setChecked(true);
+        }
 
         //Measurement +activity level
         /* Measurement */
@@ -298,17 +492,13 @@ public class GoalFragment extends Fragment {
 
                     //update temp db
                     updateTempGoalDB();
-                    String[] fields={"t_goal_i_want_to"};
-                    Cursor c=db.select("temp_goal", fields,"_id",goalId);
+                    String[] fields = {"t_goal_i_want_to"};
+                    Cursor c = db.select("temp_goal", fields, "_id", goalId);
                     textViewUserWantTo.setText(c.getString(0));
                     db.close();
-
                 }
-
             }
         });
-
-
 
 
 
@@ -345,7 +535,6 @@ public class GoalFragment extends Fragment {
         /* Numbers */
         updateTempTable(true);
 
-
         // Submit listener
         Button buttonSubmit = getActivity().findViewById(R.id.buttonSubmit);
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
@@ -355,7 +544,38 @@ public class GoalFragment extends Fragment {
             }
         });
 
+    }
 
+    private void updateGoalWithCheckBoxSave() {
+        DBAdapter db = getDbAdapter();
+
+        /*Check box  Save*/
+        //Energy
+        if (checkBoxEnergyGoal.isChecked()) {
+            db.update("goal", "_id", goalId, "goal_user_energy", 1);
+        } else {
+            db.update("goal", "_id", goalId, "goal_user_energy", 0);
+        }
+        //Protein
+        if (checkBoxEnergyGoal.isChecked()) {
+            db.update("goal", "_id", goalId, "goal_user_protein", 1);
+        } else {
+            db.update("goal", "_id", goalId, "goal_user_protein", 0);
+        }
+        //Carbs
+        if (checkBoxEnergyGoal.isChecked()) {
+            db.update("goal", "_id", goalId, "goal_user_carbs", 1);
+        } else {
+            db.update("goal", "_id", goalId, "goal_user_carbs", 0);
+        }
+        //Fat
+        if (checkBoxEnergyGoal.isChecked()) {
+            db.update("goal", "_id", goalId, "goal_user_fat", 1);
+        } else {
+            db.update("goal", "_id", goalId, "goal_user_fat", 0);
+        }
+
+        db.close();
     }
 
     private void updateTempGoalDB() {
@@ -418,12 +638,12 @@ public class GoalFragment extends Fragment {
         if (stringGoalIWantTo.startsWith("l")) {
             ifYouWant = "If you want to loose weight ";
             method = "Loose " + stringGoalWeeklyGoal;
-        } else if(stringGoalIWantTo.startsWith("g")) {
+        } else if (stringGoalIWantTo.startsWith("g")) {
             ifYouWant = "If you want to gain weight ";
             method = "Gain " + stringGoalWeeklyGoal;
-        }else {
+        } else {
             ifYouWant = "If you want to keep weight ";
-            method = "Just keep " ;
+            method = "Just keep ";
         }
 
         /* Measurement */
@@ -468,10 +688,10 @@ public class GoalFragment extends Fragment {
     }
 
     private void updateTempTable(boolean firstTime) {
-        //todo при начальной загрузке все подгружается с goal
+        // при начальной загрузке все подгружается с goal
         //При любом изменениии все сохраняется в tempGoal и подгружается оттуда
-        //TODo Update temp table (после любого изменения)
-        //TODO только полсе submit все сохраняем в бд
+        //Update temp table (после любого изменения)
+        //только полсе submit все сохраняем в бд
 
         DBAdapter db = getDbAdapter();
         Cursor goalCursor;
@@ -481,19 +701,19 @@ public class GoalFragment extends Fragment {
             //Get goal data
             fields = new String[]{
                 "goal_energy_bmr ",
-                "goal_proteins_bmr ",
+                "goal_protein_bmr ",
                 "goal_carbs_bmr ",
                 "goal_fat_bmr ",
                 "goal_energy_diet ",
-                "goal_proteins_diet ",
+                "goal_protein_diet ",
                 "goal_carbs_diet ",
                 "goal_fat_diet ",
                 "goal_energy_with_activity ",
-                "goal_proteins_with_activity ",
+                "goal_protein_with_activity ",
                 "goal_carbs_with_activity ",
                 "goal_fat_with_activity ",
                 "goal_energy_with_activity_and_diet ",
-                "goal_proteins_with_activity_and_diet ",
+                "goal_protein_with_activity_and_diet ",
                 "goal_carbs_with_activity_and_diet ",
                 "goal_fat_with_activity_and_diet "
             };
@@ -502,19 +722,19 @@ public class GoalFragment extends Fragment {
             //Get goal data
             fields = new String[]{
                 "t_goal_energy_bmr ",
-                "t_goal_proteins_bmr ",
+                "t_goal_protein_bmr ",
                 "t_goal_carbs_bmr ",
                 "t_goal_fat_bmr ",
                 "t_goal_energy_diet ",
-                "t_goal_proteins_diet ",
+                "t_goal_protein_diet ",
                 "t_goal_carbs_diet ",
                 "t_goal_fat_diet ",
                 "t_goal_energy_with_activity ",
-                "t_goal_proteins_with_activity ",
+                "t_goal_protein_with_activity ",
                 "t_goal_carbs_with_activity ",
                 "t_goal_fat_with_activity ",
                 "t_goal_energy_with_activity_and_diet ",
-                "t_goal_proteins_with_activity_and_diet ",
+                "t_goal_protein_with_activity_and_diet ",
                 "t_goal_carbs_with_activity_and_diet ",
                 "t_goal_fat_with_activity_and_diet "
             };
@@ -526,44 +746,44 @@ public class GoalFragment extends Fragment {
 
         //Ready as variables
         String goal_energy_bmr = goalCursor.getString(0);
-        String goal_proteins_bmr = goalCursor.getString(1);
+        String goal_protein_bmr = goalCursor.getString(1);
         String goal_carbs_bmr = goalCursor.getString(2);
         String goal_fat_bmr = goalCursor.getString(3);
         String goal_energy_diet = goalCursor.getString(4);
-        String goal_proteins_diet = goalCursor.getString(5);
+        String goal_protein_diet = goalCursor.getString(5);
         String goal_carbs_diet = goalCursor.getString(6);
         String goal_fat_diet = goalCursor.getString(7);
         String goal_energy_with_activity = goalCursor.getString(8);
-        String goal_proteins_with_activity = goalCursor.getString(9);
+        String goal_protein_with_activity = goalCursor.getString(9);
         String goal_carbs_with_activity = goalCursor.getString(10);
         String goal_fat_with_activity = goalCursor.getString(11);
         String goal_energy_with_activity_and_diet = goalCursor.getString(12);
-        String goal_proteins_with_activity_and_diet = goalCursor.getString(13);
+        String goal_protein_with_activity_and_diet = goalCursor.getString(13);
         String goal_carbs_with_activity_and_diet = goalCursor.getString(14);
         String goal_fat_with_activity_and_diet = goalCursor.getString(15);
 
         //1 diet
         textViewEnergyLooseWithout.setText(goal_energy_diet);
-        textViewProteinsLooseWithout.setText(goal_proteins_diet);
+        textViewProteinsLooseWithout.setText(goal_protein_diet);
         textViewCarbsLooseWithout.setText(goal_carbs_diet);
         textViewFatLooseWithout.setText(goal_fat_diet);
 
 
         //2 diet and activity
         textViewEnergyLooseWith.setText(goal_energy_with_activity_and_diet);
-        textViewProteinsLooseWith.setText(goal_proteins_with_activity_and_diet);
+        textViewProteinsLooseWith.setText(goal_protein_with_activity_and_diet);
         textViewCarbsLooseWith.setText(goal_carbs_with_activity_and_diet);
         textViewFatLooseWith.setText(goal_fat_with_activity_and_diet);
 
         //3 BMR
         textViewEnergyKeepWithout.setText(goal_energy_bmr);
-        textViewProteinsKeepWithout.setText(goal_proteins_bmr);
+        textViewProteinsKeepWithout.setText(goal_protein_bmr);
         textViewCarbsKeepWithout.setText(goal_carbs_bmr);
         textViewFatKeepWithout.setText(goal_fat_bmr);
 
         //4 With activity
         textViewEnergyKeepWith.setText(goal_energy_with_activity);
-        textViewProteinsKeepWith.setText(goal_proteins_with_activity);
+        textViewProteinsKeepWith.setText(goal_protein_with_activity);
         textViewCarbsKeepWith.setText(goal_carbs_with_activity);
         textViewFatKeepWith.setText(goal_fat_with_activity);
 
@@ -573,33 +793,6 @@ public class GoalFragment extends Fragment {
     }
 
     public void toggleNumberViewGoal(boolean isChecked) {
-
-        //        //Loose|gain Table
-        //        TextView textViewProteins = getActivity().findViewById(R.id.textViewProteins);
-        //        TextView textViewCarbs = getActivity().findViewById(R.id.textViewCarbs);
-        //        TextView textViewFat = getActivity().findViewById(R.id.textViewFat);
-        //
-        //        TextView textViewProteinsLooseWithout = getActivity().findViewById(R.id.textViewProteinsLooseWithout);
-        //        TextView textViewCarbsLooseWithout = getActivity().findViewById(R.id.textViewCarbsLooseWithout);
-        //        TextView textViewFatLooseWithout = getActivity().findViewById(R.id.textViewFatLooseWithout);
-        //
-        //        TextView textViewProteinsLooseWith = getActivity().findViewById(R.id.textViewProteinsLooseWith);
-        //        TextView textViewCarbsLooseWith = getActivity().findViewById(R.id.textViewCarbsLooseWith);
-        //        TextView textViewFatLooseWith = getActivity().findViewById(R.id.textViewFatLooseWith);
-        //
-        //
-        //        //Keep weight
-        //        TextView textViewProteinsKeep = getActivity().findViewById(R.id.textViewProteinsKeep);
-        //        TextView textViewCarbsKeep = getActivity().findViewById(R.id.textViewCarbsKeep);
-        //        TextView textViewFatKeep = getActivity().findViewById(R.id.textViewFatKeep);
-        //
-        //        TextView textViewKeepProteinsKeepWithout = getActivity().findViewById(R.id.textViewProteinsKeepWithout);
-        //        TextView textViewKeepCarbsKeepWithout = getActivity().findViewById(R.id.textViewCarbsKeepWithout);
-        //        TextView textViewKeepFatKeepWithout = getActivity().findViewById(R.id.textViewFatKeepWithout);
-        //
-        //        TextView textViewProteinsKeepWith = getActivity().findViewById(R.id.textViewProteinsKeepWith);
-        //        TextView textViewCarbsKeepWith = getActivity().findViewById(R.id.textViewCarbsKeepWith);
-        //        TextView textViewFatKeepWith = getActivity().findViewById(R.id.textViewFatKeepWith);
 
         if (isChecked) {
             //Видно
@@ -664,6 +857,10 @@ public class GoalFragment extends Fragment {
     /*SignUpGoal Submit ----------------------------------------------------- */
     public void goalEditGoalSubmit() {
         errorMessage = "";
+        if (checkBoxEnergyGoal.isChecked() && editTextEnergyGoal.getText().toString().isEmpty()) {
+            errorMessage = "Energy mustn't be empty";
+        }
+
         //Get Target Weight
         double doubleTargetWeight = getTargetWeight();
 
@@ -692,9 +889,10 @@ public class GoalFragment extends Fragment {
 
         if (errorMessage.isEmpty()) {
             //Update database
+            // updateGoalWithCheckBoxSave();
 
             DBAdapter db = getDbAdapter();
-           String weight= editTextUserWeight.getText().toString();
+            String weight = editTextUserWeight.getText().toString();
             db.update("goal", "_id", goalId, "goal_current_weight", db.quoteSmart(weight));
 
             ChangeGoal.updateGoalDBMain(db, targetWeight, weeklyGoal);

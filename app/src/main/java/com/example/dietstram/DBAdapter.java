@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 29;
+    public static final int DATABASE_VERSION = 30;
 
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -59,6 +59,10 @@ public class DBAdapter {
                     "goal_protein_with_activity_and_diet INT," +
                     "goal_carbs_with_activity_and_diet INT," +
                     "goal_fat_with_activity_and_diet INT," +
+                    "goal_user_energy INT," +//1 if user want tio set his goal
+                    "goal_user_protein INT," +
+                    "goal_user_carbs INT," +
+                    "goal_user_fat INT," +
                     "goal_notes VARCHAR" +
                     ");");
 

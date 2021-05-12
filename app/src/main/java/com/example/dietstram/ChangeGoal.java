@@ -137,8 +137,21 @@ public class ChangeGoal {
         //16 % fat
         double energyBmrSQL = db.quoteSmart(bmr);
 
-        db.update("goal", "_id", goalId, mainField, energyBmrSQL);
+        String[] fieldsGoal={
+            "goal_user_energy",
+            "goal_user_protein",
+            "goal_user_carbs",
+            "goal_user_fat",
+        };
+        Cursor cursorGoalUser=db.select("goal",fieldsGoal,"_id",goalId);
+        String userEnergy=cursorGoalUser.getColumnName(0);
+        String userProtein=cursorGoalUser.getColumnName(1);
+        String userCarbs=cursorGoalUser.getColumnName(2);
+        String userFat=cursorGoalUser.getColumnName(3);
 
+        if(!userEnergy.equals("1")) {
+            db.update("goal", "_id", goalId, mainField, energyBmrSQL);
+        }
         double proteinBmr = Math.round(bmr * 14 / 100);
         double carbsBmr = Math.round(bmr * 70 / 100);
         double fatBmr = Math.round(bmr * 16 / 100);
@@ -147,10 +160,16 @@ public class ChangeGoal {
         double carbsBmrSQL = db.quoteSmart(carbsBmr);
         double fatBmrSQL = db.quoteSmart(fatBmr);
 
-        db.update("goal", "_id", goalId, fields[0], fatBmrSQL);
-        db.update("goal", "_id", goalId, fields[1], carbsBmrSQL);
-        db.update("goal", "_id", goalId, fields[2], proteinBmrSQL);
-    }
+        if(!userProtein.equals("1")) {
+            db.update("goal", "_id", goalId, fields[0], fatBmrSQL);
+        }
+        if(!userCarbs.equals("1")) {
+            db.update("goal", "_id", goalId, fields[1], carbsBmrSQL);
+        }
+        if(!userFat.equals("1")) {
+            db.update("goal", "_id", goalId, fields[2], proteinBmrSQL);
+
+        }}
 
     private static void updateGoalDB(double targetWeight, String weeklyGoal, DBAdapter db) {
 
