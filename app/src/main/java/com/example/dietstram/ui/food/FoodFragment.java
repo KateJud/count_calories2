@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
@@ -21,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -42,26 +40,21 @@ import com.example.dietstram.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.MySuggestionProvider;
 import com.example.dietstram.R;
-import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
-import com.example.dietstram.ui.categories.CategoriesFragment;
+import com.example.dietstram.ui.addfood.AddFoodToDiaryFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class FoodFragment extends Fragment {
+public class FoodFragment extends Fragment  {
 
-    /*Necessary  fields*/
-    EditText editTextName;
-
-    private FoodViewModel foodViewModel;
 
     /* Action buttons */
-    MenuItem menuItemEdit;
-    MenuItem menuItemDelete;
-    MenuItem menuItemAdd;
+    private MenuItem menuItemEdit;
+    private MenuItem menuItemDelete;
+    private MenuItem menuItemAdd;
 
-    SearchView menuItemSearch;
+    private SearchView searchView;
 
 
     /* Holder on buttons on toolbar */
@@ -70,9 +63,9 @@ public class FoodFragment extends Fragment {
     private String selectedMainCategoryName = "";
 
     /*My fields*/
-    Cursor listCursor;
-    int error;
+   private Cursor listCursor;
     private View mainView;
+    private boolean getFromCategoriesFlag = false;
 
 
     private void preListItemClickedReadyCursor() {
@@ -94,15 +87,14 @@ public class FoodFragment extends Fragment {
         //Close
         db.close();
 
-        //todo makeMenuItemInvisible();
         listItemClicked(0);
 
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        foodViewModel =
-            ViewModelProviders.of(this).get(FoodViewModel.class);
+        FoodViewModel foodViewModel = ViewModelProviders.of(this).get(FoodViewModel.class);
         mainView = inflater.inflate(R.layout.fragment_food, container, false);
         return mainView;
     }
@@ -131,11 +123,21 @@ public class FoodFragment extends Fragment {
             getFromCategoriesFlag = true;
         }
 
+        setAllWidgets();
     }
 
-    boolean getFromCategoriesFlag = false;
+    private void setAllWidgets() {
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView =  getActivity().findViewById(R.id.searchFood);
+        if(searchView!=null) {
+            setStyleToSeracher();
+            setListenersToSearcher(searchManager);
+        }
+    }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         //Inflate menu
         ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
@@ -144,15 +146,23 @@ public class FoodFragment extends Fragment {
         menuItemEdit = menu.findItem(R.id.action_edit);
         menuItemDelete = menu.findItem(R.id.action_delete);
         menuItemAdd = menu.findItem(R.id.action_add);
-        //menuItemSearch = menu.findItem(R.id.search);
 
 
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        menuItemSearch = (SearchView) menu.findItem(R.id.search).getActionView();
-        menuItemSearch.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        //Hide as default (if list)
+        if (!getFromCategoriesFlag || getActivity().findViewById(android.R.id.content) == getActivity().findViewById(R.id.layoutFood)) {
+            makeMenuItemInvisible();
+        } else {
+            //If food
+            makeMenuItemVisible();
+        }
+
+    }
+
+    private void setListenersToSearcher(SearchManager searchManager) {
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         // Здесь можно указать будет ли строка поиска изначально развернута или свернута в значок
-        menuItemSearch.setIconifiedByDefault(true);
-        menuItemSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Обратный вызов при изменении текста, запрос - это текст после изменения
@@ -170,17 +180,17 @@ public class FoodFragment extends Fragment {
                 return false;
             }
         });
-
-
-        //Hide as default (if list)
-        if (!getFromCategoriesFlag || getActivity().findViewById(android.R.id.content) == getActivity().findViewById(R.id.layoutFood)) {
-            makeMenuItemInvisible();
-        } else {
-            //If food
-            makeMenuItemVisible();
-        }
-
     }
+
+    private void setStyleToSeracher() {
+        /*Style */
+        int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+        // Getting the 'search_plate' LinearLayout.
+        View searchPlate = searchView.findViewById(searchPlateId);
+        // Setting background of 'search_plate' to earlier defined drawable.
+        searchPlate.setBackgroundResource(R.drawable.bg_search_view);
+    }
+
 
     private DBAdapter getDbAdapter() {
         DBAdapter db = new DBAdapter(getActivity());

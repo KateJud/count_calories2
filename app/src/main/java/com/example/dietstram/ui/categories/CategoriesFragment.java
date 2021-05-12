@@ -46,7 +46,6 @@ public class CategoriesFragment extends Fragment {
     private int error;
 
     /* Action buttons */
-    private MenuItem menuItemSearch;
     private MenuItem menuItemEdit;
     private MenuItem menuItemDelete;
 
@@ -93,12 +92,10 @@ public class CategoriesFragment extends Fragment {
         ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
 
         //Assign variables
-        menuItemSearch=menu.findItem(R.id.search);
         setMenuItemEdit(menu.findItem(R.id.action_edit));
         setMenuItemDelete(menu.findItem(R.id.action_delete));
 
         //Hide as default
-        menuItemSearch.setVisible(false);
         getMenuItemEdit().setVisible(false);
         getMenuItemDelete().setVisible(false);
 

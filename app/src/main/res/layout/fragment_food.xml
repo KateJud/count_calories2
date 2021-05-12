@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:searchBar="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutFood"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <SearchView
+        android:id="@+id/searchFood"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5sp"
+        android:layout_height="40sp" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listViewFood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp" />
+        android:layout_below="@+id/searchFood"
+        android:padding="10sp" />
 
 
 </RelativeLayout>

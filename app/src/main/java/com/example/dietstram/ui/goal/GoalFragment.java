@@ -415,25 +415,25 @@ public class GoalFragment extends Fragment {
 
         //Energy
         editTextEnergyGoal.setText(stringGoalEnergy);
-        if (stringUserSaveEnergy.equals("1")) {
+        if (stringUserSaveEnergy!=null && stringGoalEnergy.equals("1")) {
             checkBoxEnergyGoal.setChecked(true);
         }
 
         //Protein
         editTextProteinGoal.setText(stringGoalProtein);
-        if (stringUserSaveProtein.equals("1")) {
+        if (stringUserSaveProtein!=null &&stringUserSaveProtein.equals("1")) {
             checkBoxProteinGoal.setChecked(true);
         }
 
         //Carbs
         editTextCarbsGoal.setText(stringGoalCarbs);
-        if (stringUserSaveCarbs.equals("1")) {
+        if (stringUserSaveCarbs!=null &&stringUserSaveCarbs.equals("1")) {
             checkBoxCarbsGoal.setChecked(true);
         }
 
         //Fat
         editTextFatGoal.setText(stringGoalFat);
-        if (stringUserSaveFat.equals("1")) {
+        if (stringUserSaveFat!=null &&stringUserSaveFat.equals("1")) {
             checkBoxFatGoal.setChecked(true);
         }
 
@@ -868,7 +868,7 @@ public class GoalFragment extends Fragment {
         String stringWeeklyGoal = spinnerWeeklyGoal.getSelectedItem().toString();
 
         /* Spinner ActivityLevel */
-        String stringActivityLevel = spinnerActivityLevel.getSelectedItem().toString();
+        String stringActivityLevel = String.valueOf( spinnerActivityLevel.getSelectedItemPosition());
 
 
         //Error handling
@@ -897,7 +897,7 @@ public class GoalFragment extends Fragment {
             DBAdapter db = getDbAdapter();
             String weight = editTextUserWeight.getText().toString();
             db.update("goal", "_id", goalId, "goal_current_weight", db.quoteSmart(weight));
-            db.update("goal", "_id", goalId, "goal_activity_level", db.quoteSmart(activityLevel));
+            db.update("users", "_id", goalId, "user_activity_level", db.quoteSmart(activityLevel));
 
             ChangeGoal.updateGoalDBMain(db, targetWeight, weeklyGoal);
             db.close();

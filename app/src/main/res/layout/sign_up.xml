@@ -29,11 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp">
+            android:layout_marginRight="24dp"
+           >
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+               >
 
                 <ImageView
                     android:id="@+id/imageViewError"
@@ -77,7 +79,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp">
+            android:layout_marginRight="24dp"
+            android:shrinkColumns="1,2"
+            android:stretchColumns="1,2">
 
             <!-- Gender -->
             <TableRow
@@ -290,6 +294,10 @@
                     style="@style/Widget.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="none"
+                    android:scrollHorizontally="false"
+                    android:maxLines="100"
+                    android:spinnerMode="dialog"
                     android:entries="@array/array_activity_level"
                     android:padding="16dp" />
             </TableRow>

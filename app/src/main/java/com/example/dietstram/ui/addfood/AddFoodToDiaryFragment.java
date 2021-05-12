@@ -1,5 +1,6 @@
-package com.example.dietstram.ui.add_food;
+package com.example.dietstram.ui.addfood;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,32 +8,30 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dietstram.DBAdapter;
 import com.example.dietstram.FoodCursorAdapter;
 import com.example.dietstram.MainActivity;
+import com.example.dietstram.MySuggestionProvider;
 import com.example.dietstram.R;
-import com.example.dietstram.ui.food.FoodFragment;
 import com.example.dietstram.ui.home.HomeFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.example.dietstram.OpenCloseDB.changeTitle;
@@ -40,41 +39,33 @@ import static com.example.dietstram.OpenCloseDB.changeTitle;
 
 public class AddFoodToDiaryFragment extends Fragment {
 
-    /* TextView */
-    TextView textViewFoodName;//.findViewById(R.id.textViewFoodName);
-    TextView textViewFoodManufactureName;//.findViewById(R.id.textViewManufacture);
-    TextView textViewFoodAbout;//.findViewById(R.id.textViewFoodAbout);
-    TextView textViewDescription;//.findViewById(R.id.textViewFoodDescription);
+    /* private TextView */
+    private TextView textViewFoodName;
+    private TextView textViewFoodAbout;
+    private TextView textViewDescription;
 
-    TextView textViewFoodEnergyPerHundred;//.findViewById(R.id.textViewFoodEnergyPerHundred);
-    TextView textViewFoodProteinsPerHundred;//.findViewById(R.id.textViewFoodProteinsPerHundred);
-    TextView textViewFoodCarbsPerHundred;//.findViewById(R.id.textViewFoodCarbsPerHundred);
-    TextView textViewFoodFatPerHundred;//.findViewById(R.id.textViewFoodFatPerHundred);
+    private TextView textViewFoodEnergyPerHundred;
+    private TextView textViewFoodProteinsPerHundred;
+    private TextView textViewFoodCarbsPerHundred;
+    private TextView textViewFoodFatPerHundred;
 
-    TextView textViewFoodEnergyPerN;//.findViewById(R.id.textViewFoodEnergyPerN);
-    TextView textViewFoodProteinsPerN;//.findViewById(R.id.textViewFoodProteinsPerN);
-    TextView textViewFoodCarbsPerN;//.findViewById(R.id.textViewFoodCarbsPerN);
-    TextView textViewFoodFatPerN;//.findViewById(R.id.textViewFoodFatPerN);
+    private TextView textViewFoodEnergyPerN;
+    private TextView textViewFoodProteinsPerN;
+    private TextView textViewFoodCarbsPerN;
+    private TextView textViewFoodFatPerN;
 
     /* EditText */
-    EditText editTextPortionSizePCS;
-    EditText editTextPortionSizeGram;
+    private EditText editTextPortionSizePCS;
+    private EditText editTextPortionSizeGram;
 
+    /* SearchView */
+    private SearchView searchView;
 
-    /* --------------------------------------------------- */
-    /* Necessary  fields */
-    private View mainView;
 
     /* My fields */
-    Cursor listCategoryCursor;
-    Cursor listCursorFood;
-
-    /* Holder on buttons on toolbar */
-    private String currentCategoryId;
-    private String currentCategoryName;
+    private Cursor listCursorFood;
 
     private String currentFoodId;
-    private String currentFoodName;
 
     private String currentMealNumber;
 
@@ -86,9 +77,10 @@ public class AddFoodToDiaryFragment extends Fragment {
 
     private void setAllWidgets() {
         textViewFoodName = getView().findViewById(R.id.textViewFoodName);
-        textViewFoodManufactureName = getView().findViewById(R.id.textViewManufacture);
+        TextView textViewFoodManufactureName = getView().findViewById(R.id.textViewManufacture);
         textViewFoodAbout = getView().findViewById(R.id.textViewFoodAbout);
         textViewDescription = getView().findViewById(R.id.textViewFoodDescription);
+
         //Values from table
         textViewFoodEnergyPerHundred = getView().findViewById(R.id.textViewFoodEnergyPerHundred);
         textViewFoodProteinsPerHundred = getView().findViewById(R.id.textViewFoodProteinsPerHundred);
@@ -104,6 +96,47 @@ public class AddFoodToDiaryFragment extends Fragment {
         editTextPortionSizeGram = getActivity().findViewById(R.id.editTextPortionSizeGram);
 
 
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView =  getActivity().findViewById(R.id.searchFood);
+
+        if(searchView!=null) {
+            setStyleToSeracher();
+            setListenersToSearcher(searchManager);
+        }
+
+    }
+
+    private void setListenersToSearcher(SearchManager searchManager) {
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        // Здесь можно указать будет ли строка поиска изначально развернута или свернута в значок
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Обратный вызов при изменении текста, запрос - это текст после изменения
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getActivity(),
+                    MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+                suggestions.saveRecentQuery(query, null);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Обратный вызов при отправке текста, newText - последний текст, отправленный для поиска
+                populateListFood(newText);
+                return false;
+            }
+        });
+    }
+
+    private void setStyleToSeracher() {
+        /*Style */
+        int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+        // Getting the 'search_plate' LinearLayout.
+        View searchPlate = searchView.findViewById(searchPlateId);
+        // Setting background of 'search_plate' to earlier defined drawable.
+        searchPlate.setBackgroundResource(R.drawable.bg_search_view);
     }
 
 
@@ -116,7 +149,6 @@ public class AddFoodToDiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         /* Set title */
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Add food to diary");
     }
@@ -125,7 +157,7 @@ public class AddFoodToDiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_food_to_diary, container, false);
+        return inflater.inflate(R.layout.fragment_food, container, false);
     }
 
 
@@ -142,7 +174,7 @@ public class AddFoodToDiaryFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
 
         String action = "";
         Bundle bundle = this.getArguments();
@@ -153,10 +185,12 @@ public class AddFoodToDiaryFragment extends Fragment {
 
         }
         if (action.isEmpty()) {
-            populateListCategory("0", "");
+            populateListFood("");
+           // populateListCategory("0", "");
         } else if (action.equals("foodInCategoryListItemClicked")) {
             preFoodInCategoryListItemClicked();
         }
+        setAllWidgets();
     }
 
     //Came from another class
@@ -178,82 +212,52 @@ public class AddFoodToDiaryFragment extends Fragment {
         listCursorFood = db.select("food", fields, "_id", db.quoteSmart(currentFoodId));
 
         db.close();
-        foodInCategoryListItemClicked(0);
+        listItemClickedFood(0);
     }
 
-    private void populateListCategory(String parentId, String categoryName) {
-
+    private void populateListFood(String filter) {
         /*DataBase*/
         DBAdapter db = getDbAdapter();
 
         String[] fields = new String[]{
             "_id",
-            "category_name",
-            "category_parent_id"
+            "food_name",
+            "food_serving_size_gram",
+            "food_serving_size_gram_measurement",
+            "food_energy_calculated",
+            "food_protein_calculated",
+            "food_carbohydrates_calculated",
+            "food_fat_calculated"
         };
-        listCategoryCursor = db.select("categories", fields, "category_parent_id", parentId, "category_name", "ASC");
-        ArrayList<String> values = new ArrayList<>();
+        listCursorFood = db.selectFood("food", fields, filter);
+        //listCursor = db.selectFood("food", fields, "", "", "food_name", "ASC");
 
+        // set up the RecyclerView
+        RecyclerView recyclerView = getActivity().findViewById(R.id.listViewFood);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursorFood);
+        foodCursorAdapter.setOnEntryClickListener(new FoodCursorAdapter.OnEntryClickListener() {
+            @Override
+            public void onEntryClick(View view, int position) {
 
-        //Convert categories to string
-        int categoryCount = listCategoryCursor.getCount();
-        for (int i = 0; i < categoryCount; i++) {
-            values.add(listCategoryCursor.getString(listCategoryCursor.getColumnIndex("category_name")));
-            listCategoryCursor.moveToNext();
+                listItemClickedFood(position);
+            }
+        });
 
-        }
-
-        //Create adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
-
-        //Set adapter
-        final ListView listView = getActivity().findViewById(R.id.listViewAddFood);
-        listView.setAdapter(adapter);
-
-        //OnClick
-        if (parentId.equals("0")) {
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    listItemClicked(position);
-                }
-            });
-        }
+        recyclerView.setAdapter(foodCursorAdapter);
 
 
         //Close
         db.close();
 
-
     }
 
-    private void listItemClicked(int position) {
-
-        //Move to id selected
-        listCategoryCursor.moveToPosition(position);
-
-        //GetId and name from cursor
-        String id = listCategoryCursor.getString(0);
-        String name = listCategoryCursor.getString(1);
-        String parentCategoryId = listCategoryCursor.getString(2);
-
-        //Change Title
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Add food from " + name + " to Diary");
-
-        currentCategoryId = id;
-        currentCategoryName = name;
-
-        //Move to subclass
-        populateListCategory(id, name);
-
-        //Show food in category
-        showFoodInCategory(currentCategoryId, currentCategoryName, parentCategoryId);
-
-    }
 
     private void setMainView(int id) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mainView = inflater.inflate(id, null);
+        /* --------------------------------------------------- */
+        /* Necessary  fields */
+        View mainView = inflater.inflate(id, null);
         ViewGroup rootView = (ViewGroup) getView();
         rootView.removeAllViews();
         rootView.addView(mainView);
@@ -266,45 +270,9 @@ public class AddFoodToDiaryFragment extends Fragment {
     }
 
 
-    private void showFoodInCategory(String categoryId, String categoryName, String categoryParentId) {
-        if (!categoryParentId.equals("0")) {
-
-            changeLayout(R.layout.fragment_food);
-
-            /*DataBase*/
-            DBAdapter db = getDbAdapter();
-
-            String[] fields = new String[]{
-                "_id",
-                "food_name",
-                "food_serving_size_gram",
-                "food_serving_size_gram_measurement",
-                "food_energy_calculated",
-                "food_protein_calculated",
-                "food_carbohydrates_calculated",
-                "food_fat_calculated"
-
-            };
-            listCursorFood = db.select("food", fields, "", "", "food_name", "ASC");
 
 
-            RecyclerView recyclerView = getActivity().findViewById(R.id.listViewFood);
-            FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursorFood);
-            recyclerView.setAdapter(foodCursorAdapter);
-
-            foodCursorAdapter.setOnEntryClickListener(new FoodCursorAdapter.OnEntryClickListener() {
-                @Override
-                public void onEntryClick(View view, int position) {
-                    foodInCategoryListItemClicked(position);
-                }
-            });
-
-            //Close
-            db.close();
-        }
-    }
-
-    private void foodInCategoryListItemClicked(int listItemFoodIndexClicked) {
+    private void listItemClickedFood(int listItemFoodIndexClicked) {
 
         //TODO show edit button
         //TODO madeMenuItemVisible();
@@ -318,7 +286,7 @@ public class AddFoodToDiaryFragment extends Fragment {
 
         //GetId and name from cursor
         currentFoodId = listCursorFood.getString(0);
-        currentFoodName = listCursorFood.getString(1);
+        String currentFoodName = listCursorFood.getString(1);
 
         //Change Title
         changeTitle(getActivity(), "Add " + currentFoodName);
@@ -432,8 +400,7 @@ public class AddFoodToDiaryFragment extends Fragment {
         editTextPortionSizePCS.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                } else {
+                if (!hasFocus) {
                     String lock = "portionSizePCS";
                     releaseLock(lock);
                 }
@@ -461,8 +428,7 @@ public class AddFoodToDiaryFragment extends Fragment {
         editTextPortionSizeGram.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                } else {
+                if (!hasFocus) {
                     String lock = "portionSizeGram";
                     releaseLock(lock);
                 }
@@ -542,8 +508,9 @@ public class AddFoodToDiaryFragment extends Fragment {
 
                 // Have changed pcs
                 // Update gram
+
                 double doublePortionSizeGram = Math.round(doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber));
-                editTextPortionSizeGram.setText("" + doublePortionSizeGram);
+                editTextPortionSizeGram.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS));
                 updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
 
 
@@ -567,16 +534,17 @@ public class AddFoodToDiaryFragment extends Fragment {
 
 
         double koeff = doublePortionSizeGram / Double.parseDouble(servingSize);
-        String energyNew = String.valueOf(Double.parseDouble(energyOld) * koeff);
-        String proteinNew = String.valueOf(Double.parseDouble(proteinOld) * koeff);
-        String carbsNew = String.valueOf(Double.parseDouble(carbsOld) * koeff);
-        String fatNew = String.valueOf(Double.parseDouble(fatOld) * koeff);
+        double energyNew = Double.parseDouble(energyOld) * koeff;
+        double proteinNew = Double.parseDouble(proteinOld) * koeff;
+        double carbsNew = Double.parseDouble(carbsOld) * koeff;
+        double fatNew = Double.parseDouble(fatOld) * koeff;
 
 
-        textViewFoodEnergyPerN.setText(energyNew);
-        textViewFoodProteinsPerN.setText(proteinNew);
-        textViewFoodCarbsPerN.setText(carbsNew);
-        textViewFoodFatPerN.setText(fatNew);
+        //String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS)
+        textViewFoodEnergyPerN.setText(String.format(getActivity().getString(R.string.format_double),  energyNew));
+        textViewFoodProteinsPerN.setText(String.format(getActivity().getString(R.string.format_double),proteinNew));
+        textViewFoodCarbsPerN.setText(String.format(getActivity().getString(R.string.format_double),carbsNew));
+        textViewFoodFatPerN.setText(String.format(getActivity().getString(R.string.format_double),fatNew));
     }
 
     public void editPortionSizeGramOnChanged() {
@@ -633,7 +601,7 @@ public class AddFoodToDiaryFragment extends Fragment {
                 // Have changed pcs
                 // Update gram
                 double doublePortionSizePCS = Math.round(doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize));
-                editTextPortionSizePCS.setText("" + doublePortionSizePCS);
+                editTextPortionSizePCS.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS));
 
 
                 updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
@@ -645,28 +613,6 @@ public class AddFoodToDiaryFragment extends Fragment {
     }
 
     private void addFoodToDiary() {
-
-
-        //GetId and name from cursor
-//        currentFoodId = listCursorFood.getString(0);
-//        currentFoodName = listCursorFood.getString(1);
-        //----------------------------------------------------
-
-
-//        "fd_id INTEGER , " +
-//            "fd_date DATE," +
-//            "fd_meal_number INT," +
-//            "fd_food_id INT," +
-//            "fd_serving_size_gram DOUBLE," +
-//            "fd_serving_size_gram_measurement VARCHAR,"+
-//            "fd_serving_size_pcs DOUBLE ,"+
-//            "fd_serving_size_pcs_measurement VARCHAR ,"+
-//            "fd_energy_calculated DOUBLE," +
-//            "fd_protein_calculated DOUBLE," +
-//            "fd_carbohydrates_calculated DOUBLE," +
-//            "fd_fat_calculated DOUBLE," +
-//            "fd_user_id INT"
-
 
         //We want to add food
         DBAdapter db = getDbAdapter();

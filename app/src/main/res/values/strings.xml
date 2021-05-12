@@ -193,4 +193,6 @@
     <string name="format_progress_g">%s/%s g</string>
     <string name="nickname_">NickName*</string>
 
+    <string name="format_double">%.1f</string>
+
 </resources>

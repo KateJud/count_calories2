@@ -40,7 +40,7 @@ import com.example.dietstram.DBSetupInsert;
 import com.example.dietstram.Idioms;
 import com.example.dietstram.MainActivity;
 import com.example.dietstram.R;
-import com.example.dietstram.ui.add_food.AddFoodToDiaryFragment;
+import com.example.dietstram.ui.addfood.AddFoodToDiaryFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -387,6 +387,8 @@ public class HomeFragment extends Fragment {
             buttonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     addFood(Integer.parseInt(mealId));
                     calculateNumberOfCalEatenToday();
                 }
@@ -589,7 +591,7 @@ public class HomeFragment extends Fragment {
 
     private void moveToAddFoodToDiaryLayout(int mealNumber) {
 
-        Class fragmentClass = AddFoodToDiaryFragment.class;
+        Class<AddFoodToDiaryFragment> fragmentClass = AddFoodToDiaryFragment.class;
 
 
         Bundle bundle = new Bundle();
