@@ -1400,10 +1400,10 @@ public class HomeFragment extends Fragment {
             TextView textViewProgressCarbs = getView().findViewById(R.id.textViewProgressCarbs);
             TextView textViewProgressFat = getView().findViewById(R.id.textViewProgressFat);
 
-            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progress_kcal), stringGoalEnergy, stringEatenEnergy));
-            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringGoalProtein, stringEatenProtein));
-            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringGoalCarbs, stringEatenCarbs));
-            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringGoalFat, stringEatenFat));
+            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progress_kcal), stringEatenEnergy,stringGoalEnergy ));
+            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenProtein,stringGoalProtein ));
+            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenCarbs,stringGoalCarbs ));
+            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenFat,stringGoalFat));
 
 
         }

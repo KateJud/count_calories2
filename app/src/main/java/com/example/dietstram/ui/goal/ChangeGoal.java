@@ -133,6 +133,47 @@ public class ChangeGoal {
     private static void updateDbEnergyFatsCarbsProteins(DBAdapter db, double bmr, String[] fields,
                                                         String mainField) {
 
+
+        double proteinBmr ;
+        double carbsBmr ;
+        double fatBmr ;
+
+        //Search goal
+        String[] fieldsIWantTo = new String[]{
+            "goal_i_want_to"
+        };
+        Cursor c = db.select("goal", fieldsIWantTo,"_id", goalId);
+        String goalWantTo = c.getString(0);
+
+        if(goalWantTo.startsWith("k")){
+            //Keep
+            //30 % protein
+            //30 % fat
+            //40 % karbohydrat
+            proteinBmr = Math.round(bmr * 30 / (100*4));
+            carbsBmr = Math.round(bmr * 40 / (100*4));
+            fatBmr = Math.round(bmr * 30 / (100*9));
+
+        }else if(goalWantTo.startsWith("l")){
+            //Loose
+            //30 % protein
+            //50 % karbohydrat
+            //20 % fat
+            proteinBmr = Math.round(bmr * 30 / (100*4));
+            carbsBmr = Math.round(bmr * 50 / (100*4));
+            fatBmr = Math.round(bmr * 20 / (100*9));
+
+        }else {
+            //Gain
+            //35 % protein
+            //55 % karbohydrat
+            //25-35 % fat
+            proteinBmr = Math.round(bmr * 35 / (100*4));
+            carbsBmr = Math.round(bmr * 55 / (100*4));
+            fatBmr = Math.round(bmr * 30 / (100*9));
+
+        }
+
         //CalculateProteins
         //14 % protein
         //70 % karbohydrat
@@ -151,24 +192,22 @@ public class ChangeGoal {
         String userCarbs=cursorGoalUser.getColumnName(2);
         String userFat=cursorGoalUser.getColumnName(3);
 
-        if(!userEnergy.equals("1")) {
+        if(userEnergy!=null &&!userEnergy.equals("1")) {
             db.update("goal", "_id", goalId, mainField, energyBmrSQL);
         }
-        double proteinBmr = Math.round(bmr * 14 / 100);
-        double carbsBmr = Math.round(bmr * 70 / 100);
-        double fatBmr = Math.round(bmr * 16 / 100);
+
 
         double proteinBmrSQL = db.quoteSmart(proteinBmr);
         double carbsBmrSQL = db.quoteSmart(carbsBmr);
         double fatBmrSQL = db.quoteSmart(fatBmr);
 
-        if(!userProtein.equals("1")) {
+        if(userProtein!=null&&!userProtein.equals("1")) {
             db.update("goal", "_id", goalId, fields[0], fatBmrSQL);
         }
-        if(!userCarbs.equals("1")) {
+        if(userCarbs!=null&&!userCarbs.equals("1")) {
             db.update("goal", "_id", goalId, fields[1], carbsBmrSQL);
         }
-        if(!userFat.equals("1")) {
+        if(userFat!=null&&!userFat.equals("1")) {
             db.update("goal", "_id", goalId, fields[2], proteinBmrSQL);
 
         }}
@@ -206,7 +245,6 @@ public class ChangeGoal {
 
         /*Calculate Energy*/
         double weight = Double.parseDouble(getTempWeight(db));
-//
 
         /*1: bmr*/
         double bmr = getBmr(db, weight);
@@ -238,17 +276,49 @@ public class ChangeGoal {
     private static void updateTempDbEnergyFatsCarbsProteins(DBAdapter db, double bmr, String[] fields,
                                                             String mainField) {
 
-        //CalculateProteins
-        //20-25 % protein
-        //40-50 % karbohydrat
-        //25-35 % fat
+        double proteinBmr ;
+        double carbsBmr ;
+        double fatBmr ;
+
+        //Search goal
+        String[] fieldsIWantTo = new String[]{
+            "t_goal_i_want_to"
+        };
+        Cursor c = db.select("temp_goal", fieldsIWantTo,"_id", goalId);
+        String goalWantTo = c.getString(0);
+
+        if(goalWantTo.startsWith("k")){
+            //Keep
+            //30 % protein
+            //30 % fat
+            //40 % karbohydrat
+            proteinBmr = Math.round(bmr * 30 / (100*4));
+           carbsBmr = Math.round(bmr * 40 / (100*4));
+           fatBmr = Math.round(bmr * 30 / (100*9));
+
+        }else if(goalWantTo.startsWith("l")){
+            //Loose
+            //30 % protein
+            //50 % karbohydrat
+            //20 % fat
+            proteinBmr = Math.round(bmr * 30 / (100*4));
+            carbsBmr = Math.round(bmr * 50 / (100*4));
+            fatBmr = Math.round(bmr * 20 / (100*9));
+
+        }else {
+            //Gain
+            //35 % protein
+            //55 % karbohydrat
+            //25-35 % fat
+            proteinBmr = Math.round(bmr * 35 / (100*4));
+            carbsBmr = Math.round(bmr * 55 / (100*4));
+            fatBmr = Math.round(bmr * 30 / (100*9));
+
+        }
+
         double energyBmrSQL = db.quoteSmart(bmr);
 
         db.update("temp_goal", "_id", goalId, mainField, energyBmrSQL);
-
-        double proteinBmr = Math.round(bmr * 25 / 100);
-        double carbsBmr = Math.round(bmr * 50 / 100);
-        double fatBmr = Math.round(bmr * 25 / 100);
 
         double proteinBmrSQL = db.quoteSmart(proteinBmr);
         double carbsBmrSQL = db.quoteSmart(carbsBmr);
