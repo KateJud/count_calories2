@@ -31,8 +31,8 @@ import com.example.dietstram.R;
 
 import java.util.Arrays;
 
-import static com.example.dietstram.helpers.ConverClass.changeTitle;
-import static com.example.dietstram.helpers.ConverClass.convertKgToPounds;
+import static com.example.dietstram.helpers.ConvertClass.changeTitle;
+import static com.example.dietstram.helpers.ConvertClass.convertKgToPounds;
 
 //TODO SUbmiT??
 public class GoalFragment extends Fragment {

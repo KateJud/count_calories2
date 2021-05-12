@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.example.dietstram.MainActivity;
 
-public class ConverClass {
+public class ConvertClass {
 
     public static void changeTitle(Activity activity, String title) {
         ((MainActivity)activity).getSupportActionBar().setTitle(title);

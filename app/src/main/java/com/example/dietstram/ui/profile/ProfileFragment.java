@@ -29,9 +29,9 @@ import com.example.dietstram.ui.home.HomeFragment;
 
 import java.util.Locale;
 
-import static com.example.dietstram.helpers.ConverClass.convertCmToFeetInchesFEET;
-import static com.example.dietstram.helpers.ConverClass.convertCmToFeetInchesINCHES;
-import static com.example.dietstram.helpers.ConverClass.convertFeetInchesToCm;
+import static com.example.dietstram.helpers.ConvertClass.convertCmToFeetInchesFEET;
+import static com.example.dietstram.helpers.ConvertClass.convertCmToFeetInchesINCHES;
+import static com.example.dietstram.helpers.ConvertClass.convertFeetInchesToCm;
 
 public class ProfileFragment extends Fragment {
 

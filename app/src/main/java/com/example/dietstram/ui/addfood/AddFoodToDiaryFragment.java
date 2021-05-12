@@ -34,7 +34,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static com.example.dietstram.helpers.ConverClass.changeTitle;
+import static com.example.dietstram.helpers.ConvertClass.changeTitle;
 
 
 public class AddFoodToDiaryFragment extends Fragment {
