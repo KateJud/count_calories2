@@ -14,7 +14,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +21,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+//TODO write error
 
 public class SignUp extends AppCompatActivity {
 
@@ -222,7 +223,6 @@ public class SignUp extends AppCompatActivity {
             }
         }
 
-        Toast.makeText(this, "Metric", Toast.LENGTH_SHORT).show();
     }//public void measureChanged
 
 
@@ -444,14 +444,11 @@ public class SignUp extends AppCompatActivity {
     private String getEmail() {
 
         String stringEmail = editTextEmail.getText().toString();
-        Toast.makeText(this, "Hi, " + stringEmail + "!", Toast.LENGTH_SHORT).show();
 
         if (stringEmail.isEmpty() || stringEmail.startsWith(" ")) {
             //   textViewEmail.setTextColor(Color.RED);
             errorMessage = "Please fill in an e-mail address";
             textViewErrorMessage.setText(errorMessage);
-        } else {
-//      textViewEmail.setTextColor(Color.DKGRAY);
         }
         return stringEmail;
     }

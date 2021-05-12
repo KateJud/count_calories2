@@ -140,7 +140,7 @@
                     style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_gravity="center_vertical"
                     android:text="@string/date_of_birth" />
 
                 <DatePicker
