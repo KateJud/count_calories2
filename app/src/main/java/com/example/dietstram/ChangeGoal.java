@@ -70,7 +70,7 @@ public class ChangeGoal {
 
     private static int getEnergyDiet(DBAdapter db, String weeklyGoal, double bmr) {
         //Carefully or quickly
-        double doubleWeeklyGoal = weeklyGoal.equals("0") ? 0.1 : 0.2;
+        double doubleWeeklyGoal = weeklyGoal.equals("0") ? 0.15 : 0.25;
         double kcal = 0;
         double energyDiet = bmr;
         kcal = bmr * ( doubleWeeklyGoal);

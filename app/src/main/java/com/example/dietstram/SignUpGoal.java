@@ -1,6 +1,7 @@
 package com.example.dietstram;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class SignUpGoal extends AppCompatActivity {
 
@@ -28,25 +30,22 @@ public class SignUpGoal extends AppCompatActivity {
   /* Widgets fields --------------------------------------------------------------------------- */
 
   /* ImageView ------------------------------------------------------------------------------ */
-  ImageView imageViewError;
+  private ImageView imageViewError;
 
   /* EditText ------------------------------------------------------------------------------- */
-  EditText editTextTargetWeight;
+  private EditText editTextTargetWeight;
 
   /* TextView --------------------------------------------------------------------------------- */
-  TextView textViewErrorMessage;
-  TextView textViewKgEachWeek;
-  TextView textViewKg;
+  private TextView textViewErrorMessage;
+  private TextView textViewTargetWeight;
+  private TextView textViewKg;
 
   /* Button --------------------------------------------------------------------------- */
-  Button buttonSubmit;
+  private Button buttonSubmit;
 
   /* Spinner --------------------------------------------------------------------------- */
-  Spinner spinnerWeeklyGoal;
-
-  /* RadioGroup --------------------------------------------------------------------------- */
-
-  /* RadioButton --------------------------------------------------------------------------- */
+  private Spinner spinnerWeeklyGoal;
+  private Spinner spinnerActivityLevel;
 
 
   private void setAllWidgets() {
@@ -61,6 +60,7 @@ public class SignUpGoal extends AppCompatActivity {
     /* TextView --------------------------------------------------------------------------------- */
     textViewErrorMessage = findViewById(R.id.textViewErrorMessage);
     textViewKg = findViewById(R.id.textViewKg);
+    textViewTargetWeight= findViewById(R.id.textViewTargetWeight);
 
 
     /* Button --------------------------------------------------------------------------- */
@@ -68,7 +68,7 @@ public class SignUpGoal extends AppCompatActivity {
 
     /* Spinner --------------------------------------------------------------------------- */
     spinnerWeeklyGoal = findViewById(R.id.spinnerWeeklyGoalB);
-
+    spinnerActivityLevel = findViewById(R.id.spinnerActivityLevel);
 
     /* RadioGroup --------------------------------------------------------------------------- */
 
@@ -114,16 +114,13 @@ public class SignUpGoal extends AppCompatActivity {
 
     db.close();
 
-    if (measurement.startsWith("m")) {
-      //Metric
-
-    } else {
+    if (!measurement.startsWith("m")) {
       //Imperial
 
       //Kg to pounds
       textViewKg.setText("pounds");
-      textViewKgEachWeek.setText("pounds each week");
-    }
+    }  //Metric
+
 
   }
 
@@ -139,11 +136,8 @@ public class SignUpGoal extends AppCompatActivity {
     //Get Target Weight
     double doubleTargetWeight = getTargetWeight();
 
-//    //Spinner WantTo
-//    //0: loose
-//    //1: gain
-//    int positionWantTo = spinnerWantTo.getSelectedItemPosition();
-
+//Activity level
+    int positionActivityLevel = spinnerActivityLevel.getSelectedItemPosition();
 
     /* Spinner WeeklyGoal*/
     //0: carefully
@@ -151,7 +145,7 @@ public class SignUpGoal extends AppCompatActivity {
     String stringWeeklyGoal =String.valueOf( spinnerWeeklyGoal.getSelectedItemPosition());
 
     //Error handling
-    tryFinishSignUp(doubleTargetWeight, stringWeeklyGoal);
+    tryFinishSignUp(doubleTargetWeight, stringWeeklyGoal,positionActivityLevel);
 
   }
 
@@ -160,21 +154,25 @@ public class SignUpGoal extends AppCompatActivity {
     double doubleTargetWeight = 0;
     try {
       doubleTargetWeight = Double.parseDouble(stringTargetWeight);
+      textViewTargetWeight.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.login_form_details)));
+
     } catch (NumberFormatException nfe) {
       errorMessage = "Target weight has to be a number.";
+      textViewTargetWeight.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.my_red)));
+
     }
     return doubleTargetWeight;
   }
 
-  private void tryFinishSignUp(double targetWeight, String weeklyGoal) {
+  private void tryFinishSignUp(double targetWeight, String weeklyGoal,int activityLevel) {
     //Нет ошибки
     textViewErrorMessage.setText(errorMessage);
     if (errorMessage.isEmpty()) {
       //Update database
 
-
       DBAdapter db = new DBAdapter(this);
       db.open();
+      db.update("users","_id",goalId,"user_activity_level",db.quoteSmart(activityLevel));
       db.insert("temp_goal", "_id", "NULL");
       ChangeGoal.updateGoalDBMain(db,targetWeight, weeklyGoal);
       db.close();

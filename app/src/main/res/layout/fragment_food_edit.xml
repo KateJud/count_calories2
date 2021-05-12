@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:background="@drawable/bg_login">
+    android:background="@drawable/bg_all"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,24 +25,28 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
 
             <!-- HeadLine -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+               >
 
                 <TextView
                     android:id="@+id/textViewFoodName"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:hint="@string/name"
-                    android:textSize="18sp" />
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/name"
+                    />
 
                 <EditText
                     android:id="@+id/editTextName"
+                    style="@style/Widget.EditTextBlankBlue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -53,13 +58,14 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                >
 
                 <TextView
                     android:id="@+id/textViewCategory"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/category"
                     android:textSize="18sp" />
 
@@ -81,6 +87,7 @@
 
                 <Spinner
                     android:id="@+id/spinnerMainCategory"
+                    style="@style/Widget.SpinnerBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </TableRow>
@@ -94,12 +101,13 @@
                     android:id="@+id/textViewSubCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/sub"
                     android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/spinnerSubCategory"
+                    style="@style/Widget.SpinnerBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </TableRow>
@@ -123,30 +131,31 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                >
 
                 <TextView
                     android:id="@+id/textViewFoodSize"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/size"
-                    android:textSize="18sp" />
+                    />
 
                 <EditText
                     android:id="@+id/editTextServingSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="3"
+                    style="@style/Widget.EditTextBlankBlue"
                     android:text="@string/_100"
-                    android:hint="@string/size"
                     android:inputType="number"/>
 
                 <EditText
                     android:id="@+id/editTextServingMeasurement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="3"
+                    style="@style/Widget.EditTextBlankBlue"
+                    android:ems="6"
                     android:text="@string/gram"
                     android:hint="@string/measurement" />
             </TableRow>
@@ -156,21 +165,22 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                >
 
                 <TextView
                     android:id="@+id/textViewFoodNumber"
+                    style="@style/Widget.TextViewSimple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/number"
-                    android:textSize="18sp" />
+                    />
 
                 <EditText
                     android:id="@+id/editTextServingNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="3"
+                    style="@style/Widget.EditTextBlankBlue"
                     android:inputType="number"
                     android:text="@string/_1"
                     android:hint="@string/number" />
@@ -180,6 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="6"
+                    style="@style/Widget.EditTextBlankBlue"
                     android:text="@string/portion"
                     android:hint="@string/measurement" />
             </TableRow>
@@ -190,15 +201,19 @@
         <!-- Calories table -->
         <TextView
             android:id="@+id/textViewCaloriesTable"
+            style="@style/Widget.TextViewBig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:text="@string/calories_table"
-            android:textSize="18sp" />
+             />
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_meal_table"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
 
             <!-- Hat of the table -->
             <TableRow
@@ -210,59 +225,64 @@
                     android:id="@+id/textViewFoodBlank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.TextViewForTable"
                     android:text="@string/blank" />
 
                 <TextView
                     android:id="@+id/textViewFoodEnergy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.TextViewForTable"
                     android:text="@string/energy" />
 
                 <TextView
                     android:id="@+id/textViewFoodProteins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.TextViewForTable"
                     android:text="@string/protein" />
 
                 <TextView
                     android:id="@+id/textViewFoodCarbs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.TextViewForTable"
                     android:text="@string/carbs" />
 
                 <TextView
                     android:id="@+id/textViewFoodFat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.TextViewForTable"
                     android:text="@string/fat" />
             </TableRow>
             <!-- // Hat of the table -->
-            <!-- Per 100 -->
+            <!-- Per N -->
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp">
+                android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textViewFoodBlankPerHundred"
+                    android:id="@+id/textViewFoodBlankPerPortion"
+                    style="@style/Widget.TextViewForTable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/per_hundred" />
+                    android:text="@string/per_portion"
+                    android:layout_weight="1" />
+
 
                 <EditText
                     android:id="@+id/editTextFoodEnergyPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.EditTextBlankBlue"
+                    android:ems="2"
+                    android:layout_weight="1"
                     android:inputType="number"
                     android:text="@string/_100" />
 
@@ -270,6 +290,9 @@
                     android:id="@+id/editTextFoodProteinsPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.EditTextBlankBlue"
+                    android:ems="2"
+                    android:layout_weight="1"
                     android:inputType="number"
                     android:text="@string/_100" />
 
@@ -277,6 +300,9 @@
                     android:id="@+id/editTextFoodCarbsPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.EditTextBlankBlue"
+                    android:ems="2"
+                    android:layout_weight="1"
                     android:inputType="number"
                     android:text="@string/_100"/>
 
@@ -284,6 +310,9 @@
                     android:id="@+id/editTextFoodFatPerHundred"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.EditTextBlankBlue"
+                    android:ems="2"
+                    android:layout_weight="1"
                     android:inputType="number"
                     android:text="@string/_100" />
             </TableRow>
@@ -310,18 +339,20 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="12dp">
+          >
 
             <TextView
                 android:id="@+id/textViewManufacture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                style="@style/Widget.TextViewSimple"
                 android:text="@string/manufacture"
-                android:textSize="18sp" />
+             />
 
             <EditText
                 android:id="@+id/editTextManufacture"
+                style="@style/Widget.EditTextBlankBlue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -333,18 +364,20 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="12dp">
+            >
 
             <TextView
                 android:id="@+id/textViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:hint="@string/description"
+                style="@style/Widget.TextViewSimple"
+                android:layout_marginEnd="8dp"
+                android:text="@string/description"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editTextDescription"
+                style="@style/Widget.EditTextBlankBlue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -356,17 +389,19 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="12dp">
+           >
 
             <TextView
                 android:id="@+id/textViewBarcode"
+                style="@style/Widget.TextViewSimple"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/barcode"
+                android:text="@string/barcode"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editTextBarcode"
+                style="@style/Widget.EditTextBlankBlue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -385,6 +420,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_bg"
             android:text="@string/save"
+            android:layout_marginBottom="70dp"
             style="@style/Widget.MyButton"/>
         <!-- // Save button -->
 

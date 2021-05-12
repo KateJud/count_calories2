@@ -158,6 +158,21 @@ public class FoodFragment extends Fragment  {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            addFood();
+        }
+        if (item.getItemId() == R.id.action_edit) {
+            editFood();
+        }
+        if (item.getItemId() == R.id.action_delete) {
+            deleteFood();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setListenersToSearcher(SearchManager searchManager) {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         // Здесь можно указать будет ли строка поиска изначально развернута или свернута в значок
@@ -336,16 +351,6 @@ public class FoodFragment extends Fragment  {
         TextView textViewFoodFatPerHundred = getView().findViewById(R.id.textViewFoodFatPerHundred);
         textViewFoodFatPerHundred.setText(fat);
 
-        TextView textViewFoodEnergyPerN = getView().findViewById(R.id.textViewFoodEnergyPerN);
-        textViewFoodEnergyPerN.setText(energyCalculated);
-        TextView textViewFoodProteinsPerN = getView().findViewById(R.id.textViewFoodProteinsPerN);
-        textViewFoodProteinsPerN.setText(proteinCalculated);
-        TextView textViewFoodCarbsPerN = getView().findViewById(R.id.textViewFoodCarbsPerN);
-        textViewFoodCarbsPerN.setText(carbohydratesCalculated);
-        TextView textViewFoodFatPerN = getView().findViewById(R.id.textViewFoodFatPerN);
-        textViewFoodFatPerN.setText(fatCalculated);
-
-
         db.close();
 
         //set Listener
@@ -417,20 +422,7 @@ public class FoodFragment extends Fragment  {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            addFood();
-        }
-        if (item.getItemId() == R.id.action_edit) {
-            editFood();
-        }
-        if (item.getItemId() == R.id.action_delete) {
-            deleteFood();
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 
     /* Add food ----------------------------------------- */
     private void addFood() {
@@ -438,6 +430,7 @@ public class FoodFragment extends Fragment  {
         /* Change layout */
         int id = R.layout.fragment_food_edit;
         changeLayout(id);
+        menuItemAdd.setVisible(false);
 
         /* Change title */
         changeTitle("Add food");
@@ -452,6 +445,7 @@ public class FoodFragment extends Fragment  {
             "category_name",
             "category_parent_id"
         };
+
 
         /* Main spinner */
         Cursor dbCursorMain = db.select("categories", spinnerFields, "category_parent_id", "0", "category_name", "ASC");
@@ -679,24 +673,6 @@ public class FoodFragment extends Fragment  {
     /* Delete food ----------------------------------------- */
     private void deleteFood() {
         createAlertDialog();
-
-//        int id = R.layout.fragment_food_delete;
-//        changeLayout(id);
-//
-//        Button buttonDelete = getActivity().findViewById(R.id.buttonDelete);
-//        buttonDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onDeleteClicked();
-//            }
-//        });
-//        Button buttonCancel = getActivity().findViewById(R.id.buttonCancel);
-//        buttonCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onCancelClicked();
-//            }
-//        });
     }
 
     private void createAlertDialog() {
@@ -761,6 +737,7 @@ public class FoodFragment extends Fragment  {
         makeMenuItemInvisible();
         /* Change layout */
         changeLayout(R.layout.fragment_food_edit);
+        menuItemAdd.setVisible(false);
 
 
         //GetId and name from cursor
@@ -857,15 +834,16 @@ public class FoodFragment extends Fragment  {
         editTextServingWord.setText(servingNameWord);
 
 
+
         //Values from table
         EditText editTextFoodEnergyPerHundred = getView().findViewById(R.id.editTextFoodEnergyPerHundred);
-        editTextFoodEnergyPerHundred.setText(energy);
+        editTextFoodEnergyPerHundred.setText(String.format(getActivity().getResources().getString(R.string.format_double),Double.parseDouble(energy)));
         EditText editTextFoodProteinsPerHundred = getView().findViewById(R.id.editTextFoodProteinsPerHundred);
-        editTextFoodProteinsPerHundred.setText(protein);
+        editTextFoodProteinsPerHundred.setText(String.format(getActivity().getResources().getString(R.string.format_double),Double.parseDouble(protein)));
         EditText editTextFoodCarbsPerHundred = getView().findViewById(R.id.editTextFoodCarbsPerHundred);
-        editTextFoodCarbsPerHundred.setText(carbohydrates);
+        editTextFoodCarbsPerHundred.setText(String.format(getActivity().getResources().getString(R.string.format_double),Double.parseDouble(carbohydrates)));
         EditText editTextFoodFatPerHundred = getView().findViewById(R.id.editTextFoodFatPerHundred);
-        editTextFoodFatPerHundred.setText(fat);
+        editTextFoodFatPerHundred.setText(String.format(getActivity().getResources().getString(R.string.format_double),Double.parseDouble(fat)));
 
 
         /* Populate spinner */
@@ -1210,12 +1188,6 @@ public class FoodFragment extends Fragment  {
         menuItemDelete.setVisible(true);
         menuItemAdd.setVisible(false);
 
-        //todo{
-//        menuItemSearch.setQuery("", false);
-//        menuItemSearch.onActionViewCollapsed();
-//        menuItemSearch.setVisibility(View.INVISIBLE);
-
-
     }
 
 
@@ -1225,9 +1197,6 @@ public class FoodFragment extends Fragment  {
         menuItemEdit.setVisible(false);
         menuItemDelete.setVisible(false);
         menuItemAdd.setVisible(true);
-
-//        menuItemSearch.setEnabled(true);
-//        menuItemSearch.setVisibility(View.VISIBLE);
     }
     /*//  Visible & invisible ----------------------------------------- */
 

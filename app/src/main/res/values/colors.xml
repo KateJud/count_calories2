@@ -10,12 +10,15 @@
     <color name="gray">#878A87</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="my_green">#4CAF50</color>
+    <color name="my_green">#2FA133</color>
     <color name="my_yellow">#FF9800</color>
     <color name="my_red">#F44336</color>
 
-    <color name="light_green">#B6D9B6</color>
-    <color name="light_blue">#B9ECF2</color>
+    <color name="light_green_table">#D5F6D5</color>
+    <color name="light_blue_table">#B9ECF2</color>
+
+    <color name="light_blue">#4AAAF5</color>
+    <color name="light_green">#A1EFA1</color>
 
     <color name="light_black">#040506</color>
 

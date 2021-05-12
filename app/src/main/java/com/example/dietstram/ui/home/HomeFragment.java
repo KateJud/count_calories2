@@ -239,7 +239,17 @@ public class HomeFragment extends Fragment {
                 }
             });
 
+
             tableLayoutMain.addView(tableRowMealName);
+
+            /* Blue line */
+            View view = new View(getActivity());
+            TableRow.LayoutParams viewParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+
+            viewParams.height = 2;
+
+            view.setBackground(ContextCompat.getDrawable(getActivity(), R.color.light_blue));
+            tableLayoutMain.addView(view, viewParams);
 
             c.moveToNext();
         }
@@ -1295,6 +1305,15 @@ public class HomeFragment extends Fragment {
             linearLayout.addView(imageViewFat);
             linearLayout.addView(textViewFat);
             // //Fat
+
+            /* Blue line */
+            View view = new View(getActivity());
+            LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+
+            viewParams.height = 2;
+
+            view.setBackground(ContextCompat.getDrawable(getActivity(), R.color.light_green));
+            linearLayout.addView(view, viewParams);
 
         } else {
             db.close();

@@ -194,5 +194,9 @@
     <string name="nickname_">NickName*</string>
 
     <string name="format_double">%.1f</string>
+    <string name="height_">Height*</string>
+    <string name="weight_">Weight*</string>
+    <string name="obligatory_fields">* - obligatory fields</string>
+    <string name="target_weight_">Target weight *</string>
 
 </resources>

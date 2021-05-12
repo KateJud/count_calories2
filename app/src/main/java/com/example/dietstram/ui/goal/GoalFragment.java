@@ -307,6 +307,7 @@ public class GoalFragment extends Fragment {
     }
 
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         goalViewModel =
@@ -337,7 +338,8 @@ public class GoalFragment extends Fragment {
 
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         //Inflate menu
         ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_goal, menu);
@@ -463,8 +465,8 @@ public class GoalFragment extends Fragment {
         } else {
             textViewGoalKg.setText(getActivity().getString(R.string.pounds));
             textViewGoalKg2.setText(getActivity().getString(R.string.pounds));
-            editTextUserWeight.setText("" + convertKgToPounds(stringGoalCurrentWeight));
-            editTextUserTargetWeight.setText("" + convertKgToPounds(stringGoalTargetWeight));
+            editTextUserWeight.setText( String.format(getActivity().getResources().getString(R.string.format_double), convertKgToPounds(stringGoalCurrentWeight)));
+            editTextUserTargetWeight.setText( String.format(getActivity().getResources().getString(R.string.format_double),convertKgToPounds(stringGoalTargetWeight)));
         }
 
 
@@ -546,37 +548,6 @@ public class GoalFragment extends Fragment {
 
     }
 
-    private void updateGoalWithCheckBoxSave() {
-        DBAdapter db = getDbAdapter();
-
-        /*Check box  Save*/
-        //Energy
-        if (checkBoxEnergyGoal.isChecked()) {
-            db.update("goal", "_id", goalId, "goal_user_energy", 1);
-        } else {
-            db.update("goal", "_id", goalId, "goal_user_energy", 0);
-        }
-        //Protein
-        if (checkBoxEnergyGoal.isChecked()) {
-            db.update("goal", "_id", goalId, "goal_user_protein", 1);
-        } else {
-            db.update("goal", "_id", goalId, "goal_user_protein", 0);
-        }
-        //Carbs
-        if (checkBoxEnergyGoal.isChecked()) {
-            db.update("goal", "_id", goalId, "goal_user_carbs", 1);
-        } else {
-            db.update("goal", "_id", goalId, "goal_user_carbs", 0);
-        }
-        //Fat
-        if (checkBoxEnergyGoal.isChecked()) {
-            db.update("goal", "_id", goalId, "goal_user_fat", 1);
-        } else {
-            db.update("goal", "_id", goalId, "goal_user_fat", 0);
-        }
-
-        db.close();
-    }
 
     private void updateTempGoalDB() {
 
@@ -637,10 +608,10 @@ public class GoalFragment extends Fragment {
         String ifYouWant = "";
         if (stringGoalIWantTo.startsWith("l")) {
             ifYouWant = "If you want to loose weight ";
-            method = "Loose " + stringGoalWeeklyGoal;
+            method = "Loose ";// + stringGoalWeeklyGoal;
         } else if (stringGoalIWantTo.startsWith("g")) {
             ifYouWant = "If you want to gain weight ";
-            method = "Gain " + stringGoalWeeklyGoal;
+            method = "Gain ";// + stringGoalWeeklyGoal;
         } else {
             ifYouWant = "If you want to keep weight ";
             method = "Just keep ";
@@ -652,13 +623,6 @@ public class GoalFragment extends Fragment {
         Cursor cursor2 = db.select("users", fields2, "_id", rowId);
         String measurement = cursor2.getString(1);
         String activityLevel = cursor2.getString(2);
-
-
-        if (measurement.startsWith("m")) {
-            method = method + " kg/week";
-        } else {
-            method = method + " pounds/week";
-        }
 
         TextView textViewUserMethod = getActivity().findViewById(R.id.textViewUserMethod);
         textViewUserMethod.setText(method);
