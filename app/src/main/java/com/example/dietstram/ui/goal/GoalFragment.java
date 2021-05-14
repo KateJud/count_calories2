@@ -34,9 +34,8 @@ import java.util.Arrays;
 import static com.example.dietstram.helpers.ConvertClass.changeTitle;
 import static com.example.dietstram.helpers.ConvertClass.convertKgToPounds;
 
-//TODO SUbmiT??
 public class GoalFragment extends Fragment {
-    static final int goalId = 1;
+    static int goalId = Integer.parseInt( MainActivity.USER_ID);
 
     /* Action buttons */
     MenuItem menuItemEdit;
@@ -179,8 +178,8 @@ public class GoalFragment extends Fragment {
                 if (isChecked) {
                     editTextEnergyGoal.setEnabled(false);
                     //Energy
-                    db.update("goal", "_id", goalId, "goal_user_energy", 1);
-                    db.update("goal", "_id", goalId, "goal_energy_with_activity_and_diet", 1);
+                    db.update("goal", "_id",goalId, "goal_user_energy", 1);
+                    db.update("goal", "_id",goalId, "goal_energy_with_activity_and_diet", 1);
                 } else {
                     editTextEnergyGoal.setEnabled(true);
                     db.update("goal", "_id", goalId, "goal_user_energy", 0);
@@ -299,6 +298,7 @@ public class GoalFragment extends Fragment {
 
         /* Set title */
         changeTitle(getActivity(), "Goal");
+        goalId=Integer.parseInt( MainActivity.USER_ID);
 
     }
 
@@ -676,7 +676,7 @@ public class GoalFragment extends Fragment {
                 "goal_carbs_with_activity_and_diet ",
                 "goal_fat_with_activity_and_diet "
             };
-            goalCursor = db.select("goal", fields, "_id", 1);
+            goalCursor = db.select("goal", fields, "_id", goalId);
         } else {
             //Get goal data
             fields = new String[]{
@@ -863,7 +863,7 @@ public class GoalFragment extends Fragment {
 
             //Move to Goal (not edit)
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContent, new GoalFragment(), GoalFragment.class.getName()).commit();
+            fragmentManager.beginTransaction().replace(R.id.flContent, new GoalFragment(), GoalFragment.class.getName()).addToBackStack(null).commit();
 
         } else {
             //There is error

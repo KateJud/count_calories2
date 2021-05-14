@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.dietstram.database.DBAdapter;
@@ -15,7 +14,6 @@ import com.example.dietstram.ui.food.FoodFragment;
 import com.example.dietstram.ui.goal.GoalFragment;
 import com.example.dietstram.ui.home.HomeFragment;
 import com.example.dietstram.ui.profile.ProfileFragment;
-import com.example.dietstram.ui.signup.SignUp;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,6 +40,19 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
+   public static String USER_ID;
+
+    @Override public void onBackPressed() {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+        //Toast.makeText(this,"back",Toast.LENGTH_LONG).show();
+    }
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -60,15 +71,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         /* Initialize fragment */
         Fragment fragment = null;
-        Class fragmentClass = HomeFragment.class;
+        Class<HomeFragment> fragmentClass = HomeFragment.class;
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
 
 
 
@@ -104,15 +115,33 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         db.open();
 
         /* Setup for food */
-        //Count rows in food
-        int numRows = db.count("categories");
-        if (numRows < 1) {
-            DBSetupInsert setupInsert = new DBSetupInsert(this);
-            setupInsert.insertAllFood();
-            setupInsert.insertAllCategories();
-        }
+        setFoodAndCategories(db);
 
         /* Setup for MealName */
+        setMealNames(db);
+
+        int numRows;
+        /* Check if there is user table */
+        //Count rows in user table
+        numRows = db.count("users_in");
+        Intent i;
+
+        if (numRows < 1) {
+            i = new Intent(MainActivity.this, RegistrationActivity.class);
+            startActivity(i);
+        } else{
+            String[] fieldsUserI = {
+                "users_i_id"
+            };
+        Cursor cursorUserI = db.select("users_in", fieldsUserI);
+        USER_ID = cursorUserI.getString(0);
+    }
+        /*Close*/
+        db.close();
+
+    }
+
+    private void setMealNames(DBAdapter db) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentData = dateFormat.format(Calendar.getInstance().getTime());
         Cursor c = db.select("meal",new String[] {"_id"},"meal_date",db.quoteSmart(currentData));
@@ -120,24 +149,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             DBSetupInsert setupInsert = new DBSetupInsert(this);
             setupInsert.insertAllMealName();
         }
-
-        /* Check if there is user table */
-        //Count rows in user table
-        numRows = db.count("users");
-        Intent i;
-
-        if (numRows < 1) {
-            i = new Intent(MainActivity.this, SignUp.class);
-            startActivity(i);
-        }
-        /*Close*/
-        db.close();
-
-
-        View header = navigationView.getHeaderView(0);
-//        TextView HeaderName = (TextView) header.findViewById(R.id.txt_namedisplay);
-//        TextView HeaderEmail = (TextView) header.findViewById(R.id.textView);
     }
+
+    private void setFoodAndCategories(DBAdapter db) {
+        //Count rows in food
+        int numRows = db.count("categories");
+        if (numRows < 1) {
+            DBSetupInsert setupInsert = new DBSetupInsert(this);
+            setupInsert.insertAllFood();
+            setupInsert.insertAllCategories();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -194,7 +217,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         //Try to show that content
         FragmentManager fragmentManager = getSupportFragmentManager();
         try {
-            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
         } catch (Exception e) {
             e.printStackTrace();
             //Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -244,7 +267,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         //Try to show that content
         FragmentManager fragmentManager = getSupportFragmentManager();
         try {
-            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();

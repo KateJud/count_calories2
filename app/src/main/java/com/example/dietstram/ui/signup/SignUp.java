@@ -1,8 +1,13 @@
 package com.example.dietstram.ui.signup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,7 +21,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.dietstram.MainActivity;
 import com.example.dietstram.database.DBAdapter;
 import com.example.dietstram.R;
 
@@ -28,6 +36,7 @@ import java.util.Locale;
 //TODO write error
 
 public class SignUp extends AppCompatActivity {
+
 
     /* ------------------------------------------------------------------------------------------ */
     /*                                                                                            */
@@ -44,7 +53,8 @@ public class SignUp extends AppCompatActivity {
     private ImageView imageViewError;
 
     /* EditText --------------------------------------------------------------------------------- */
-    private EditText editTextEmail;
+    private EditText editTextNickName;
+    private EditText editTextPassword;
     private EditText editTextHeightCm;
     private EditText editTextHeightInches;
     private EditText editTextWeight;
@@ -74,7 +84,8 @@ public class SignUp extends AppCompatActivity {
         imageViewError = findViewById(R.id.imageViewError);
 
         /* EditText ------------------------------------------------------------------------------- */
-        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextNickName = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
         editTextHeightCm = findViewById(R.id.editTextHeightCm);
         editTextHeightInches = findViewById(R.id.editTextHeightInches);
         editTextWeight = findViewById(R.id.editTextWeight);
@@ -113,6 +124,10 @@ public class SignUp extends AppCompatActivity {
         setAllWidgets();
 
         /*Sign up */
+
+        /*Listener nickName*/
+        onNickNameChanged();
+
         /*Listener*/
         buttonSignUpListener();
 
@@ -128,6 +143,56 @@ public class SignUp extends AppCompatActivity {
 
     }//protected void onCreate
 
+    private void onNickNameChanged() {
+        final Context context=this;
+
+        editTextNickName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//if()
+                //Если такой уже есть user тогда
+                String[] fieldsUser={
+                    "user_nickname"
+                };
+                DBAdapter db=new DBAdapter(context);
+                db.open();
+                String currentNick=db.quoteSmart( editTextNickName.getText().toString());
+
+                Cursor cursor=db.select("users",fieldsUser,"user_nickname",currentNick);
+                if(cursor.getCount()==0){
+                    editTextNickName.setBackgroundResource (R.drawable.et_bg);
+                }else {
+                    editTextNickName.setBackgroundResource (R.drawable.et_bg_error);
+                }
+
+                    db.close();
+
+            }
+        });
+    }
+
+
+    @Override public void onBackPressed() {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+        //Toast.makeText(this,"back",Toast.LENGTH_LONG).show();
+    }
 
     /* Styles ----------------------------------------------------------------------------------- */
 
@@ -195,36 +260,36 @@ public class SignUp extends AppCompatActivity {
         if (stringMeasurement.startsWith("I")) {
             //Imperial
             editTextHeightInches.setVisibility(View.VISIBLE);
-            textViewCm.setText("feet and inches");
-            textViewKg.setText("pounds");
+            textViewCm.setText(getResources().getString(R.string.feetInches));
+            textViewKg.setText(getResources().getString(R.string.pounds));
 
             //Change Cm to Feet and Inches
             if (!stringHeightCm.isEmpty()) {
                 // feet = (cm* 0.3937008)/12
-                editTextHeightCm.setText("" + convertCmToFeetInchesFEET(stringHeightCm));
-                editTextHeightInches.setText("" + convertCmToFeetInchesINCHES(stringHeightCm));
+                editTextHeightCm.setText(String.format(getResources().getString(R.string.format_long), convertCmToFeetInchesFEET(stringHeightCm)));
+                editTextHeightInches.setText(String.format(getResources().getString(R.string.format_long), convertCmToFeetInchesINCHES(stringHeightCm)));
             }
 
             //Change Kg to Pounds
             if (!stringWeight.isEmpty()) {
-                editTextWeight.setText("" + convertKgToPounds(stringWeight));
+                editTextWeight.setText(String.format(getResources().getString(R.string.format_long), convertKgToPounds(stringWeight)));
             }
 
         } else {
 
             //Metric
             editTextHeightInches.setVisibility(View.GONE);
-            textViewCm.setText("cm");
-            textViewKg.setText("kg");
+            textViewCm.setText(getResources().getString(R.string.cm));
+            textViewKg.setText(getResources().getString(R.string.kg));
 
             //Change Feet and Inches to Cm
             if (!stringHeightCm.isEmpty() && !stringHeightInches.isEmpty()) {
-                editTextHeightCm.setText("" + convertFeetInchesToCm(stringHeightCm, stringHeightInches));
+                editTextHeightCm.setText(String.format(getResources().getString(R.string.format_long), convertFeetInchesToCm(stringHeightCm, stringHeightInches)));
             }
 
             //Change Pounds to Kg
             if (!stringWeight.isEmpty()) {
-                editTextWeight.setText("" + convertPoundsToKg(stringWeight));
+                editTextWeight.setText(String.format(getResources().getString(R.string.format_long), convertPoundsToKg(stringWeight)));
             }
         }
 
@@ -266,8 +331,11 @@ public class SignUp extends AppCompatActivity {
     private void signUpSubmit() {
         errorMessage = "";
 
+        //NickName
+        String stringNickName = getNickName();
+
         //Email
-        String stringEmail = getEmail();
+        String stringPassword = getPassword();
 
         //DateOfBirth
         String stringDateOfBirth = getDOB();
@@ -283,18 +351,18 @@ public class SignUp extends AppCompatActivity {
 
 
         //Error handling
-        tryFinishSignUp(stringEmail, stringDateOfBirth, stringGender, height, weight);
+        tryFinishSignUp(stringNickName,stringPassword, stringDateOfBirth, stringGender, height, weight);
 
     }
 
-    private void tryFinishSignUp(String stringEmail, String stringDateOfBirth, String stringGender,
+    private void tryFinishSignUp(String stringEmail,String stringPassword , String stringDateOfBirth, String stringGender,
                                  double height, double weight) {
         //Нет ошибки
         textViewErrorMessage.setText(errorMessage);
         if (errorMessage.isEmpty()) {
 
             //Put data into database
-            putDataToDB(stringEmail, stringDateOfBirth, stringGender, height, weight);
+            putDataToDB(stringEmail,stringPassword, stringDateOfBirth, stringGender, height, weight);
             hideError();
 
             //Move MainActivity
@@ -310,21 +378,23 @@ public class SignUp extends AppCompatActivity {
 
     /* Additional Methods ---------------------------------------------------------------------- */
 
-    private void putDataToDB(String stringEmail, String stringDateOfBirth, String stringGender,
+    private void putDataToDB(String stringEmail,String stringPassword, String stringDateOfBirth, String stringGender,
                              double height, double weight) {
         DBAdapter db = new DBAdapter(this);
         //Quote smart
 
         //For users
-        String stringInput = getInputToDB(stringEmail, stringDateOfBirth, stringGender, height, db);
+        String stringInput = getInputToDB(stringEmail,stringPassword, stringDateOfBirth, stringGender, height, db);
 
         //For goal
         String stringInput2 = getInputToDB2(weight, db);
 
         db.open();
         db.insert("users",
-            "_id, user_email, user_dob, user_gender, user_height, user_measurement",
+            "_id, user_nickname, user_password, user_dob, user_gender, user_height, user_measurement",
             stringInput);
+        Cursor currentUserId= db.select("users",new String[]{"_id"},"user_nickname",db.quoteSmart( stringEmail));
+        MainActivity.USER_ID= currentUserId.getString(0);
 
         db.insert("goal",
             "_id, goal_current_weight, goal_date",
@@ -332,9 +402,10 @@ public class SignUp extends AppCompatActivity {
         db.close();
     }
 
-    private String getInputToDB(String stringEmail, String stringDateOfBirth, String stringGender,
+    private String getInputToDB(String stringEmail,String stringPassword ,String stringDateOfBirth, String stringGender,
                                 double height,  DBAdapter db) {
         String stringEmailSQL = db.quoteSmart(stringEmail);
+        String stringPasswordSQL = db.quoteSmart(stringPassword);
         String stringDateOfBirthSQL = db.quoteSmart(stringDateOfBirth);
         String stringGenderSQL = db.quoteSmart(stringGender);
         String stringMeasurement = (spinnerMeasurement.getSelectedItem().toString())
@@ -343,7 +414,7 @@ public class SignUp extends AppCompatActivity {
 
         double heightCmSQL = db.quoteSmart(height);
 
-        return "NULL " + "," + stringEmailSQL + "," + stringDateOfBirthSQL + "," + stringGenderSQL + ","
+        return "NULL " + "," + stringEmailSQL + ","  + stringPasswordSQL + "," + stringDateOfBirthSQL + "," + stringGenderSQL + ","
             + heightCmSQL + ","  + stringMeasurementSQL;
     }
 
@@ -436,16 +507,29 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-    private String getEmail() {
+    private String getNickName() {
 
-        String stringEmail = editTextEmail.getText().toString();
+        String stringNickName =
+            editTextNickName.getText().toString();
 
-        if (stringEmail.isEmpty() || stringEmail.startsWith(" ")) {
-            errorMessage = "Please fill in a nickName";
-            editTextEmail.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.my_red)));
+        if (stringNickName.isEmpty() || editTextNickName.getBackground().getConstantState()==ContextCompat.getDrawable(this,R.drawable.et_bg_error).getConstantState()) {
+            errorMessage = "Please fill in a unique nickName";
+            editTextNickName.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.my_red)));
             textViewErrorMessage.setText(errorMessage);
         }
-        return stringEmail;
+        return stringNickName;
+    }
+
+    private String getPassword() {
+
+        String stringPassword = editTextPassword.getText().toString();
+
+        if (stringPassword.isEmpty()) {
+            errorMessage = "Please fill in your password";
+            editTextPassword.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.my_red)));
+            textViewErrorMessage.setText(errorMessage);
+        }
+        return stringPassword;
     }
 
 

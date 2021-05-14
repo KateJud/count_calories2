@@ -120,7 +120,7 @@ public class ProfileFragment extends Fragment {
         /* Get data from data base */
         DBAdapter db = getDbAdapter();
 
-        long longRowId = 1;
+        long longRowId =Long.parseLong( MainActivity.USER_ID);
         String[] fields = {
             "_id",
             "user_dob",
@@ -217,8 +217,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void putDataToDB(String nickName, String stringDateOfBirth, String stringGender, double height, String measurement) {
-        //TODO
-        long id = 1;
+
         DBAdapter db = new DBAdapter(getActivity());
         db.open();
 
@@ -237,14 +236,14 @@ public class ProfileFragment extends Fragment {
             "user_email"};
         String[] values = {stringDateOfBirthSQL, stringGenderSQL, heightSQL, measurementSQL, nickNameSQL};
 
-        db.update("users", "_id", id, fieldsUser, values);
+        db.update("users", "_id", db.quoteSmart( Long.parseLong( MainActivity.USER_ID)), fieldsUser, values);
         Toast.makeText(getActivity(), "Everything was saved :)", Toast.LENGTH_LONG).show();
 
         /* UpdateGoal Db */
         String[] fieldsGoal = {"goal_target_weight",
             "goal_weekly_goal",
         };
-        Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
+        Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", db.quoteSmart( MainActivity.USER_ID));
 
         double targetWeight = cursorGoal.getDouble(0);
         String weeklyGoal = cursorGoal.getString(1);
@@ -259,7 +258,7 @@ public class ProfileFragment extends Fragment {
 
     private void moveToHomeLayout() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).addToBackStack(null).commit();
     }
 
     private String getGender() {

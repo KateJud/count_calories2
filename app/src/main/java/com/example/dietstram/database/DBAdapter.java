@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 32;
+    public static final int DATABASE_VERSION = 34;
 
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -34,6 +34,13 @@ public class DBAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
             try {
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS users_in (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "users_i_id INTEGER, " +
+                    "users_i_password VARCHAR," +
+                    "users_i_nickname VARCHAR"+
+                    ");");
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS goal (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -96,7 +103,7 @@ public class DBAdapter {
                 db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "user_id INTEGER , " +
-                    "user_email VARCHAR," +
+                    "user_nickname VARCHAR," +
                     "user_password VARCHAR," +
                     "user_salt VARCHAR," +
                     "user_alias VARCHAR," +
@@ -206,6 +213,7 @@ public class DBAdapter {
             db.execSQL("DROP TABLE IF EXISTS goal");
             db.execSQL("DROP TABLE IF EXISTS temp_goal");
             db.execSQL("DROP TABLE IF EXISTS users");
+            db.execSQL("DROP TABLE IF EXISTS users_in");
             db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
             db.execSQL("DROP TABLE IF EXISTS food_diary_sum");
             db.execSQL("DROP TABLE IF EXISTS food_diary");

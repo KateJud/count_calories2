@@ -2,6 +2,7 @@ package com.example.dietstram.ui.goal;
 
 import android.database.Cursor;
 
+import com.example.dietstram.MainActivity;
 import com.example.dietstram.database.DBAdapter;
 
 import java.util.Calendar;
@@ -9,7 +10,7 @@ import java.util.Calendar;
 public class ChangeGoal {
 
 
-    static final int goalId = 1;
+    static int goalId =Integer.parseInt( MainActivity.USER_ID);
 
     public static void updateGoalDBMain(DBAdapter db, double targetWeight, String weeklyGoal) {
 

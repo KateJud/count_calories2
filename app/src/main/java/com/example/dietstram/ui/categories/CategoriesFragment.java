@@ -429,7 +429,7 @@ public class CategoriesFragment extends Fragment {
 
     private void moveToCategoryLayout() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new CategoriesFragment(), CategoriesFragment.class.getName()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new CategoriesFragment(), CategoriesFragment.class.getName()).addToBackStack(null).commit();
     }
 
     private String getParentId(DBAdapter db) {
@@ -570,7 +570,7 @@ public class CategoriesFragment extends Fragment {
 
         //Need to pass meal number
         fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
     }
 
     public Cursor getListCursorCategory() {

@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dietstram.IOnBackPressed;
 import com.example.dietstram.database.DBAdapter;
 import com.example.dietstram.database.DBSetupInsert;
 import com.example.dietstram.database.Idioms;
@@ -47,7 +48,7 @@ import java.util.Calendar;
 
 import static com.example.dietstram.helpers.ConvertClass.changeTitle;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements IOnBackPressed {
 
     //Holding variables
     private String currentData;
@@ -113,6 +114,18 @@ public class HomeFragment extends Fragment {
     private boolean lockPortionSizePCS = false;
     private boolean lockPortionSizeGram = false;
 
+    @Override
+    public boolean onBackPressed() {
+//        if (myCondition) {
+//            //action not popBackStack
+//            return true;
+//        } else {
+//            return false;
+//        }
+
+        return true;
+    }
+
 
     private void setAllWidgets() {
 
@@ -163,9 +176,9 @@ public class HomeFragment extends Fragment {
 
     private void setHi() {
         TextView textViewHi = getActivity().findViewById(R.id.textViewHi);
-        String[] fields = {"user_email"};
+        String[] fields = {"user_nickname"};
         DBAdapter db = getDbAdapter();
-        Cursor cursor = db.select("users", fields, "_id", 1);
+        Cursor cursor = db.select("users", fields, "_id", db.quoteSmart( MainActivity.USER_ID));
         if (cursor.getCount() != 0) {
             String userName = cursor.getString(0);
             Idioms idioms = new Idioms();
@@ -618,7 +631,7 @@ public class HomeFragment extends Fragment {
         //Need to pass meal number
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
     }
 
 
@@ -871,7 +884,7 @@ public class HomeFragment extends Fragment {
     private void restartFragmentHome() {
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).addToBackStack(null).commit();
     }
 
 
@@ -1204,7 +1217,6 @@ public class HomeFragment extends Fragment {
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             imageParams.height = 70;
             imageParams.width = 70;
-            //imageParams.setMargins(10, 0, 0, 0);
 
             //Energy
             ImageView imageViewEnergy = new ImageView(context);

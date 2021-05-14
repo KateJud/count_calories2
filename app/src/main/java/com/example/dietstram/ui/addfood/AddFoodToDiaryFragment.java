@@ -781,6 +781,6 @@ public class AddFoodToDiaryFragment extends Fragment {
 
     private void moveToHomeLayout() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HomeFragment(), HomeFragment.class.getName()).addToBackStack(null).commit();
     }
 }

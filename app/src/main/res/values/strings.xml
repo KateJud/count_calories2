@@ -34,20 +34,20 @@
     <string name="pounds_each_week">pounds each week</string>
 
 
-<!--    <string-array name="array_weekly_goal">-->
-<!--        <item> loose weight</item>-->
-<!--        <item> gain weight</item>-->
-<!--    </string-array>-->
+    <!--    <string-array name="array_weekly_goal">-->
+    <!--        <item> loose weight</item>-->
+    <!--        <item> gain weight</item>-->
+    <!--    </string-array>-->
 
     <string-array name="array_weekly_goal_kg">
         <item> reach the goal carefully</item>
         <item> reach the goal quickly</item>
-<!--        <item>0.5</item>-->
-<!--        <item>1</item>-->
-<!--        <item>1.5</item>-->
-<!--        <item>2</item>-->
-<!--        <item>2.5</item>-->
-<!--        <item>3</item>-->
+        <!--        <item>0.5</item>-->
+        <!--        <item>1</item>-->
+        <!--        <item>1.5</item>-->
+        <!--        <item>2</item>-->
+        <!--        <item>2.5</item>-->
+        <!--        <item>3</item>-->
     </string-array>
 
     <string-array name="array_weekly_goal_b">
@@ -198,5 +198,27 @@
     <string name="weight_">Weight*</string>
     <string name="obligatory_fields">* - obligatory fields</string>
     <string name="target_weight_">Target weight *</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="sign_in">Sign in</string>
+    <string name="press_here_to_register"><u>Press here to register</u></string>
+    <string name="password">Password</string>
+    <string name="error_nickname_or_password">Error:Nick name or password is incorrect</string>
+    <string name="password_">Password*</string>
+
+    <string name="format_long">%d</string>
 
 </resources>
