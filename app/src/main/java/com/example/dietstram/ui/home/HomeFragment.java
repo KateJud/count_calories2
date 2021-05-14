@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         TextView textViewHi = getActivity().findViewById(R.id.textViewHi);
         String[] fields = {"user_nickname"};
         DBAdapter db = getDbAdapter();
-        Cursor cursor = db.select("users", fields, "_id", db.quoteSmart( MainActivity.USER_ID));
+        Cursor cursor = db.select("users", fields, "_id", db.quoteSmart(MainActivity.USER_ID));
         if (cursor.getCount() != 0) {
             String userName = cursor.getString(0);
             Idioms idioms = new Idioms();
@@ -451,12 +451,13 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             tableRowMealName.addView(buttonMoreLess, buttonMoreLessParams);
             final boolean[] showFlag = {false};
             final PopupWindow popupWindow = new PopupWindow(getActivity());
+
             buttonMoreLess.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showFlag[0] = !showFlag[0];
                     if (showFlag[0]) {
-                        showPopup(popupWindow, tableLayoutSub, tableLayoutHeaderStyle);
+                        showPopup(popupWindow, tableLayoutSub, tableLayoutHeaderStyle, buttonMoreLess);
                         buttonMoreLess.setImageResource(R.drawable.ic_up);
 
                     } else {
@@ -481,15 +482,21 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
     @Override
     public void onDetach() {
 
-//todo закрыть menu
         super.onDetach();
     }
 
     // The method that displays the popup.
-    private void showPopup(PopupWindow popupWindow, TableLayout tableLayoutSub, TableLayout tableLayoutHeader) {
+    private void showPopup(final PopupWindow popupWindow, TableLayout tableLayoutSub, TableLayout tableLayoutHeader, final ImageButton buttonMoreLess) {
 
         //((ViewGroup) tableLayoutSub.getParent()).removeView(tableLayoutSub);
         popupWindow.setContentView(tableLayoutSub);
+        tableLayoutSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonMoreLess.setImageResource(R.drawable.ic_down);
+                popupWindow.dismiss();
+            }
+        });
         popupWindow.showAsDropDown(tableLayoutHeader);
 
     }
@@ -749,6 +756,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             tableLayout.addView(tableRow);
             tableLayout.addView(linearLayoutSubLineFood);
 
+
             tableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -909,19 +917,34 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         /* Get data from database */
         String[] fieldsFood = new String[]{"_id",
             " food_name",
-            " food_manufactor_name"
+            " food_manufactor_name",
+            " food_energy ",
+            " food_protein ",
+            " food_carbohydrates ",
+            " food_fat ",
+            " food_energy_calculated ",
+            " food_protein_calculated ",
+            " food_carbohydrates_calculated ",
+            " food_fat_calculated ",
         };
 
         //Convert Cursor to strings
         String foodId = "";
         String name = "";
         String manufactureName = "";
+        String energy = "";
+        String protein = "";
+        String carbohydrates = "";
+        String fat = "";
+        String energyCalculated = "";
+        String proteinCalculated = "";
+        String carbohydratesCalculated = "";
+        String fatCalculated = "";
 
         String servingSizeGram = "";
         String servingSizeGramMeasurement = "";
         String servingSizePcs = "";
         String servingSizePCSMeasurement = "";
-        String energyCalculated;
 
         Cursor cursorFood;
 
@@ -939,6 +962,14 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             foodId = cursorFood.getString(0);
             name = cursorFood.getString(1);
             manufactureName = cursorFood.getString(2);
+            energy = cursorFood.getString(3);
+            protein = cursorFood.getString(4);
+            carbohydrates = cursorFood.getString(5);
+            fat = cursorFood.getString(6);
+            energyCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(energy)));
+            proteinCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(protein)));
+            carbohydratesCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(carbohydrates)));
+            fatCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(fat)));
 
             String subLine = manufactureName + ", " +
                 servingSizeGram + " " +
@@ -989,6 +1020,17 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         TextView textViewServingSizeMeasurement = getActivity().findViewById(R.id.textViewServingSizeMeasurement);
         textViewServingSizeMeasurement.setText(servingSizeGramMeasurement);
 
+
+        //Values from table
+        textViewFoodEnergyPerHundred.setText(energy);
+        textViewFoodProteinsPerHundred.setText(protein);
+        textViewFoodCarbsPerHundred.setText(carbohydrates);
+        textViewFoodFatPerHundred.setText(fat);
+
+        textViewFoodEnergyPerN.setText(energyCalculated);
+        textViewFoodProteinsPerN.setText(proteinCalculated);
+        textViewFoodCarbsPerN.setText(carbohydratesCalculated);
+        textViewFoodFatPerN.setText(fatCalculated);
 
         /* Listener for editTextPortionSizePCS */
         editTextPortionSizePCS.addTextChangedListener(new TextWatcher() {
@@ -1078,7 +1120,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
     public void editPortionSizePCSOnChanged() {
 
-
         if (!lockPortionSizeGram) {
             lockPortionSizePCS = true;
             //GetValue of pcs
@@ -1106,7 +1147,11 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                     "food_serving_size_gram",
                     "food_serving_size_gram_measurement",
                     "food_serving_size_pcs",
-                    "food_serving_size_pcs_measurement"
+                    "food_serving_size_pcs_measurement",
+                    " food_energy_calculated ",
+                    " food_protein_calculated ",
+                    " food_carbohydrates_calculated ",
+                    " food_fat_calculated ",
                 };
 
                 DBAdapter db = getDbAdapter();
@@ -1119,14 +1164,48 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 String servingNameNumber = foodCursor.getString(3);
                 String servingNameWord = foodCursor.getString(4);
 
-                db.close();
 
                 // Have changed pcs
                 // Update gram
+
+                //200 u -1
+                //x -----2
                 double doublePortionSizeGram = Math.round(doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber));
-                editTextPortionSizeGram.setText("" + doublePortionSizeGram);
+                editTextPortionSizeGram.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizeGram));
+                updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
+
+
+                db.close();
+
+
+                //Per meal: 1000 kal -120 г
+                // x kal -10
+                //
             }
         }
+    }
+
+    private void updateTablePerN(Cursor foodCursor, String servingSize, double doublePortionSizeGram) {
+        //energy, size gram
+        //new energy= energyOld*newSize/oldSize
+        String energyOld = foodCursor.getString(5);
+        String proteinOld = foodCursor.getString(6);
+        String carbsOld = foodCursor.getString(7);
+        String fatOld = foodCursor.getString(8);
+
+
+        double koeff = doublePortionSizeGram / Double.parseDouble(servingSize);
+        double energyNew = Double.parseDouble(energyOld) * koeff;
+        double proteinNew = Double.parseDouble(proteinOld) * koeff;
+        double carbsNew = Double.parseDouble(carbsOld) * koeff;
+        double fatNew = Double.parseDouble(fatOld) * koeff;
+
+
+        //String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS)
+        textViewFoodEnergyPerN.setText(String.format(getActivity().getString(R.string.format_double), energyNew));
+        textViewFoodProteinsPerN.setText(String.format(getActivity().getString(R.string.format_double), proteinNew));
+        textViewFoodCarbsPerN.setText(String.format(getActivity().getString(R.string.format_double), carbsNew));
+        textViewFoodFatPerN.setText(String.format(getActivity().getString(R.string.format_double), fatNew));
     }
 
     public void editPortionSizeGramOnChanged() {
@@ -1162,7 +1241,11 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                     "food_serving_size_gram",
                     "food_serving_size_gram_measurement",
                     "food_serving_size_pcs",
-                    "food_serving_size_pcs_measurement"
+                    "food_serving_size_pcs_measurement",
+                    " food_energy_calculated ",
+                    " food_protein_calculated ",
+                    " food_carbohydrates_calculated ",
+                    " food_fat_calculated "
                 };
 
                 DBAdapter db = getDbAdapter();
@@ -1175,16 +1258,21 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 String servingNameNumber = foodCursor.getString(3);
                 String servingNameWord = foodCursor.getString(4);
 
-                db.close();
 
                 // Have changed pcs
                 // Update gram
                 double doublePortionSizePCS = Math.round(doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize));
-                editTextPortionSizePCS.setText("" + doublePortionSizePCS);
+                editTextPortionSizePCS.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS));
+
+
+                updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
+
+                db.close();
 
             }
         }
     }
+
 
     LinearLayout getSubLine(Context context, String stringEnergy, String stringProtein, String stringCarbs, String stringFat) {
 
@@ -1407,10 +1495,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             TextView textViewProgressCarbs = getView().findViewById(R.id.textViewProgressCarbs);
             TextView textViewProgressFat = getView().findViewById(R.id.textViewProgressFat);
 
-            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progress_kcal), stringEatenEnergy,stringGoalEnergy ));
-            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenProtein,stringGoalProtein ));
-            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenCarbs,stringGoalCarbs ));
-            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenFat,stringGoalFat));
+            textViewProgressEnergy.setText(String.format(getActivity().getResources().getString(R.string.format_progress_kcal), stringEatenEnergy, stringGoalEnergy));
+            textViewProgressProtein.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenProtein, stringGoalProtein));
+            textViewProgressCarbs.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenCarbs, stringGoalCarbs));
+            textViewProgressFat.setText(String.format(getActivity().getResources().getString(R.string.format_progress_g), stringEatenFat, stringGoalFat));
 
 
         }

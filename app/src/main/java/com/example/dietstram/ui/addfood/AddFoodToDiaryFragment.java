@@ -457,7 +457,6 @@ public class AddFoodToDiaryFragment extends Fragment {
 
     public void editPortionSizePCSOnChanged() {
 
-
         if (!lockPortionSizeGram) {
             lockPortionSizePCS = true;
             //GetValue of pcs
@@ -507,7 +506,7 @@ public class AddFoodToDiaryFragment extends Fragment {
                 // Update gram
 
                 double doublePortionSizeGram = Math.round(doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber));
-                editTextPortionSizeGram.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS));
+                editTextPortionSizeGram.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizeGram));
                 updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
 
 
@@ -700,7 +699,7 @@ public class AddFoodToDiaryFragment extends Fragment {
         String servingSizeGramSQL = db.quoteSmart(servingSizeGramNew);
 
         //fd_serving_size_gram_measurement
-        String servingSizeGramMeasurementSQL = db.quoteSmart(servingSizeGram);
+        String servingSizeGramMeasurementSQL = db.quoteSmart(servingSizeGramMeasurement);
 
 
         //fd_serving_size_pcs
