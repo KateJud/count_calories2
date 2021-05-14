@@ -1,6 +1,7 @@
 package com.example.dietstram.ui.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dietstram.RegistrationActivity;
 import com.example.dietstram.ui.goal.ChangeGoal;
 import com.example.dietstram.database.DBAdapter;
 import com.example.dietstram.MainActivity;
@@ -51,6 +53,8 @@ public class ProfileFragment extends Fragment {
     /* RadioGroup ------------------------------------------------------------------------------- */
     private RadioGroup radioGroupGender;
 
+    private TextView textViewLogOut;
+
     private View mainView;
 
 
@@ -65,6 +69,19 @@ public class ProfileFragment extends Fragment {
         editTextNickName = getActivity().findViewById(R.id.editTextNickName);
         /* DataPicker ------------------------------------------------------------------------------- */
         dataPicker = getActivity().findViewById(R.id.datePicker);
+
+        textViewLogOut=getActivity().findViewById(R.id.textViewLogOut);
+        Context context=getContext();
+        textViewLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBAdapter db=getDbAdapter();
+                db.deleteAll("users_in");
+                db.close();
+               Intent  i = new Intent(getActivity(), RegistrationActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -90,15 +107,6 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private void setMainView(int id) {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mainView = inflater.inflate(id, null);
-        ViewGroup rootView = (ViewGroup) getView();
-        rootView.removeAllViews();
-        rootView.addView(mainView);
-
-    }
-
     private DBAdapter getDbAdapter() {
         DBAdapter db = new DBAdapter(getActivity());
         db.open();
@@ -120,16 +128,15 @@ public class ProfileFragment extends Fragment {
         /* Get data from data base */
         DBAdapter db = getDbAdapter();
 
-        long longRowId =Long.parseLong( MainActivity.USER_ID);
         String[] fields = {
             "_id",
             "user_dob",
             "user_gender",
             "user_height",
             "user_measurement",
-            "user_email"
+            "user_nickname"
         };
-        Cursor cursor = db.select("users", fields, "_id", longRowId);
+        Cursor cursor = db.select("users", fields, "_id", db.quoteSmart(MainActivity.USER_ID));
         String stringUserDOB = cursor.getString(1);
         String stringUserGender = cursor.getString(2);
         String stringUserHeight = cursor.getString(3);
@@ -233,7 +240,7 @@ public class ProfileFragment extends Fragment {
             "user_gender",
             "user_height",
             "user_measurement",
-            "user_email"};
+            "user_nickname"};
         String[] values = {stringDateOfBirthSQL, stringGenderSQL, heightSQL, measurementSQL, nickNameSQL};
 
         db.update("users", "_id", db.quoteSmart( Long.parseLong( MainActivity.USER_ID)), fieldsUser, values);

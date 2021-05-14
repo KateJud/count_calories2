@@ -21,7 +21,7 @@
     <string name="activity_level">Activity level</string>
     <string name="weight">Weight</string>
     <string name="target_weight">Target weight</string>
-    <string name="measurement">Measurement</string>
+    <string name="measurement">Measure</string>
     <string name="cm">cm</string>
     <string name="feetInches">Feet inches </string>
     <string name="kg">kg</string>
@@ -220,5 +220,6 @@
     <string name="password_">Password*</string>
 
     <string name="format_long">%d</string>
+    <string name="log_out"><u>Press here to log out</u></string>
 
 </resources>

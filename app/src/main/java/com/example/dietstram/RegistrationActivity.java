@@ -134,6 +134,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 db.insert("users_in", "users_i_id,users_i_nickname, users_i_password", values);
 
                 db.close();
+
+                Intent i = new Intent(RegistrationActivity.this, MainActivity.class);
+                startActivity(i);
+
             }
         });
 

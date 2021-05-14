@@ -211,6 +211,16 @@
             android:text="@string/save" />
         <!-- //Submit button -->
 
+        <TextView
+            android:id="@+id/textViewLogOut"
+            style="@style/Widget.TextViewSimple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="@string/log_out" />
     </LinearLayout>
+
+
+
 
 </ScrollView>

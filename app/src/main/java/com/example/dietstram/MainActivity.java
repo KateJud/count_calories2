@@ -40,7 +40,7 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
-   public static String USER_ID;
+   public static String USER_ID="1";
 
     @Override public void onBackPressed() {
 

@@ -13,7 +13,7 @@ public class DBAdapter {
 
     /* 01 Variables ------------------------------------------------------------------------------- */
     public static final String DATABASE_NAME = "my_life";
-    public static final int DATABASE_VERSION = 34;
+    public static final int DATABASE_VERSION = 35;
 
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -450,5 +450,8 @@ public class DBAdapter {
     /* 13 Delete ---------------------------------------------------------------------------------- */
     public int delete(String table, String primaryKey, long rowId) {
         return db.delete(table, primaryKey + "=" + rowId, null);
+    }
+    public int deleteAll(String table) {
+        return db.delete(table,null,null);
     }
 }
