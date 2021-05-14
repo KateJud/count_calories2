@@ -302,15 +302,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         currentData = dateFormat.format(Calendar.getInstance().getTime());
         String fdDataSQL = db.quoteSmart(currentData);
 
-        //TODO
-        /* Write ALL Meal Names */
-        /* Write All food to that meal_name*/
         writeAllMealNames();
-
 
         //Calculate of eaten calories today
         calculateNumberOfCalEatenToday();
-
 
         Button buttonAddMeal = getActivity().findViewById(R.id.buttonAddMeal);
         buttonAddMeal.setOnClickListener(new View.OnClickListener() {

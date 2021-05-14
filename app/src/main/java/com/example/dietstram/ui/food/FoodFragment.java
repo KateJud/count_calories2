@@ -1,5 +1,4 @@
 package com.example.dietstram.ui.food;
-//TODO падает пре редактировании на spinner
 
 import android.app.AlertDialog;
 import android.app.SearchManager;

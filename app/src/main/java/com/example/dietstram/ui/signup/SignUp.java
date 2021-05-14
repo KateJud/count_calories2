@@ -33,8 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-//TODO write error
-
 public class SignUp extends AppCompatActivity {
 
 

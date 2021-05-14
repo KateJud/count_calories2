@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietstram.database.DBAdapter;
@@ -278,7 +279,6 @@ public class CategoriesFragment extends Fragment {
         builder.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                //TODO как возвратиться не на category, а на 1 назад?
                 onDeleteClicked();
             }
         });
@@ -297,30 +297,8 @@ public class CategoriesFragment extends Fragment {
     private void deleteCategory() {
         setAlertDialog();
 
-//
-//        int id = R.layout.fragment_categories_delete;
-//        changeLayout(id);
-//
-//        Button buttonDelete = getActivity().findViewById(R.id.buttonCategoriesDelete);
-//        buttonDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onDeleteClicked();
-//            }
-//        });
-//        Button buttonCancel = getActivity().findViewById(R.id.buttonCategoriesCancel);
-//        buttonCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onCancelClicked();
-//            }
-//        });
-
     }
 
-    private void onCancelClicked() {
-        moveToCategoryLayout();
-    }
 
     private void onDeleteClicked() {
         //Delete Form Sql
@@ -528,10 +506,14 @@ public class CategoriesFragment extends Fragment {
                 "food_carbohydrates_calculated",
                 "food_fat_calculated"
             };
+
+            System.out.println("**************88");
+            System.out.println(categoryId);
+
             setListCursorFood(db.select("food", fields, "food_category_id", categoryId, "food_name", "ASC"));
 
-
             RecyclerView recyclerView = getActivity().findViewById(R.id.listViewFood);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             FoodCursorAdapter foodCursorAdapter = new FoodCursorAdapter(getActivity(), listCursorFood);
             recyclerView.setAdapter(foodCursorAdapter);
 
@@ -545,8 +527,6 @@ public class CategoriesFragment extends Fragment {
 
             //Close
             db.close();
-
-            //  changeMenuItemVisibility(parentId);
 
         }
     }

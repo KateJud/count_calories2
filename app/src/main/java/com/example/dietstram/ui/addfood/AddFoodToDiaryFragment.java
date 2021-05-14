@@ -274,9 +274,6 @@ public class AddFoodToDiaryFragment extends Fragment {
 
     private void listItemClickedFood(int listItemFoodIndexClicked) {
 
-        //TODO show edit button
-        //TODO madeMenuItemVisible();
-
         /* Change layout */
         changeLayout(R.layout.fragment_add_food_to_diary_view_food);
         setAllWidgets();
@@ -677,7 +674,7 @@ public class AddFoodToDiaryFragment extends Fragment {
         String stringPortionSizeGram = editTextPortionSizeGram.getText().toString();
 
         double doublePortionSizeGram = Double.parseDouble(stringPortionSizeGram);
-        //Todo error?
+
         if (stringPortionSizeGram.isEmpty()) {
             error = 1;
             Toast.makeText(getActivity(), "Gram cannot be empty", Toast.LENGTH_SHORT).show();
