@@ -116,13 +116,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-//        if (myCondition) {
-//            //action not popBackStack
-//            return true;
-//        } else {
-//            return false;
-//        }
-
         return true;
     }
 
@@ -780,8 +773,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         linearLayoutSubLineTotal.addView(getSubLine(getContext(), String.valueOf(fdceEatenEnergy), String.valueOf(fdceEatenProteins), String.valueOf(fdceEatenCarbs), String.valueOf(fdceEatenFat)), linearLayoutParams);
 
         if (!fdceId.equals("-1")) {
-            //TODO
-
             //Update fdce_table
             String[] updateFields = {"fdce_eaten_energy ",
                 "fdce_eaten_protein ",
@@ -1308,15 +1299,14 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             TextView textViewEnergy = new TextView(context, null, R.style.Widget_TextViewSmallComponents);
             textViewEnergy.setText(String.format(context.getResources().getString(R.string.format_kcal), stringEnergy));
 
-            //~300
-            if (Double.parseDouble(stringEnergy) * 8 < Double.parseDouble(stringEnergyGoal)) {
+            if (Double.parseDouble(stringEnergy) < Double.parseDouble(stringEnergyGoal)*0.17) {
                 textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-            } else if (Double.parseDouble(stringEnergy) * 4 < Double.parseDouble(stringEnergyGoal)) {
-                //~500
+            } else if (Double.parseDouble(stringEnergy)  < Double.parseDouble(stringEnergyGoal)*0.3) {
+
                 textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
             } else {
-                //>500
+
                 textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_red)));
 
             }
@@ -1334,9 +1324,9 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             textViewProtein.setText(String.format(context.getResources().getString(R.string.format_g), stringProtein));
 
             //~300
-            if (Double.parseDouble(stringProtein) * 8 < Double.parseDouble(stringProteinGoal)) {
+            if (Double.parseDouble(stringProtein) < Double.parseDouble(stringProteinGoal)*0.17) {
                 textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-            } else if (Double.parseDouble(stringProtein) * 4 < Double.parseDouble(stringProteinGoal)) {
+            } else if (Double.parseDouble(stringProtein)  < Double.parseDouble(stringProteinGoal)*0.3) {
                 //~500
                 textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -1359,9 +1349,9 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             textViewCarbs.setText(String.format(context.getResources().getString(R.string.format_g), stringCarbs));
 
             //~300
-            if (Double.parseDouble(stringCarbs) * 8 < Double.parseDouble(stringCarbsGoal)) {
+            if (Double.parseDouble(stringCarbs)  < Double.parseDouble(stringCarbsGoal)*0.17) {
                 textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-            } else if (Double.parseDouble(stringCarbs) * 4 < Double.parseDouble(stringCarbsGoal)) {
+            } else if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal)*0.3) {
                 //~500
                 textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -1384,9 +1374,9 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             textViewFat.setText(String.format(context.getResources().getString(R.string.format_g), stringFat));
 
             //~300
-            if (Double.parseDouble(stringFat) * 8 < Double.parseDouble(stringFatGoal)) {
+            if (Double.parseDouble(stringFat)  < Double.parseDouble(stringFatGoal)*0.17) {
                 textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-            } else if (Double.parseDouble(stringFat) * 4 < Double.parseDouble(stringFatGoal)) {
+            } else if (Double.parseDouble(stringFat)  < Double.parseDouble(stringFatGoal)*0.3) {
                 //~500
                 textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 

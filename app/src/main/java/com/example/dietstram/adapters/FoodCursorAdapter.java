@@ -137,14 +137,14 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewEnergy.setText(String.format(context.getResources().getString(R.string.format_kcal), stringEnergy));
 
         //~300
-        if (Double.parseDouble(stringEnergy) * 8 < Double.parseDouble(stringEnergyGoal)) {
+        if (Double.parseDouble(stringEnergy)  < Double.parseDouble(stringEnergyGoal)*0.17) {
             textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringEnergy) * 4 < Double.parseDouble(stringEnergyGoal)) {
-            //~500
+        } else if (Double.parseDouble(stringEnergy) < Double.parseDouble(stringEnergyGoal)*0.3) {
+            //~17-30%
             textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
         } else {
-            //>500
+            //>30%
             textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_red)));
 
         }
@@ -162,9 +162,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewProtein.setText(String.format(context.getResources().getString(R.string.format_g), stringProtein));
 
         //~300
-        if (Double.parseDouble(stringProtein) * 8 < Double.parseDouble(stringProteinGoal)) {
+        if (Double.parseDouble(stringProtein) < Double.parseDouble(stringProteinGoal)*0.17) {
             textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringProtein) * 4 < Double.parseDouble(stringProteinGoal)) {
+        } else if (Double.parseDouble(stringProtein)  < Double.parseDouble(stringProteinGoal)*0.3) {
             //~500
             textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -187,9 +187,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewCarbs.setText(String.format(context.getResources().getString(R.string.format_g), stringCarbs));
 
         //~300
-        if (Double.parseDouble(stringCarbs) * 8 < Double.parseDouble(stringCarbsGoal)) {
+        if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal)*0.17) {
             textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringCarbs) * 4 < Double.parseDouble(stringCarbsGoal)) {
+        } else if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal)*0.3) {
             //~500
             textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -212,9 +212,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewFat.setText(String.format(context.getResources().getString(R.string.format_g), stringFat));
 
         //~300
-        if (Double.parseDouble(stringFat) * 8 < Double.parseDouble(stringFatGoal)) {
+        if (Double.parseDouble(stringFat)  < Double.parseDouble(stringFatGoal)*0.17) {
             textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringFat) * 4 < Double.parseDouble(stringFatGoal)) {
+        } else if (Double.parseDouble(stringFat)  < Double.parseDouble(stringFatGoal)*0.3) {
             //~500
             textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
