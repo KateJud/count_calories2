@@ -7,30 +7,30 @@
 
     <fragment
             android:id="@+id/nav_home"
-            android:name="com.example.dietstram.ui.home.HomeFragment"
+            android:name="com.example.calorycounter.ui.home.HomeFragment"
             android:label="@string/home"
             tools:layout="@layout/fragment_home"/>
 
     <fragment
             android:id="@+id/nav_profile"
-            android:name="com.example.dietstram.ui.profile.ProfileFragment"
+            android:name="com.example.calorycounter.ui.profile.ProfileFragment"
             android:label="@string/profile"
             tools:layout="@layout/fragment_profile"/>
 
     <fragment
             android:id="@+id/nav_goal"
-            android:name="com.example.dietstram.ui.goal.GoalFragment"
+            android:name="com.example.calorycounter.ui.goal.GoalFragment"
             android:label="@string/menu_goal"
             tools:layout="@layout/fragment_goal"/>
 
     <fragment
         android:id="@+id/nav_categories"
-        android:name="com.example.dietstram.ui.categories.CategoriesFragment"
+        android:name="com.example.calorycounter.ui.categories.CategoriesFragment"
         android:label="@string/category"
         tools:layout="@layout/fragment_categories"/>
     <fragment
         android:id="@+id/nav_food"
-        android:name="com.example.dietstram.ui.food.FoodFragment"
+        android:name="com.example.calorycounter.ui.food.FoodFragment"
         android:label="@string/food"
         tools:layout="@layout/fragment_food"/>
 </navigation>

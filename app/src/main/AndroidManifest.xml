@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.dietstram">
+    package="com.example.calorycounter">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -19,7 +19,7 @@
                app to run.
         -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.calorycounter.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -34,11 +34,11 @@
         </activity>
 
         <provider
-            android:name=".helpers.MySuggestionProvider"
-            android:authorities="com.example.dietstram.helpers.MySuggestionProvider" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".ui.signup.SignUp" />
-        <activity android:name=".ui.signup.SignUpGoal" />
+            android:name="com.example.calorycounter.helpers.MySuggestionProvider"
+            android:authorities="com.example.calorycounter.helpers.MySuggestionProvider" />
+        <activity android:name="com.example.calorycounter.RegistrationActivity" />
+        <activity android:name="com.example.calorycounter.ui.signup.SignUp" />
+        <activity android:name="com.example.calorycounter.ui.signup.SignUpGoal" />
     </application>
 
 </manifest>
