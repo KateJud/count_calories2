@@ -221,5 +221,6 @@
 
     <string name="format_long">%d</string>
     <string name="log_out"><u>Press here to log out</u></string>
+    <string name="formula_mifflin">** All calculations are carried out using the Mifflin St. Jeor formula, make sure that it is suitable for you</string>
 
 </resources>
