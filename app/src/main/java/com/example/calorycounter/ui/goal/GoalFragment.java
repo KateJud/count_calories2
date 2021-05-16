@@ -177,9 +177,10 @@ public class GoalFragment extends Fragment {
                 DBAdapter db = getDbAdapter();
                 if (isChecked) {
                     editTextEnergyGoal.setEnabled(false);
+                    String infSQL=db.quoteSmart( editTextEnergyGoal.getText().toString());
                     //Energy
                     db.update("goal", "_id",goalId, "goal_user_energy", 1);
-                    db.update("goal", "_id",goalId, "goal_energy_with_activity_and_diet", 1);
+                    db.update("goal", "_id",goalId, "goal_energy_with_activity_and_diet", infSQL);
                 } else {
                     editTextEnergyGoal.setEnabled(true);
                     db.update("goal", "_id", goalId, "goal_user_energy", 0);
@@ -210,9 +211,10 @@ public class GoalFragment extends Fragment {
                 DBAdapter db = getDbAdapter();
                 if (isChecked) {
                     editTextProteinGoal.setEnabled(false);
+                    String infSQL=db.quoteSmart( editTextProteinGoal.getText().toString());
                     //Protein
                     db.update("goal", "_id", goalId, "goal_user_protein", 1);
-                    db.update("goal", "_id", goalId, "goal_protein_with_activity_and_diet", 1);
+                    db.update("goal", "_id", goalId, "goal_protein_with_activity_and_diet", infSQL);
                 } else {
                     editTextProteinGoal.setEnabled(true);
                     db.update("goal", "_id", goalId, "goal_user_protein", 0);
@@ -244,8 +246,9 @@ public class GoalFragment extends Fragment {
                 if (isChecked) {
                     editTextCarbsGoal.setEnabled(false);
                     //Carbs
+                    String infSQL=db.quoteSmart( editTextCarbsGoal.getText().toString());
                     db.update("goal", "_id", goalId, "goal_user_carbs", 1);
-                    db.update("goal", "_id", goalId, "goal_carbs_with_activity_and_diet", 1);
+                    db.update("goal", "_id", goalId, "goal_carbs_with_activity_and_diet", infSQL);
                 } else {
                     editTextCarbsGoal.setEnabled(true);
                     db.update("goal", "_id", goalId, "goal_user_carbs", 0);
@@ -279,9 +282,10 @@ public class GoalFragment extends Fragment {
 
                 if (isChecked) {
                     editTextFatGoal.setEnabled(false);
+                    String infSQL=db.quoteSmart( editTextFatGoal.getText().toString());
                     //Fat
                     db.update("goal", "_id", goalId, "goal_user_fat", 1);
-                    db.update("goal", "_id", goalId, "goal_fat_with_activity_and_diet", 1);
+                    db.update("goal", "_id", goalId, "goal_fat_with_activity_and_diet", infSQL);
                 } else {
                     editTextFatGoal.setEnabled(true);
                     db.update("goal", "_id", goalId, "goal_user_fat", 0);

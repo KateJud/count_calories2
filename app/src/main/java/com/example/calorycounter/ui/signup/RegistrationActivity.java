@@ -1,4 +1,4 @@
-package com.example.calorycounter;
+package com.example.calorycounter.ui.signup;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.calorycounter.MainActivity;
+import com.example.calorycounter.R;
 import com.example.calorycounter.database.DBAdapter;
-import com.example.calorycounter.ui.signup.SignUp;
 
 public class RegistrationActivity extends AppCompatActivity {
     private Button buttonSignIn;

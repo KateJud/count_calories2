@@ -46,6 +46,7 @@ public class CategoriesFragment extends Fragment {
     private int error;
 
     /* Action buttons */
+    private MenuItem menuItemAdd;
     private MenuItem menuItemEdit;
     private MenuItem menuItemDelete;
 
@@ -91,6 +92,7 @@ public class CategoriesFragment extends Fragment {
         ((MainActivity) getActivity()).getMenuInflater().inflate(R.menu.menu_categories, menu);
 
         //Assign variables
+        menuItemAdd= menu.findItem(R.id.action_add);
         setMenuItemEdit(menu.findItem(R.id.action_edit));
         setMenuItemDelete(menu.findItem(R.id.action_delete));
 
@@ -100,6 +102,8 @@ public class CategoriesFragment extends Fragment {
 
 
     }
+
+
 
 
     private void populateList(String parentId) {
@@ -165,6 +169,8 @@ public class CategoriesFragment extends Fragment {
     private void editCategory() {
         //Edit name -- currentName
         //Edit id -- currentId
+        makeMenuItemInvisible();
+
         int id = R.layout.fragment_categories_add_edit;
         changeLayout(id);
 
@@ -324,6 +330,7 @@ public class CategoriesFragment extends Fragment {
     }
 
     private void addCategory() {
+        makeMenuItemInvisible();
 
         /* Change layout */
         int id = R.layout.fragment_categories_add_edit;
@@ -406,6 +413,7 @@ public class CategoriesFragment extends Fragment {
     }
 
     private void moveToCategoryLayout() {
+        makeMenuItemVisible();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, new CategoriesFragment(), CategoriesFragment.class.getName()).addToBackStack(null).commit();
     }
@@ -486,6 +494,24 @@ public class CategoriesFragment extends Fragment {
         showFoodInCategory(currentCategoryId, currentCategoryName, parentId);
 
     }
+    /* Visible & invisible ----------------------------------------- */
+    private void makeMenuItemVisible() {
+
+        //Show edit button
+        menuItemEdit.setVisible(true);
+        menuItemDelete.setVisible(true);
+        menuItemAdd.setVisible(true);
+
+    }
+
+
+    private void makeMenuItemInvisible() {
+
+        //Show edit button
+        menuItemEdit.setVisible(false);
+        menuItemDelete.setVisible(false);
+        menuItemAdd.setVisible(false);
+    }
 
 
     private void showFoodInCategory(String categoryId, String categoryName, String categoryParentId) {
@@ -506,9 +532,6 @@ public class CategoriesFragment extends Fragment {
                 "food_carbohydrates_calculated",
                 "food_fat_calculated"
             };
-
-            System.out.println("**************88");
-            System.out.println(categoryId);
 
             setListCursorFood(db.select("food", fields, "food_category_id", categoryId, "food_name", "ASC"));
 

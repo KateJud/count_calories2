@@ -14,6 +14,7 @@ import com.example.calorycounter.ui.food.FoodFragment;
 import com.example.calorycounter.ui.goal.GoalFragment;
 import com.example.calorycounter.ui.home.HomeFragment;
 import com.example.calorycounter.ui.profile.ProfileFragment;
+import com.example.calorycounter.ui.signup.RegistrationActivity;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

@@ -1,4 +1,4 @@
-package com.example.calorycounter;
+package com.example.calorycounter.helpers;
 
 public interface IOnBackPressed {
 

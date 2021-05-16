@@ -36,7 +36,7 @@
         <provider
             android:name="com.example.calorycounter.helpers.MySuggestionProvider"
             android:authorities="com.example.calorycounter.helpers.MySuggestionProvider" />
-        <activity android:name="com.example.calorycounter.RegistrationActivity" />
+        <activity android:name="com.example.calorycounter.ui.signup.RegistrationActivity" />
         <activity android:name="com.example.calorycounter.ui.signup.SignUp" />
         <activity android:name="com.example.calorycounter.ui.signup.SignUpGoal" />
     </application>

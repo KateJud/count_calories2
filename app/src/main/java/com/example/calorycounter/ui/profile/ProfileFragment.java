@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.calorycounter.RegistrationActivity;
+import com.example.calorycounter.ui.signup.RegistrationActivity;
 import com.example.calorycounter.ui.goal.ChangeGoal;
 import com.example.calorycounter.database.DBAdapter;
 import com.example.calorycounter.MainActivity;

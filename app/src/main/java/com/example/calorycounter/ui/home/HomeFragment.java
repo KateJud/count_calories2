@@ -34,7 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.calorycounter.IOnBackPressed;
+import com.example.calorycounter.helpers.IOnBackPressed;
 import com.example.calorycounter.database.DBAdapter;
 import com.example.calorycounter.database.DBSetupInsert;
 import com.example.calorycounter.database.Idioms;

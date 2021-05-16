@@ -523,8 +523,8 @@ public class FoodFragment extends Fragment  {
 
         // SubCategory
         Spinner spinnerSubCategory = getActivity().findViewById(R.id.spinnerSubCategory);
-        int subCategory = spinnerSubCategory.getSelectedItemPosition();
-        String subCategorySQL = db.quoteSmart("" + subCategory);
+        String subCategory = spinnerSubCategory.getSelectedItem().toString();
+        String subCategorySQL = db.quoteSmart(subCategory);
 
 
         //Serving table
@@ -854,8 +854,11 @@ public class FoodFragment extends Fragment  {
             "category_parent_id"
         };
 
-        Cursor dbCursorCurrentFoodCategory = db.select("categories", spinnerFields, "_id", categoryId, "category_name", "ASC");
+        Cursor dbCursorCurrentFoodCategory = db.select("categories", spinnerFields, "category_name", db.quoteSmart( categoryId), "category_name", "ASC");
 
+        while (dbCursorCurrentFoodCategory.getString(2).equals("0")){
+            dbCursorCurrentFoodCategory.moveToNext();
+        }
         String currentFoodCategoryParentId = dbCursorCurrentFoodCategory.getString(2);
 
         /* Sub spinner */
@@ -1010,10 +1013,7 @@ public class FoodFragment extends Fragment  {
         EditText editTextManufacture = getActivity().findViewById(R.id.editTextManufacture);
         String stringManufacture = editTextManufacture.getText().toString();
         String stringManufactureSQL = db.quoteSmart(stringManufacture);
-        if (stringManufacture.isEmpty()) {
-            error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill manufacture", Toast.LENGTH_LONG).show();
-        }
+
 
         //Description
         EditText editTextDescription = getActivity().findViewById(R.id.editTextDescription);
@@ -1025,10 +1025,7 @@ public class FoodFragment extends Fragment  {
         EditText editTextBarcode = getActivity().findViewById(R.id.editTextBarcode);
         String stringBarcode = editTextBarcode.getText().toString();
         String stringBarcodeSQL = db.quoteSmart(stringBarcode);
-        if (stringBarcode.isEmpty()) {
-            error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill Barcode", Toast.LENGTH_LONG).show();
-        }
+
 
         // SubCategory
         Spinner spinnerSubCategory = getActivity().findViewById(R.id.spinnerSubCategory);
@@ -1069,7 +1066,7 @@ public class FoodFragment extends Fragment  {
         String stringNumberSQL = db.quoteSmart(stringNumber);
         if (stringNumber.isEmpty()) {
             error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill Number", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Error:  Please fill portion size", Toast.LENGTH_LONG).show();
         }
 
         //Word
@@ -1078,7 +1075,7 @@ public class FoodFragment extends Fragment  {
         String stringWordSQL = db.quoteSmart(stringWord);
         if (stringWord.isEmpty()) {
             error = 1;
-            Toast.makeText(getActivity(), "Error:  Please fill Word", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Error:  Please fill portion measurement", Toast.LENGTH_LONG).show();
         }
 
         //Energy
@@ -1170,11 +1167,12 @@ public class FoodFragment extends Fragment  {
             db.update("food", "_id", rowId, fields, values);
             Toast.makeText(getActivity(), "Everything is saved", Toast.LENGTH_LONG).show();
 
+            db.close();
+            moveToCorrectLayout();
         }
 
-
         db.close();
-        moveToCorrectLayout();
+
 
     }
     /*// Edit food ----------------------------------------- */
