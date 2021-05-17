@@ -10,7 +10,7 @@ import java.util.Calendar;
 public class ChangeGoal {
 
 
-    static private int goalId =Integer.parseInt( MainActivity.USER_ID);
+    private static int goalId =Integer.parseInt( MainActivity.USER_ID);
 
     public static void updateGoalDBMain(DBAdapter db, double targetWeight, String weeklyGoal) {
 

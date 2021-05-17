@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.EditTextBlankBlue"
                     android:text="@string/_100"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
 
                 <EditText
                     android:id="@+id/editTextServingMeasurement"
@@ -181,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Widget.EditTextBlankBlue"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:text="@string/_1"
                     android:hint="@string/number" />
 

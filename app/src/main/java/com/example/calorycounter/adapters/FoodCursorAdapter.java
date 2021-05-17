@@ -42,12 +42,12 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
 
         int getId = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String getName = cursor.getString(cursor.getColumnIndexOrThrow("food_name"));
-        String getFoodSizeGramCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram"));
+        String getFoodSizeGramCalculated = String.format(context.getString(R.string.format_double), Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram"))));
         String getServingMeasurement = cursor.getString(cursor.getColumnIndexOrThrow("food_serving_size_gram_measurement"));
-        String getFoodSizeProteinCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_protein_calculated"));
-        String getFoodSizeCarbsCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_carbohydrates_calculated"));
-        String getFoodSizeFatCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_fat_calculated"));
-        String getFoodEnergyCalculated = cursor.getString(cursor.getColumnIndexOrThrow("food_energy_calculated"));
+        String getFoodSizeProteinCalculated = String.format(context.getString(R.string.format_double), Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow("food_protein_calculated"))));
+        String getFoodSizeCarbsCalculated = String.format(context.getString(R.string.format_double), Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow("food_carbohydrates_calculated"))));
+        String getFoodSizeFatCalculated = String.format(context.getString(R.string.format_double), Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow("food_fat_calculated"))));
+        String getFoodEnergyCalculated = String.format(context.getString(R.string.format_double), Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow("food_energy_calculated"))));
 
         //100 g \n
         //  protein: , carbs: fat:ng,
@@ -115,10 +115,10 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
             "goal_energy_with_activity_and_diet",
         };
         Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
-        String stringEnergyGoal = cursorGoal.getString(0);
-        String stringProteinGoal = cursorGoal.getString(1);
-        String stringCarbsGoal = cursorGoal.getString(2);
-        String stringFatGoal = cursorGoal.getString(3);
+        String stringEnergyGoal = String.format(context.getString(R.string.format_double), Double.parseDouble(cursorGoal.getString(0)));
+        String stringProteinGoal = String.format(context.getString(R.string.format_double), Double.parseDouble(cursorGoal.getString(1)));
+        String stringCarbsGoal = String.format(context.getString(R.string.format_double), Double.parseDouble(cursorGoal.getString(2)));
+        String stringFatGoal = String.format(context.getString(R.string.format_double), Double.parseDouble(cursorGoal.getString(3)));
         db.close();
 
 
@@ -137,9 +137,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewEnergy.setText(String.format(context.getResources().getString(R.string.format_kcal), stringEnergy));
 
         //~300
-        if (Double.parseDouble(stringEnergy)  < Double.parseDouble(stringEnergyGoal)*0.17) {
+        if (Double.parseDouble(stringEnergy) < Double.parseDouble(stringEnergyGoal) * 0.17) {
             textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringEnergy) < Double.parseDouble(stringEnergyGoal)*0.3) {
+        } else if (Double.parseDouble(stringEnergy) < Double.parseDouble(stringEnergyGoal) * 0.3) {
             //~17-30%
             textViewEnergy.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -162,9 +162,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewProtein.setText(String.format(context.getResources().getString(R.string.format_g), stringProtein));
 
         //~300
-        if (Double.parseDouble(stringProtein) < Double.parseDouble(stringProteinGoal)*0.17) {
+        if (Double.parseDouble(stringProtein) < Double.parseDouble(stringProteinGoal) * 0.17) {
             textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringProtein)  < Double.parseDouble(stringProteinGoal)*0.3) {
+        } else if (Double.parseDouble(stringProtein) < Double.parseDouble(stringProteinGoal) * 0.3) {
             //~500
             textViewProtein.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -187,9 +187,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewCarbs.setText(String.format(context.getResources().getString(R.string.format_g), stringCarbs));
 
         //~300
-        if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal)*0.17) {
+        if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal) * 0.17) {
             textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal)*0.3) {
+        } else if (Double.parseDouble(stringCarbs) < Double.parseDouble(stringCarbsGoal) * 0.3) {
             //~500
             textViewCarbs.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 
@@ -212,9 +212,9 @@ public class FoodCursorAdapter extends RecyclerView.Adapter<FoodCursorAdapter.Re
         textViewFat.setText(String.format(context.getResources().getString(R.string.format_g), stringFat));
 
         //~300
-        if (Double.parseDouble(stringFat)  < Double.parseDouble(stringFatGoal)*0.17) {
+        if (Double.parseDouble(stringFat) < Double.parseDouble(stringFatGoal) * 0.17) {
             textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_green)));
-        } else if (Double.parseDouble(stringFat)  < Double.parseDouble(stringFatGoal)*0.3) {
+        } else if (Double.parseDouble(stringFat) < Double.parseDouble(stringFatGoal) * 0.3) {
             //~500
             textViewFat.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.my_yellow)));
 

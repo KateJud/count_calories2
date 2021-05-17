@@ -5,7 +5,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!-- TODO -->
     <!-- сделать внизу таблицу отображения -->
 
     <LinearLayout
@@ -55,6 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/blank"
+                    android:inputType="numberDecimal"
                     style="@style/Widget.EditTextBlankBlue"/>
 
                 <TextView
@@ -84,6 +84,7 @@
                     android:id="@+id/editTextPortionSizePCS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     style="@style/Widget.EditTextBlankBlue" />
 
                 <TextView

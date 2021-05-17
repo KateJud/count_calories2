@@ -27,16 +27,15 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText editTextNickName;
 
     private void setAllWidgets() {
+
         buttonSignIn = findViewById(R.id.buttonSignIn);
+        buttonSignIn.setEnabled(false);
 
         textViewRegister = findViewById(R.id.textViewRegister);
-
         textViewError = findViewById(R.id.textViewError);
 
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextNickName = findViewById(R.id.editTextNickName);
-
-    buttonSignIn.setEnabled(false);
 
     }
 
@@ -103,6 +102,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 final DBAdapter db = new DBAdapter(context);
                 db.open();
 
+                String nickName = editTextNickName.getText().toString();
+                String password = editTextPassword.getText().toString();
 
                 String nickNameSQL = db.quoteSmart(editTextNickName.getText().toString());
                 String passwordSQL = db.quoteSmart(editTextPassword.getText().toString());
@@ -127,10 +128,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
 
                 //Current user (in global table 'users') id
-                String id=cursorUser.getString(0);
-                MainActivity.USER_ID =id;
-                String idSQL=db.quoteSmart(id);
-                String values =idSQL+","+ nickNameSQL + "," + passwordSQL;
+                String id = cursorUser.getString(0);
+                MainActivity.USER_ID = id;
+                String idSQL = db.quoteSmart(id);
+                String values = idSQL + "," + nickNameSQL + "," + passwordSQL;
 
                 db.insert("users_in", "users_i_id,users_i_nickname, users_i_password", values);
 

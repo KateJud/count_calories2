@@ -505,7 +505,7 @@ public class AddFoodToDiaryFragment extends Fragment {
                 // Have changed pcs
                 // Update gram
 
-                double doublePortionSizeGram = Math.round(doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber));
+                double doublePortionSizeGram = doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber);
                 editTextPortionSizeGram.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizeGram));
                 updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
 
@@ -596,7 +596,7 @@ public class AddFoodToDiaryFragment extends Fragment {
 
                 // Have changed pcs
                 // Update gram
-                double doublePortionSizePCS = Math.round(doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize));
+                double doublePortionSizePCS = doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize);
                 editTextPortionSizePCS.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS));
 
 
@@ -712,23 +712,23 @@ public class AddFoodToDiaryFragment extends Fragment {
         //fd_energy_calculated
         //Energy=consump*kcal/100
         double energyPerHundred = Double.parseDouble(energy);
-        double energyCalculatedNew = Math.round(doublePortionSizeGram * energyPerHundred / 100);
+        double energyCalculatedNew = doublePortionSizeGram * energyPerHundred / 100;
         String energyCalculateSQL = db.quoteSmart("" + energyCalculatedNew);
 
         //fd_protein_calculated
         double proteinPerHundred = Double.parseDouble(protein);
-        double proteinCalculatedNew = Math.round(doublePortionSizeGram * proteinPerHundred / 100);
+        double proteinCalculatedNew = doublePortionSizeGram * proteinPerHundred / 100;
         String proteinCalculateSQL = db.quoteSmart("" + proteinCalculatedNew);
 
         //fd_carbohydrates_calculated
         double carbohydratePerHundred = Double.parseDouble(carbohydrate);
-        double carbohydrateCalculatedNew = Math.round(doublePortionSizeGram * carbohydratePerHundred / 100);
+        double carbohydrateCalculatedNew = doublePortionSizeGram * carbohydratePerHundred / 100;
         String carbohydrateCalculateSQL = db.quoteSmart("" + carbohydrateCalculatedNew);
 
 
         //fd_fat_calculated
         double fatPerHundred = Double.parseDouble(fat);
-        double fatCalculatedNew = Math.round(doublePortionSizeGram * fatPerHundred / 100);
+        double fatCalculatedNew = doublePortionSizeGram * fatPerHundred / 100;
         String fatCalculateSQL = db.quoteSmart("" + fatCalculatedNew);
 
 

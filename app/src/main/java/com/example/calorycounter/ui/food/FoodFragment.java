@@ -610,10 +610,10 @@ public class FoodFragment extends Fragment  {
 
         //Toast.makeText(getActivity(), "error "+error, Toast.LENGTH_LONG).show();
         if (error == 0) {
-            double energyCalculated = Math.round((size * Double.parseDouble(stringEnergy)) / 100);
-            double proteinCalculated = Math.round((size * Double.parseDouble(stringProteins)) / 100);
-            double carbsCalculated = Math.round((size * Double.parseDouble(stringCarbs)) / 100);
-            double fatCalculated = Math.round((size * Double.parseDouble(stringFat)) / 100);
+            double energyCalculated = (size * Double.parseDouble(stringEnergy)) / 100;
+            double proteinCalculated = (size * Double.parseDouble(stringProteins)) / 100;
+            double carbsCalculated = (size * Double.parseDouble(stringCarbs)) / 100;
+            double fatCalculated = (size * Double.parseDouble(stringFat)) / 100;
 
             String energyCalculatedSQL = db.quoteSmart("" + energyCalculated);
             String proteinCalculatedSQL = db.quoteSmart("" + proteinCalculated);
@@ -1115,10 +1115,10 @@ public class FoodFragment extends Fragment  {
 
         //Toast.makeText(getActivity(), "error "+error, Toast.LENGTH_LONG).show();
         if (error == 0) {
-            double energyCalculated = Math.round((size * Double.parseDouble(stringEnergy)) / 100);
-            double proteinCalculated = Math.round((size * Double.parseDouble(stringProteins)) / 100);
-            double carbsCalculated = Math.round((size * Double.parseDouble(stringCarbs)) / 100);
-            double fatCalculated = Math.round((size * Double.parseDouble(stringFat)) / 100);
+            double energyCalculated =(size * Double.parseDouble(stringEnergy)) / 100;
+            double proteinCalculated = (size * Double.parseDouble(stringProteins)) / 100;
+            double carbsCalculated = (size * Double.parseDouble(stringCarbs)) / 100;
+            double fatCalculated = (size * Double.parseDouble(stringFat)) / 100;
 
             String energyCalculatedSQL = db.quoteSmart("" + energyCalculated);
             String proteinCalculatedSQL = db.quoteSmart("" + proteinCalculated);

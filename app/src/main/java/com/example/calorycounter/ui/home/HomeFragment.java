@@ -543,10 +543,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         //Выбираем сегодняшнюю сумму
         Cursor cursorFdSum = db.select("food_diary_sum", fieldsFdSum, "fd_sum_date", db.quoteSmart(currentData));
 
-        int fdceEatenEnergy = 0;
-        int fdceEatenProteins = 0;
-        int fdceEatenCarbs = 0;
-        int fdceEatenFat = 0;
+        double fdceEatenEnergy = 0;
+        double fdceEatenProteins = 0;
+        double fdceEatenCarbs = 0;
+        double fdceEatenFat = 0;
 
         //Считаем сумму через food_diary
         String[] fieldsFDCE = {
@@ -556,10 +556,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             "fdce_eaten_fat "};
         Cursor cursorFdce = db.select("food_diary_cal_eaten", fieldsFDCE, "fdce_date", currentDateSQL);
         for (int i = 0; i < cursorFdce.getCount(); i++) {
-            fdceEatenEnergy += Integer.parseInt(cursorFdce.getString(0));
-            fdceEatenProteins += Integer.parseInt(cursorFdce.getString(1));
-            fdceEatenCarbs += Integer.parseInt(cursorFdce.getString(2));
-            fdceEatenFat += Integer.parseInt(cursorFdce.getString(3));
+            fdceEatenEnergy +=Double.parseDouble(cursorFdce.getString(0));
+            fdceEatenProteins += Double.parseDouble(cursorFdce.getString(1));
+            fdceEatenCarbs += Double.parseDouble(cursorFdce.getString(2));
+            fdceEatenFat += Double.parseDouble(cursorFdce.getString(3));
             cursorFdce.moveToNext();
         }
 
@@ -723,10 +723,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             //Variables from food_diary
             String fdId = cursorFd.getString(1);
 
-            String fdEnergyCalculated = cursorFd.getString(6);
-            String fdProteinCalculated = cursorFd.getString(7);
-            String fdCarbsCalculated = cursorFd.getString(8);
-            String fdFatCalculated = cursorFd.getString(9);
+            String fdEnergyCalculated =String.format( getString(R.string.format_double), Double.parseDouble( cursorFd.getString(6)));
+            String fdProteinCalculated = String.format( getString(R.string.format_double), Double.parseDouble( cursorFd.getString(7)));
+            String fdCarbsCalculated =String.format( getString(R.string.format_double), Double.parseDouble(  cursorFd.getString(8)));
+            String fdFatCalculated = String.format( getString(R.string.format_double), Double.parseDouble( cursorFd.getString(9)));
 
             //food name
             cursorFood = db.select("food", fieldsFood, "_id", db.quoteSmart(fdId));
@@ -759,10 +759,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
 
             //Sum fields
-            fdceEatenEnergy += Integer.parseInt(fdEnergyCalculated);
-            fdceEatenProteins += Integer.parseInt(fdProteinCalculated);
-            fdceEatenCarbs += Integer.parseInt(fdCarbsCalculated);
-            fdceEatenFat += Integer.parseInt(fdFatCalculated);
+            fdceEatenEnergy += Double.parseDouble(fdEnergyCalculated);
+            fdceEatenProteins += Double.parseDouble(fdProteinCalculated);
+            fdceEatenCarbs += Double.parseDouble(fdCarbsCalculated);
+            fdceEatenFat += Double.parseDouble(fdFatCalculated);
 
             cursorFd.moveToNext();
         }
@@ -770,7 +770,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         /* Total Fat,Protein,Carbs */
         TableRow.LayoutParams linearLayoutParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         linearLayoutParams.setMarginStart(30);
-        linearLayoutSubLineTotal.addView(getSubLine(getContext(), String.valueOf(fdceEatenEnergy), String.valueOf(fdceEatenProteins), String.valueOf(fdceEatenCarbs), String.valueOf(fdceEatenFat)), linearLayoutParams);
+        linearLayoutSubLineTotal.addView(getSubLine(getContext(), String.format( getString(R.string.format_double),  fdceEatenEnergy),String.format( getString(R.string.format_double),fdceEatenProteins), String.format( getString(R.string.format_double),fdceEatenCarbs), String.format( getString(R.string.format_double),fdceEatenFat)), linearLayoutParams);
 
         if (!fdceId.equals("-1")) {
             //Update fdce_table
@@ -835,23 +835,23 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         db.update("food_diary", "_id", fdId, "fd_serving_size_gram", db.quoteSmart(servingSizeGram));
 
         //Energy calculated
-        double fdEnergyCalculated = Math.round((foodEnergy * servingSizeGram) / 100);
+        double fdEnergyCalculated = (foodEnergy * servingSizeGram) / 100;
         String fdEnergyCalculatedSQL = db.quoteSmart("" + fdEnergyCalculated);
         db.update("food_diary", "_id", fdId, "fd_energy_calculated", fdEnergyCalculatedSQL);
 
         //Proteins calculated
-        double fdProteinCalculated = Math.round((foodProteins * servingSizeGram) / 100);
+        double fdProteinCalculated = (foodProteins * servingSizeGram) / 100;
         String fdProteinCalculatedSQL = db.quoteSmart("" + fdProteinCalculated);
         db.update("food_diary", "_id", fdId, "fd_protein_calculated", fdProteinCalculatedSQL);
 
         //Carbohydrates calculated
-        double fdCarbohydratesCalculated = Math.round((foodCarbohydrates * servingSizeGram) / 100);
+        double fdCarbohydratesCalculated = (foodCarbohydrates * servingSizeGram) / 100;
         String fdCarbohydratesCalculatedSQL = db.quoteSmart("" + fdCarbohydratesCalculated);
         db.update("food_diary", "_id", fdId, "fd_carbohydrates_calculated", fdCarbohydratesCalculatedSQL);
 
 
         //Fat calculated
-        double fdFatCalculated = Math.round((foodFat * servingSizeGram) / 100);
+        double fdFatCalculated = (foodFat * servingSizeGram) / 100;
         String fdFatCalculatedSQL = db.quoteSmart("" + fdFatCalculated);
         db.update("food_diary", "_id", fdId, "fd_fat_calculated", fdFatCalculatedSQL);
 
@@ -927,10 +927,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         String protein = "";
         String carbohydrates = "";
         String fat = "";
-        String energyCalculated = "";
-        String proteinCalculated = "";
-        String carbohydratesCalculated = "";
-        String fatCalculated = "";
+        double energyCalculated = 0;
+        double proteinCalculated = 0;
+        double carbohydratesCalculated = 0;
+        double fatCalculated = 0;
 
         String servingSizeGram = "";
         String servingSizeGramMeasurement = "";
@@ -943,36 +943,37 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
             stringFdId = cursorFd.getString(0);
             foodId = cursorFd.getString(1);
-            servingSizeGram = cursorFd.getString(2);
+            servingSizeGram =String.format( getString(R.string.format_double), Double.parseDouble(  cursorFd.getString(2)));
             servingSizeGramMeasurement = cursorFd.getString(3);
-            servingSizePcs = cursorFd.getString(4);
+            servingSizePcs = String.format( getString(R.string.format_double), Double.parseDouble(  cursorFd.getString(4)));
             servingSizePCSMeasurement = cursorFd.getString(5);
-            energyCalculated = cursorFd.getString(6);
+
 
             cursorFood = db.select("food", fieldsFood, "_id", db.quoteSmart(foodId));
             foodId = cursorFood.getString(0);
             name = cursorFood.getString(1);
             manufactureName = cursorFood.getString(2);
-            energy = cursorFood.getString(3);
-            protein = cursorFood.getString(4);
-            carbohydrates = cursorFood.getString(5);
-            fat = cursorFood.getString(6);
-            energyCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(energy)));
-            proteinCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(protein)));
-            carbohydratesCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(carbohydrates)));
-            fatCalculated = String.valueOf(Math.round(Double.parseDouble(servingSizePcs) * Double.parseDouble(fat)));
+            energy =String.format( getString(R.string.format_double), Double.parseDouble(  cursorFood.getString(3)));
+            protein =String.format( getString(R.string.format_double), Double.parseDouble(  cursorFood.getString(4)));
+            carbohydrates =String.format( getString(R.string.format_double), Double.parseDouble(  cursorFood.getString(5)));
+            fat =String.format( getString(R.string.format_double), Double.parseDouble(  cursorFood.getString(6)));
+            energyCalculated = Double.parseDouble(servingSizePcs) * Double.parseDouble(energy);
+            proteinCalculated = Double.parseDouble(servingSizePcs) * Double.parseDouble(protein);
+            carbohydratesCalculated = Double.parseDouble(servingSizePcs) * Double.parseDouble(carbohydrates);
+            fatCalculated = Double.parseDouble(servingSizePcs) * Double.parseDouble(fat);
 
-            String subLine = manufactureName + ", " +
-                servingSizeGram + " " +
-                servingSizeGramMeasurement + ", " +
-                servingSizePcs + " " +
-                servingSizePCSMeasurement;
+//            String subLine = String.format( manufactureName + ", " +
+//                 "%.1f " +
+//                servingSizeGramMeasurement + ", " +
+//                "%.1f " +
+//                servingSizePCSMeasurement,servingSizeGram,servingSizePcs );
 
             if (stringTableRowTextName.equals(name)) {
                 break;
-            } else if (stringTableRowTextName.equals(subLine)) {
-                break;
             }
+//            } else if (stringTableRowTextName.equals(subLine)) {
+//                break;
+//            }
             cursorFd.moveToNext();
         }
 
@@ -1018,10 +1019,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         textViewFoodCarbsPerHundred.setText(carbohydrates);
         textViewFoodFatPerHundred.setText(fat);
 
-        textViewFoodEnergyPerN.setText(energyCalculated);
-        textViewFoodProteinsPerN.setText(proteinCalculated);
-        textViewFoodCarbsPerN.setText(carbohydratesCalculated);
-        textViewFoodFatPerN.setText(fatCalculated);
+        textViewFoodEnergyPerN.setText(String.format(getString(R.string.format_double), energyCalculated));
+        textViewFoodProteinsPerN.setText(String.format(getString(R.string.format_double),proteinCalculated));
+        textViewFoodCarbsPerN.setText(String.format(getString(R.string.format_double),carbohydratesCalculated));
+        textViewFoodFatPerN.setText(String.format(getString(R.string.format_double),fatCalculated));
 
         /* Listener for editTextPortionSizePCS */
         editTextPortionSizePCS.addTextChangedListener(new TextWatcher() {
@@ -1161,7 +1162,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
                 //200 u -1
                 //x -----2
-                double doublePortionSizeGram = Math.round(doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber));
+                double doublePortionSizeGram = doublePortionSizePCS * Double.parseDouble(servingSize) / Double.parseDouble(servingNameNumber);
                 editTextPortionSizeGram.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizeGram));
                 updateTablePerN(foodCursor, servingSize, doublePortionSizeGram);
 
@@ -1252,7 +1253,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
                 // Have changed pcs
                 // Update gram
-                double doublePortionSizePCS = Math.round(doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize));
+                double doublePortionSizePCS = doublePortionSizeGram * Double.parseDouble(servingNameNumber) / Double.parseDouble(servingSize);
                 editTextPortionSizePCS.setText(String.format(getActivity().getString(R.string.format_double), doublePortionSizePCS));
 
 
@@ -1416,10 +1417,10 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         };
         Cursor cursorGoal = db.select("goal", fieldsGoal, "_id", 1);
         if (cursorGoal.getCount() != 0) {
-            String stringGoalEnergy = cursorGoal.getString(0);
-            String stringGoalProtein = cursorGoal.getString(1);
-            String stringGoalCarbs = cursorGoal.getString(2);
-            String stringGoalFat = cursorGoal.getString(3);
+            String stringGoalEnergy =String.format( getString(R.string.format_double), Double.parseDouble(  cursorGoal.getString(0)));
+            String stringGoalProtein =String.format( getString(R.string.format_double), Double.parseDouble(  cursorGoal.getString(1)));
+            String stringGoalCarbs =String.format( getString(R.string.format_double), Double.parseDouble(  cursorGoal.getString(2)));
+            String stringGoalFat =String.format( getString(R.string.format_double), Double.parseDouble(  cursorGoal.getString(3)));
 
 
             String[] fieldsSum = {
@@ -1429,14 +1430,14 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 "fd_sum_fat",
             };
             Cursor cursorSum = db.select("food_diary_sum", fieldsSum, "fd_sum_date", db.quoteSmart(currentData));
-            String stringEatenEnergy = cursorSum.getString(0);
-            String stringEatenProtein = cursorSum.getString(1);
-            String stringEatenCarbs = cursorSum.getString(2);
-            String stringEatenFat = cursorSum.getString(3);
+            String stringEatenEnergy =String.format( getString(R.string.format_double), Double.parseDouble(  cursorSum.getString(0)));
+            String stringEatenProtein =String.format( getString(R.string.format_double), Double.parseDouble(  cursorSum.getString(1)));
+            String stringEatenCarbs =String.format( getString(R.string.format_double), Double.parseDouble(  cursorSum.getString(2)));
+            String stringEatenFat =String.format( getString(R.string.format_double), Double.parseDouble(  cursorSum.getString(3)));
 
 
-            progressBarEnergy.setMax(Integer.parseInt(stringGoalEnergy));
-            progressBarEnergy.setProgress(Integer.parseInt(stringEatenEnergy));
+            progressBarEnergy.setMax((int) Double.parseDouble(stringGoalEnergy) );
+            progressBarEnergy.setProgress((int) Double.parseDouble(stringEatenEnergy));
             double energyLeft = Double.parseDouble(stringGoalEnergy) - Double.parseDouble(stringEatenEnergy);
             if (energyLeft > 30) {
                 progressBarEnergy.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
@@ -1446,8 +1447,8 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 progressBarEnergy.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
             }
 
-            progressBarProtein.setMax(Integer.parseInt(stringGoalProtein));
-            progressBarProtein.setProgress(Integer.parseInt(stringEatenProtein));
+            progressBarProtein.setMax((int) Double.parseDouble(stringGoalProtein));
+            progressBarProtein.setProgress((int) Double.parseDouble(stringEatenProtein));
             double proteinLeft = Double.parseDouble(stringGoalProtein) - Double.parseDouble(stringEatenProtein);
             if (proteinLeft > 10) {
                 progressBarProtein.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
@@ -1457,8 +1458,8 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 progressBarProtein.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
             }
 
-            progressBarCarbs.setMax(Integer.parseInt(stringGoalCarbs));
-            progressBarCarbs.setProgress(Integer.parseInt(stringEatenCarbs));
+            progressBarCarbs.setMax((int) Double.parseDouble(stringGoalCarbs));
+            progressBarCarbs.setProgress((int) Double.parseDouble(stringEatenCarbs));
             double carbsLeft = Double.parseDouble(stringGoalCarbs) - Double.parseDouble(stringEatenCarbs);
             if (carbsLeft > 10) {
                 progressBarCarbs.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
@@ -1468,8 +1469,8 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 progressBarCarbs.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_red)));
             }
 
-            progressBarFat.setMax(Integer.parseInt(stringGoalFat));
-            progressBarFat.setProgress(Integer.parseInt(stringEatenFat));
+            progressBarFat.setMax((int) Double.parseDouble(stringGoalFat));
+            progressBarFat.setProgress((int) Double.parseDouble(stringEatenFat));
             double fatLeft = Double.parseDouble(stringGoalFat) - Double.parseDouble(stringEatenFat);
             if (fatLeft > 10) {
                 progressBarFat.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.my_green)));
@@ -1493,7 +1494,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
         }
         db.close();
-
     }
 
 }

@@ -156,7 +156,7 @@ public class SignUp extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-//if()
+
                 //Если такой уже есть user тогда
                 String[] fieldsUser={
                     "user_nickname"
